@@ -1,0 +1,66 @@
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>결과</title>
+</head>
+<body>
+    <h2>업로드 결과</h2>
+    <p>성공: [[${result.successCount}]]건</p>
+    <p>실패: [[${result.errors.size()}]]건</p>
+
+    <div th:if="${result.errors.size() > 0}">
+        <h4>실패 내역</h4>
+        <ul>
+            <li th:each="err : ${result.errors}">
+                라인 [[${err.lineNumber}]]: [[${err.text}]]
+            </li>
+        </ul>
+    </div>
+
+    <button onclick="loadData()">조회</button>
+    <table id="dataTable">
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>pwd</th>
+                <th>name</th>
+                <th>level</th>
+                <th>desc</th>
+                <th>reg_date</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        function loadData() {
+            fetch("/data")
+                .then(response => response.json())
+                .then(data => {
+                    const tbody = document.querySelector("#dataTable tbody");
+                    tbody.innerHTML = "";
+                    data.forEach(row => {
+
+                    const date = new Date(row.reg_date);
+                    const formattedDate = `${date.getFullYear()}년${date.getMonth() + 1}월${date.getDate()}일 ` +
+                                      `${date.getHours()}시${date.getMinutes().toString().padStart(2, '0')}분`
+                    const tr = document.createElement("tr");
+                        tr.innerHTML = `<td>${row.id}</td>
+                                        <td>${row.pwd}</td>
+                                        <td>${row.name}</td>
+                                        <td>${row.level}</td>
+                                        <td>${row.desc}</td>
+                                        <td>${formattedDate}</td>`;
+                        tbody.appendChild(tr);
+                    });
+                });
+            }
+    </script>
+</body>
+<style>
+    th, td{
+        border: 1px solid #333;
+    }
+</style>
+</html>
