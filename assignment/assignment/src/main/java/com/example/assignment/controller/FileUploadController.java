@@ -2,7 +2,9 @@ package com.example.assignment.controller;
 
 import com.example.assignment.dto.UploadResult;
 import com.example.assignment.entity.User;
-import com.example.assignment.service.MemberService;
+import com.example.assignment.service.FileUploadService;
+
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,13 +13,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @Controller
-public class MemberController {
+@AllArgsConstructor
+public class FileUploadController {
 
-    private final MemberService memberService;
-
-    public MemberController(MemberService memberService){
-        this.memberService = memberService;
-    }
+    private final FileUploadService fileUploadService;
 
     @GetMapping("/upload")
     public String uploadPage(){
@@ -30,7 +29,7 @@ public class MemberController {
             model.addAttribute(("error"), ".dbfile 확장자만 업로드 가능합니다.");
             return "upload";
         }
-        UploadResult result = memberService.processFile(file);
+        UploadResult result = fileUploadService.processFile(file);
         model.addAttribute("result", result);
         return "result";
     }
@@ -38,6 +37,6 @@ public class MemberController {
     @GetMapping("/data")
     @ResponseBody
     public List<User> readData() {
-        return memberService.findAll();
+        return fileUploadService.findAll();
     }
 }

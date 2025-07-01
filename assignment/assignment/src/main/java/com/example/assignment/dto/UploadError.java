@@ -1,20 +1,11 @@
 package com.example.assignment.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
+@AllArgsConstructor
 public class UploadError {
-    private int lineCount;
-    @Getter
+    private long lineCount;
     private String text;
-
-    public UploadError(int lineCount, String text) {
-        this.lineCount = lineCount;
-        this.text = text;
-    }
-
-    public int getLineNumber() {
-        return lineCount;
-    }
-
 }
