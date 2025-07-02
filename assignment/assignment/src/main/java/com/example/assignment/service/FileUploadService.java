@@ -1,8 +1,8 @@
 package com.example.assignment.service;
 
-import com.example.assignment.dto.UploadError;
-import com.example.assignment.dto.UploadResult;
-import com.example.assignment.entity.User;
+import com.example.assignment.domain.dto.UploadError;
+import com.example.assignment.domain.dto.UploadResult;
+import com.example.assignment.domain.entity.User;
 import com.example.assignment.repository.UserRepository;
 
 import jakarta.persistence.PersistenceException;

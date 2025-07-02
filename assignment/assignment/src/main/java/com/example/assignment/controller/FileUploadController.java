@@ -1,7 +1,7 @@
 package com.example.assignment.controller;
 
-import com.example.assignment.dto.UploadResult;
-import com.example.assignment.entity.User;
+import com.example.assignment.domain.dto.UploadResult;
+import com.example.assignment.domain.entity.User;
 import com.example.assignment.service.FileUploadService;
 
 import lombok.AllArgsConstructor;
