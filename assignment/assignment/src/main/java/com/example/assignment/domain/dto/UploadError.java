@@ -1,11 +1,16 @@
 package com.example.assignment.domain.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UploadError {
-    private long lineCount;
-    private String text;
+    private int lineCount;
+    private String errors;
+
+    public UploadError(int lineCount, String errors) {
+        this.lineCount = lineCount;
+        this.errors = errors;
+    }
 }

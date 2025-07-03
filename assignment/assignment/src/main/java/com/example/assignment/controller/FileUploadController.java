@@ -1,5 +1,7 @@
 package com.example.assignment.controller;
 
+import com.example.assignment.common.exception.CustomException;
+import com.example.assignment.common.exception.ErrorCode;
 import com.example.assignment.domain.dto.UploadResult;
 import com.example.assignment.domain.entity.User;
 import com.example.assignment.service.FileUploadService;
@@ -26,8 +28,8 @@ public class FileUploadController {
     @PostMapping("/upload")
     public String fileUpload(@RequestParam("file")MultipartFile file, Model model){
         if(!file.getOriginalFilename().endsWith(".dbfile")){
-            model.addAttribute(("error"), ".dbfile 확장자만 업로드 가능합니다.");
-            return "upload";
+//            model.addAttribute("error", ".dbfile 확장자만 업로드 가능합니다.");
+            throw new CustomException(ErrorCode.INVALID_FILE_EXTENSION);
         }
         UploadResult result = fileUploadService.processFile(file);
         model.addAttribute("result", result);

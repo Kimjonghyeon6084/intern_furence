@@ -1,13 +1,18 @@
 package com.example.assignment.domain.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
 @Getter
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UploadResult {
-    private long successCount;
+    private int successCount;
     private List<UploadError> errors;
+
+    public UploadResult(int successCount, List<UploadError> errors) {
+        this.successCount = successCount;
+        this.errors = errors;
+    }
 }

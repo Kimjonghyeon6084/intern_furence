@@ -13,7 +13,7 @@
         <h4>실패 내역</h4>
         <ul>
             <li th:each="err : ${result.errors}">
-                라인 [[${err.lineCount}]]: [[${err.text}]]
+                라인 [[${err.lineCount}]]: [[${err.errors}]]
             </li>
         </ul>
     </div>

@@ -4,14 +4,14 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.sql.Timestamp;
 
 @Getter
-@Setter
 @Entity(name = "t_user")
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
     @Id
     @Column
@@ -26,4 +26,14 @@ public class User {
     private String desc;
     @Column
     private Timestamp reg_date;
+
+    public User(String id, String pwd, String name,
+                    String level, String desc, Timestamp reg_date) {
+        this.id = id;
+        this.pwd = pwd;
+        this.name = name;
+        this.level = level;
+        this.desc = desc;
+        this.reg_date = reg_date;
+    }
 }
