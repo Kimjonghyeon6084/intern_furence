@@ -6,11 +6,8 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public class UploadError {
-    private int lineCount;
-    private String errors;
 
-    public UploadError(int lineCount, String errors) {
-        this.lineCount = lineCount;
-        this.errors = errors;
-    }
+    private final int lineCount;
+    private final String errors;
+
 }

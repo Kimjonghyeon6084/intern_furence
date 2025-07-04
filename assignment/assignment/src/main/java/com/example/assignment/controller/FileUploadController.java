@@ -7,6 +7,7 @@ import com.example.assignment.domain.entity.User;
 import com.example.assignment.service.FileUploadService;
 
 import lombok.AllArgsConstructor;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +29,7 @@ public class FileUploadController {
     @PostMapping("/upload")
     public String fileUpload(@RequestParam("file")MultipartFile file, Model model){
         if(!file.getOriginalFilename().endsWith(".dbfile")){
-//            model.addAttribute("error", ".dbfile 확장자만 업로드 가능합니다.");
+            model.addAttribute("error", ".dbfile 확장자만 업로드 가능합니다.");
             throw new CustomException(ErrorCode.INVALID_FILE_EXTENSION);
         }
         UploadResult result = fileUploadService.processFile(file);

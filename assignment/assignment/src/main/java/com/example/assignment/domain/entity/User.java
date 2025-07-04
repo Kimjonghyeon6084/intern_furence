@@ -12,7 +12,7 @@ import java.sql.Timestamp;
 @Entity(name = "t_user")
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User {
+public class User implements CommonEntity {
     @Id
     @Column
     private String id;
