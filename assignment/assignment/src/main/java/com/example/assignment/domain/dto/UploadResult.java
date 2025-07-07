@@ -8,11 +8,8 @@ import java.util.List;
 @Getter
 @RequiredArgsConstructor
 public class UploadResult {
-    private int successCount;
-    private List<UploadError> errors;
 
-    public UploadResult(int successCount, List<UploadError> errors) {
-        this.successCount = successCount;
-        this.errors = errors;
-    }
+    private final int successCount;
+    private final List<UploadError> errors;
+
 }

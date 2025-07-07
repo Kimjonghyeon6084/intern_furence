@@ -9,6 +9,7 @@ public enum ErrorCode {
     /* 파일 업로드 관련 예외 */
     INVALID_FILE_EXTENSION("U001", "파일 확장자가 .dbflie이 아닙니다."),
     DB_DUPLICATE("U002", "이미 등록된 값이 있습니다."),
+    FIELD_COUNT_INVALID("U003", "입력 필드 개수가 올바르지 않습니다."),
     UNKNOWN_ERROR("U999", "알 수 없는 오류가 발생했습니다."),
 
     /* 파일 형식 관련 예외 */
@@ -26,11 +27,11 @@ public enum ErrorCode {
     REGDATE_EMPTY("F105", "reg_date 값이 입력되지 않았습니다."),
     ;
 
-    private final String code;
+    private final String status;
     private final String message;
 
-    ErrorCode(String code, String message) {
-        this.code = code;
+    ErrorCode(String status, String message) {
+        this.status = status;
         this.message = message;
     }
 }

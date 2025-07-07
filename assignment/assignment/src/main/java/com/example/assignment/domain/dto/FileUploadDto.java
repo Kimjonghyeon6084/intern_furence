@@ -8,12 +8,11 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.sql.Timestamp;
-import java.util.Arrays;
 
 @Getter
 @Builder
-
 public class FileUploadDto {
+
     private String id;
     private String pwd;
     private String name;
@@ -41,7 +40,7 @@ public class FileUploadDto {
                     .regDate(parts[5])
                     .build();
         } else {
-            throw new IllegalArgumentException("필드 개수 오류: " + Arrays.toString(parts));
+            throw new CustomException(ErrorCode.FIELD_COUNT_INVALID, ErrorCode.FIELD_COUNT_INVALID.getMessage());
         }
     }
     /**
