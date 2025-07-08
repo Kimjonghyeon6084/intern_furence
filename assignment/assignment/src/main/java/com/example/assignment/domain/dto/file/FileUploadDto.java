@@ -1,4 +1,4 @@
-package com.example.assignment.domain.dto;
+package com.example.assignment.domain.dto.file;
 
 import com.example.assignment.common.exception.CustomException;
 import com.example.assignment.common.exception.ErrorCode;

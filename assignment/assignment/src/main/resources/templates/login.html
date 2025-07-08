@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h1>로그인</h1>
+    <form id="loginForm" action="/login" method="post">
+        <span>아이디 : </span>
+        <input id="id" required placeholder="아이디를 입력하세요."/>
+        <br>
+        <span>비밀번호 : </span>
+        <input id="pwd" required placeholder="비밀번호를 입력하세요."/>
+        <br>
+        <button type="submit">로그인</button>
+    </form>
+
+
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const id = document.getElementById("id").value;
+            const pwd = document.getElementById("pwd").value;
+
+            fetch("/login", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({id, pwd})
+            })
+            .then(async res => {
+                if (res.ok) {
+                    // 로그인 성공시 사용자 리스트 페이지로 이동
+                    window.location.href = "/user/list";
+                } else {
+                    const err = await res.json();
+                    alert(err.message || "아이디 또는 비밀번호가 틀립니다.");
+                    // 실패시 로그인창으로 이동(이미 /login이면 stay)
+                    window.location.href = "/login";
+                }
+            })
+            .catch(err => {
+                alert("서버 오류");
+            });
+        });
+    </script>
+</body>
+</html>

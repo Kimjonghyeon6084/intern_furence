@@ -1,4 +1,4 @@
-package com.example.assignment.domain.dto;
+package com.example.assignment.domain.dto.file;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
