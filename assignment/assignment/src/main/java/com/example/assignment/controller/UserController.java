@@ -8,8 +8,8 @@ import com.example.assignment.service.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-
 import jakarta.validation.Valid;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,11 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -43,11 +39,18 @@ public class UserController {
     }
 
     @GetMapping("/user/list")
-    public ResponseEntity<List<UserListDto>> showUserList(@RequestParam(defaultValue = "0") int page,
-                                                          @RequestParam(defaultValue = "10") int size) {
-        Page<UserListDto> list = userService.findAllExceptPwd(page, size);
-        log.info("유저정보 불러오기 성공");
-        return ResponseEntity.ok(list.getContent());
+    public ResponseEntity<?> showUserList(@RequestParam(defaultValue = "0") int page,
+                                                          @RequestParam(defaultValue = "10") int size,
+                                                          @SessionAttribute(name = "sessionID", required = false) String value) {
+        // 미리 로그인한 유저인지 확인
+        if (value == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new LoginErrorResDto("로그인이 필요합니다."));
+        } else {
+            Page<UserListDto> list = userService.findAllExceptPwd(page, size);
+            log.info("유저정보 불러오기 성공");
+            return ResponseEntity.ok(list.getContent());
+        }
     }
 
     @PostMapping("/login")

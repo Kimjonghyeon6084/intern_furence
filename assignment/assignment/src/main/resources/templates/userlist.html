@@ -37,17 +37,28 @@
         const size = 10;
 
         function fetchUserList(page = 0) {
-            fetch(`/user/list?page=${page}&size=${size}`)
-                .then(res => res.json())
-                .then(data => {
-                    renderTable(data);
-                    renderPagination(page, data.length === size); // 단순히 다음 페이지 있는지만 체크
-                })
-                .catch(err => {
-                    alert('유저 데이터를 불러오는데 실패했습니다.');
-                    console.error(err);
-                });
-        }
+    fetch(`/user/list?page=${page}&size=${size}`)
+        .then(res => {
+            if (res.status === 401) {
+                // 401(로그인 안함)이면 로그인 페이지로 이동
+                alert('로그인이 필요합니다.');
+                window.location.href = "/login"; // 실제 로그인 경로로 수정!
+                return Promise.reject('로그인 필요'); // 이후 코드 중단
+            }
+            return res.json();
+        })
+        .then(data => {
+            if (!data) return; // 위에서 로그인 아니면 중단
+            renderTable(data);
+            renderPagination(page, data.length === size);
+        })
+        .catch(err => {
+            if (err !== '로그인 필요') {
+                alert('유저 데이터를 불러오는데 실패했습니다.');
+                console.error(err);
+            }
+        });
+}
 
         function renderTable(users) {
             const tbody = document.querySelector("#userTable tbody");
