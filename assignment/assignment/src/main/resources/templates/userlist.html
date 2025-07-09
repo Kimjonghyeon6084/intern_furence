@@ -1,13 +1,103 @@
 <!doctype html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>유저 리스트</title>
+    <style>
+        table { border-collapse: collapse; width: 80%; margin: 30px auto;}
+        th, td { border: 1px solid #888; padding: 8px; text-align: center; }
+        th { background: #f5f5f5; }
+        #pagination { text-align: center; margin: 30px; }
+        #pagination button { margin: 0 2px; padding: 5px 12px;}
+        #resultMessage { text-align: center; color: green; font-weight: bold; margin: 20px;}
+        #errorMessage { text-align: center; color: red; font-weight: bold; margin: 20px;}
+    </style>
 </head>
 <body>
-<h1>userList</h1>
+    <h2 style="text-align: center;">유저 리스트</h2>
+    <table id="userTable">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>이름</th>
+            <th>Level</th>
+            <th>Desc</th>
+            <th>Reg Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <div id="pagination"></div>
+    <hr>
+    <button onclick="goToUploadPage()"/>
+    <script>
+        // 유저 리스트 불러오기
+        let currentPage = 0;
+        const size = 10;
+
+        function fetchUserList(page = 0) {
+            fetch(`/user/list?page=${page}&size=${size}`)
+                .then(res => res.json())
+                .then(data => {
+                    renderTable(data);
+                    renderPagination(page, data.length === size); // 단순히 다음 페이지 있는지만 체크
+                })
+                .catch(err => {
+                    alert('유저 데이터를 불러오는데 실패했습니다.');
+                    console.error(err);
+                });
+        }
+
+        function renderTable(users) {
+            const tbody = document.querySelector("#userTable tbody");
+            tbody.innerHTML = ""; // 초기화
+            if (users.length === 0) {
+                const row = `<tr><td colspan="5">데이터가 없습니다.</td></tr>`;
+                tbody.insertAdjacentHTML('beforeend', row);
+                return;
+            }
+            users.forEach(user => {
+                const regDate = user.reg_date
+                    ? new Date(user.reg_date).toLocaleString('ko-KR', { hour12: false })
+                    : '';
+                const row = `
+                    <tr>
+                        <td>${user.id}</td>
+                        <td>${user.name}</td>
+                        <td>${user.level}</td>
+                        <td>${user.desc || ''}</td>
+                        <td>${regDate}</td>
+                    </tr>
+                `;
+                tbody.insertAdjacentHTML('beforeend', row);
+            });
+        }
+
+        function renderPagination(page, hasNext) {
+            const pagDiv = document.getElementById("pagination");
+            pagDiv.innerHTML = "";
+
+            if (page > 0) {
+                pagDiv.innerHTML += `<button onclick="movePage(${page-1})">이전</button>`;
+            }
+            pagDiv.innerHTML += `<span style="margin:0 8px;">${page + 1} 페이지</span>`;
+            if (hasNext) {
+                pagDiv.innerHTML += `<button onclick="movePage(${page+1})">다음</button>`;
+            }
+        }
+
+        function movePage(page) {
+            currentPage = page;
+            fetchUserList(page);
+        }
+
+        function goToUploadPage() {
+            window.location.href = "/upload";
+        }
+
+        // 첫 로딩에 리스트 호출
+        fetchUserList(currentPage);
+    </script>
 </body>
 </html>

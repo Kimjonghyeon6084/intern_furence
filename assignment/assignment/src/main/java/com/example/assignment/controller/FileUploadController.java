@@ -2,12 +2,11 @@ package com.example.assignment.controller;
 
 import com.example.assignment.domain.dto.file.UploadError;
 import com.example.assignment.domain.dto.file.UploadResult;
-import com.example.assignment.domain.dto.user.UserListDto;
 import com.example.assignment.domain.entity.User;
 import com.example.assignment.service.FileUploadService;
 
-import com.example.assignment.service.UserService;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +21,11 @@ public class FileUploadController {
 
     private final FileUploadService fileUploadService;
 
+    @GetMapping("/upload")
+    public String toUploadPage() {
+        return "upload";
+    }
+
     @PostMapping("/upload")
     public ResponseEntity<UploadResult> fileUpload(@RequestParam("file") MultipartFile file) {
         if (!file.getOriginalFilename().endsWith(".dbfile")) {
@@ -31,7 +35,6 @@ public class FileUploadController {
         }
         UploadResult result = fileUploadService.processFile(file);
         return ResponseEntity.ok(result);
-//        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @GetMapping("/data")
