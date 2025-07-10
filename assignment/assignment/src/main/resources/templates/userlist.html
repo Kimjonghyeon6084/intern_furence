@@ -60,8 +60,8 @@
             })
             .then(data => {
                 if (!data) return; // 위에서 로그인 아니면 중단
-                renderTable(data);
-                renderPagination(page, data.length === size);
+                renderTable(data.content);
+                renderPagination(data.number, data.totalPages, data.last);
             })
             .catch(err => {
                 if (err !== '로그인 필요') {
@@ -96,29 +96,29 @@
             });
         }
 
-        function renderPagination(page, hasNext) {
+        function renderPagination(current, totalPages, isLast) {
             const pageDiv = document.getElementById("pagination");
             pageDiv.innerHTML = "";
 
             const pageSize = 10;
-            const currentGroup = Math.floor(page / pageSize);
+            const currentGroup = Math.floor(current / pageSize);
             const startPage = currentGroup * pageSize;
-            const endPage = startPage + pageSize - 1;
+            let endPage = startPage + pageSize - 1;
+            if (endPage >= totalPages) endPage = totalPages - 1;
 
             if (startPage > 0) {
                 pageDiv.innerHTML += `<button onclick="movePage(${startPage - 1})">이전</button>`;
             }
 
             for (let i = startPage; i <= endPage; i++) {
-                if (!hasNext && i > page) break;
                 pageDiv.innerHTML += `
-                    <button onclick="movePage(${i})" ${i === page ? 'style="font-weight:bold;background:#BDBDBD;"' : ''}>
+                    <button onclick="movePage(${i})" ${i === current ? 'style="font-weight:bold;background:#BDBDBD;"' : ''}>
                         ${i + 1}
                     </button>
                 `;
             }
 
-            if (hasNext) {
+            if (!isLast && endPage < totalPages - 1) {
                 pageDiv.innerHTML += `<button onclick="movePage(${endPage + 1})">다음</button>`;
             }
         }

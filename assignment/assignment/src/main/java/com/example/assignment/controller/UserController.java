@@ -49,7 +49,7 @@ public class UserController {
         } else {
             Page<UserListDto> list = userService.findAllExceptPwd(page, size);
             log.info("유저정보 불러오기 성공");
-            return ResponseEntity.ok(list.getContent());
+            return ResponseEntity.ok(list);
         }
     }
 
