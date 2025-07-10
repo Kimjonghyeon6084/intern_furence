@@ -40,8 +40,8 @@ public class UserController {
 
     @GetMapping("/user/list")
     public ResponseEntity<?> showUserList(@RequestParam(defaultValue = "0") int page,
-                                                          @RequestParam(defaultValue = "10") int size,
-                                                          @SessionAttribute(name = "sessionID", required = false) String value) {
+                                          @RequestParam(defaultValue = "10") int size,
+                                          @SessionAttribute(name = "sessionID", required = false) String value) {
         // 미리 로그인한 유저인지 확인
         if (value == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
@@ -54,7 +54,9 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> signin(@RequestBody @Valid LoginReqDto dto, HttpSession session, HttpServletRequest request) {
+    public ResponseEntity<?> signin(@RequestBody @Valid LoginReqDto dto,
+                                                        HttpSession session,
+                                                        HttpServletRequest request) {
         LoginResDto resDto = userService.login(dto);
         if (resDto != null) {
             // session 등록 전 기존 세션이 있다면

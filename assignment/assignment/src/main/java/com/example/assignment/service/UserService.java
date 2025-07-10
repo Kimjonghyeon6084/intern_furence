@@ -24,6 +24,6 @@ public class UserService {
 
     public Page<UserListDto> findAllExceptPwd(int page, int size) {
         Pageable pageable = PageRequest.of(page, size); // pageable 객체 생성
-        return userRepository.findAllExceptPwd(pageable); //
+        return userRepository.findAllExceptPwd(pageable);
     }
 }

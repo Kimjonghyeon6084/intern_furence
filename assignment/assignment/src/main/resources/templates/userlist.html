@@ -2,19 +2,30 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <title>유저 리스트</title>
     <style>
-        table { border-collapse: collapse; width: 80%; margin: 30px auto;}
-        th, td { border: 1px solid #888; padding: 8px; text-align: center; }
-        th { background: #f5f5f5; }
-        #pagination { text-align: center; margin: 30px; }
-        #pagination button { margin: 0 2px; padding: 5px 12px;}
-        #resultMessage { text-align: center; color: green; font-weight: bold; margin: 20px;}
-        #errorMessage { text-align: center; color: red; font-weight: bold; margin: 20px;}
+        h2 {
+            text-align: center;
+        }
+        table, tr, th, td {
+            margin : auto;
+            border : 1px solid #444444;
+            border-collapse : collapse;
+            padding : 10px 5px;
+            text-align : center;
+        }
+        thead {
+            background-color : #BDBDBD;
+        }
+        #pagination {
+            text-align: center;
+        }
     </style>
 </head>
 <body>
-    <h2 style="text-align: center;">유저 리스트</h2>
+    <h2>유저 리스트</h2>
     <table id="userTable">
         <thead>
         <tr>
@@ -30,35 +41,35 @@
     </table>
     <div id="pagination"></div>
     <hr>
-    <button onclick="goToUploadPage()"/>
+    <button onclick="goToUploadPage()">파일 업로드</button>
     <script>
         // 유저 리스트 불러오기
         let currentPage = 0;
         const size = 10;
 
         function fetchUserList(page = 0) {
-    fetch(`/user/list?page=${page}&size=${size}`)
-        .then(res => {
-            if (res.status === 401) {
-                // 401(로그인 안함)이면 로그인 페이지로 이동
-                alert('로그인이 필요합니다.');
-                window.location.href = "/login"; // 실제 로그인 경로로 수정!
-                return Promise.reject('로그인 필요'); // 이후 코드 중단
-            }
-            return res.json();
-        })
-        .then(data => {
-            if (!data) return; // 위에서 로그인 아니면 중단
-            renderTable(data);
-            renderPagination(page, data.length === size);
-        })
-        .catch(err => {
-            if (err !== '로그인 필요') {
-                alert('유저 데이터를 불러오는데 실패했습니다.');
-                console.error(err);
-            }
-        });
-}
+        fetch(`/user/list?page=${page}&size=${size}`)
+            .then(res => {
+                if (res.status === 401) {
+                    // 401(로그인 안함)이면 로그인 페이지로 이동
+                    alert('로그인이 필요합니다.');
+                    window.location.href = "/login"; // 실제 로그인 경로로 수정!
+                    return Promise.reject('로그인 필요'); // 이후 코드 중단
+                }
+                return res.json();
+            })
+            .then(data => {
+                if (!data) return; // 위에서 로그인 아니면 중단
+                renderTable(data);
+                renderPagination(page, data.length === size);
+            })
+            .catch(err => {
+                if (err !== '로그인 필요') {
+                    alert('유저 데이터를 불러오는데 실패했습니다.');
+                    console.error(err);
+                }
+            });
+        }
 
         function renderTable(users) {
             const tbody = document.querySelector("#userTable tbody");
@@ -86,15 +97,29 @@
         }
 
         function renderPagination(page, hasNext) {
-            const pagDiv = document.getElementById("pagination");
-            pagDiv.innerHTML = "";
+            const pageDiv = document.getElementById("pagination");
+            pageDiv.innerHTML = "";
 
-            if (page > 0) {
-                pagDiv.innerHTML += `<button onclick="movePage(${page-1})">이전</button>`;
+            const pageSize = 10;
+            const currentGroup = Math.floor(page / pageSize);
+            const startPage = currentGroup * pageSize;
+            const endPage = startPage + pageSize - 1;
+
+            if (startPage > 0) {
+                pageDiv.innerHTML += `<button onclick="movePage(${startPage - 1})">이전</button>`;
             }
-            pagDiv.innerHTML += `<span style="margin:0 8px;">${page + 1} 페이지</span>`;
+
+            for (let i = startPage; i <= endPage; i++) {
+                if (!hasNext && i > page) break;
+                pageDiv.innerHTML += `
+                    <button onclick="movePage(${i})" ${i === page ? 'style="font-weight:bold;background:#BDBDBD;"' : ''}>
+                        ${i + 1}
+                    </button>
+                `;
+            }
+
             if (hasNext) {
-                pagDiv.innerHTML += `<button onclick="movePage(${page+1})">다음</button>`;
+                pageDiv.innerHTML += `<button onclick="movePage(${endPage + 1})">다음</button>`;
             }
         }
 

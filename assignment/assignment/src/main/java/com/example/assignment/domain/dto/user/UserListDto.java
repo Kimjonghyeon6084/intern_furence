@@ -1,7 +1,6 @@
 package com.example.assignment.domain.dto.user;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 import java.sql.Timestamp;
 

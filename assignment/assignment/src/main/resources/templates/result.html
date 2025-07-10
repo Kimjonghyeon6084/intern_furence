@@ -3,6 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>김종현_결과</title>
+    <style>
+        table {
+          border: 1px solid #444444;
+          border-collapse: collapse;
+        }
+        th, td {
+          border: 1px solid #444444;
+        }
+    </style>
 </head>
 <body>
     <h2>업로드 결과</h2>
@@ -20,7 +29,7 @@
     </div>
 
     <button onclick="loadData()">조회</button>
-    <table id="dataTable">
+    <table id="dataTable" >
         <thead>
             <tr>
                 <th>id</th>
@@ -63,12 +72,4 @@
         }
     </script>
 </body>
-<style>
-    th, td{
-        border: 1px solid #333;
-    }
-    table {
-        border-collapse: collapse;
-    }
-</style>
 </html>
