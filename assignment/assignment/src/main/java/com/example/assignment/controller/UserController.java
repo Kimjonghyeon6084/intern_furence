@@ -1,6 +1,6 @@
 package com.example.assignment.controller;
 
-import com.example.assignment.domain.dto.user.LoginErrorResDto;
+import com.example.assignment.common.exception.ExceptionResponse;
 import com.example.assignment.domain.dto.user.LoginReqDto;
 import com.example.assignment.domain.dto.user.UserListDto;
 import com.example.assignment.domain.dto.user.LoginResDto;
@@ -19,8 +19,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Controller
 @Slf4j
 @RequiredArgsConstructor
@@ -38,14 +36,13 @@ public class UserController {
         return "userlist";
     }
 
-    @GetMapping("/user/list")
-    public ResponseEntity<?> showUserList(@RequestParam(defaultValue = "0") int page,
-                                          @RequestParam(defaultValue = "10") int size,
+    @GetMapping("/user/list/{page}")
+    public ResponseEntity<?> showUserList(@PathVariable int page,
                                           @SessionAttribute(name = "sessionID", required = false) String value) {
+        int size = 10;
         // 미리 로그인한 유저인지 확인
         if (value == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(new LoginErrorResDto("로그인이 필요합니다."));
+            return ExceptionResponse.fail(HttpStatus.UNAUTHORIZED, "LOGIN001", "로그인이 필요합니다..");
         } else {
             Page<UserListDto> list = userService.findAllExceptPwd(page, size);
             log.info("유저정보 불러오기 성공");
@@ -64,12 +61,12 @@ public class UserController {
             if (session.getId() != null) {
                 session.invalidate();
             }
-            HttpSession newSession = request.getSession(true);
-            newSession.setAttribute("sessionID", dto.getId());
-            log.info("로그인 성공");
-            return ResponseEntity.ok(resDto);
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new LoginErrorResDto("아이디 혹은 비밀번호가 틀립니다."));
+        HttpSession newSession = request.getSession(true);
+        newSession.setAttribute("sessionID", dto.getId());
+        log.info("로그인 성공");
+        return ResponseEntity.ok(resDto);
+
     }
 
 

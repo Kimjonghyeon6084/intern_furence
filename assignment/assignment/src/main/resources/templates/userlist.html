@@ -42,39 +42,73 @@
     <div id="pagination"></div>
     <hr>
     <button onclick="goToUploadPage()">파일 업로드</button>
+
     <script>
-        // 유저 리스트 불러오기
         let currentPage = 0;
         const size = 10;
 
+        function getPageFromUrl() {
+            const params = new URLSearchParams(window.location.search);
+            return parseInt(params.get('page')) || 0;
+        }
+
+        function getSizeFromUrl() {
+            const params = new URLSearchParams(window.location.search);
+            return parseInt(params.get('size')) || size;
+        }
+
+        // 페이지 이동(버튼 클릭 시)
+        function movePage(page) {
+            currentPage = page;
+            const url = new URL(window.location.origin + `/userlist/${page}`);
+                window.history.pushState({}, '', url);
+                fetchUserList(page);
+        }
+
+        // 뒤로가기/앞으로가기
+        window.addEventListener('popstate', () => {
+            const page = getPageFromUrl();
+            currentPage = page;
+            fetchUserList(page);
+        });
+
+        // 유저 리스트 불러오기
         function fetchUserList(page = 0) {
-        fetch(`/user/list?page=${page}&size=${size}`)
-            .then(res => {
-                if (res.status === 401) {
-                    // 401(로그인 안함)이면 로그인 페이지로 이동
-                    alert('로그인이 필요합니다.');
-                    window.location.href = "/login"; // 실제 로그인 경로로 수정!
-                    return Promise.reject('로그인 필요'); // 이후 코드 중단
-                }
-                return res.json();
-            })
-            .then(data => {
-                if (!data) return; // 위에서 로그인 아니면 중단
-                renderTable(data.content);
-                renderPagination(data.number, data.totalPages, data.last);
-            })
-            .catch(err => {
-                if (err !== '로그인 필요') {
-                    alert('유저 데이터를 불러오는데 실패했습니다.');
-                    console.error(err);
-                }
-            });
+            fetch(`/user/list/${page}`)
+                .then(async res => {
+                    if (!res.ok) {
+                        let msg;
+                        try {
+                            const data = await res.json();
+                            msg = data.message || JSON.stringify(data);
+                        } catch {
+                            msg = await res.text();
+                        }
+                        alert(msg);
+                        if (res.status === 401) {
+                            window.location.href = "/login";
+                        }
+                        throw new Error(msg);
+                    }
+                    return res.json();
+                })
+                .then(data => {
+                    if (!data) return;
+                    renderTable(data.content);
+                    renderPagination(data.number, data.totalPages, data.last);
+                })
+                .catch(err => {
+                    if (err.message !== '로그인 필요') {
+                        alert('유저 데이터를 불러오는데 실패했습니다.');
+                        console.error(err);
+                    }
+                });
         }
 
         function renderTable(users) {
             const tbody = document.querySelector("#userTable tbody");
-            tbody.innerHTML = ""; // 초기화
-            if (users.length === 0) {
+            tbody.innerHTML = "";
+            if (!users || users.length === 0) {
                 const row = `<tr><td colspan="5">데이터가 없습니다.</td></tr>`;
                 tbody.insertAdjacentHTML('beforeend', row);
                 return;
@@ -123,17 +157,21 @@
             }
         }
 
-        function movePage(page) {
-            currentPage = page;
-            fetchUserList(page);
-        }
-
         function goToUploadPage() {
             window.location.href = "/upload";
         }
 
-        // 첫 로딩에 리스트 호출
-        fetchUserList(currentPage);
+        window.addEventListener('DOMContentLoaded', () => {
+            const pathParts = window.location.pathname.split('/');
+            let page = 0;
+            if (pathParts.length >= 3 && pathParts[1] === 'userlist') {
+                page = parseInt(pathParts[2]) || 0;
+            }
+            currentPage = page;
+            fetchUserList(currentPage);
+        });
     </script>
+
+
 </body>
 </html>

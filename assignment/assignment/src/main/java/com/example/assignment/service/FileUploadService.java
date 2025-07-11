@@ -33,55 +33,6 @@ public class FileUploadService {
     /**
      * 파일 업로드하는 메서드
      **/
-//    public UploadResult processFile(MultipartFile file) {
-//
-//        int success = INITIAL_SUCCESS_COUNT;
-//        List<UploadError> errors = new ArrayList<>();
-//
-//        log.info("✅파일 업로드 시작 : {}", file.getOriginalFilename());
-//
-//        try (BufferedReader reader =
-//                     new BufferedReader(new InputStreamReader(file.getInputStream()))) {
-//
-//            List<String> lines = reader.lines().toList();
-//
-//            for (int i = 0; i < lines.size(); i++){
-//                String line = lines.get(i).trim();
-//                String[] parts = line.split("/");
-//
-//                if(parts.length != 6){
-//                    errors.add(new UploadError(i + 1,line));
-//                    continue;
-//                }
-//
-//                FileUploadDto dto = FileUploadDto.fromParts(parts);
-//
-//                try {
-//                    dto.validate(i + 1);
-//                } catch (CustomException e) {
-//                    log.warn("✅파일 업로드 실패 (라인 {}): {} / 원인: {}", i + 1, line, e.getErrorCode().getMessage());
-//                    errors.add(new UploadError(i + 1, line));
-//                    continue;
-//                }
-//
-//                try {
-//                    insertOneService.insertFileOne(dto.toEntity());
-//                    success++;
-//                } catch (PersistenceException e) {
-//                    log.warn("✅파일 업로드 실패 (라인 {}): {} / 원인: {}", i + 1, line, ErrorCode.DB_DUPLICATE.getMessage());
-//                    errors.add(new UploadError(i + 1, line));
-//                } catch (Exception e) {
-//                    log.error("✅처리 중 예외 발생: line {}, 에러: {}", i + 1, ErrorCode.UNKNOWN_ERROR.getMessage());
-//                    errors.add(new UploadError(i + 1, line));
-//                }
-//            }
-//
-//        } catch (IOException e) {
-//            throw new RuntimeException("파일 읽기 실패", e);
-//        }
-//        log.info("✅파일 업로드 종료. 성공: {}, 실패: {}", success, errors.size());
-//        return new UploadResult(success, errors);
-//    }
     public UploadResult processFile(MultipartFile file) {
         int success = 0;
         List<UploadError> errors = new ArrayList<>();

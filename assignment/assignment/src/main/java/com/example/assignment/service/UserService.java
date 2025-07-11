@@ -19,7 +19,7 @@ public class UserService {
     public LoginResDto login(LoginReqDto dto) {
         return userRepository.findByIdAndPwd(dto.getId(), dto.getPwd())
                 .map(user -> new LoginResDto(dto.getId(), dto.getPwd()))
-                .orElse(null);
+                .orElseThrow(() -> new IllegalArgumentException("아이디 혹은 비밀번호가 틀립니다."));
     }
 
     public Page<UserListDto> findAllExceptPwd(int page, int size) {
