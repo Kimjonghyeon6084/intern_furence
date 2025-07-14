@@ -11,10 +11,10 @@
     <h1>로그인</h1>
     <form id="loginForm" action="/login" method="post">
         <span>아이디 : </span>
-        <input id="id" required placeholder="아이디를 입력하세요."/>
+        <input id="id" placeholder="아이디를 입력하세요."/>
         <br>
         <span>비밀번호 : </span>
-        <input id="pwd" type="password" required placeholder="비밀번호를 입력하세요."/>
+        <input id="pwd" type="password" placeholder="비밀번호를 입력하세요."/>
         <br>
         <button type="submit">로그인</button>
     </form>
@@ -33,14 +33,15 @@
                 body: JSON.stringify({id, pwd})
             })
             .then(async res => {
+                //console.log(res);
                 if (res.ok) {
-                    // 로그인 성공시 사용자 리스트 페이지로 이동
                     window.location.href = "/userlist";
                 } else {
                     const err = await res.json();
-                    alert(err.message || "아이디 또는 비밀번호가 틀립니다.");
-                    // 실패시 로그인창으로 이동(이미 /login이면 stay)
+                    console.log("err json:", err);
+                    alert(err.message);
                     window.location.href = "/login";
+                    console.log("login fail")
                 }
             })
             .catch(err => {

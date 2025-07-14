@@ -42,7 +42,7 @@ public class UserController {
         int size = 10;
         // 미리 로그인한 유저인지 확인
         if (value == null) {
-            return ExceptionResponse.fail(HttpStatus.UNAUTHORIZED, "LOGIN001", "로그인이 필요합니다..");
+            return ExceptionResponse.fail(HttpStatus.UNAUTHORIZED, "로그인이 필요합니다..");
         } else {
             Page<UserListDto> list = userService.findAllExceptPwd(page, size);
             log.info("유저정보 불러오기 성공");
@@ -58,16 +58,17 @@ public class UserController {
         if (resDto != null) {
             // session 등록 전 기존 세션이 있다면
             // 파기(세션 고정 공격 방지, 이전 사용자 정보/값 초기화, 사용자 전환 이슈 방지)
-            if (session.getId() != null) {
+            if (session.getAttribute("sessionID") != null) {
+                log.info((String) session.getAttribute("sessionID") + "11111111111111111111");
                 session.invalidate();
             }
         }
+
         HttpSession newSession = request.getSession(true);
         newSession.setAttribute("sessionID", dto.getId());
+        log.info((String) newSession.getAttribute("sessionID") + "222222222222222222");
         log.info("로그인 성공");
         return ResponseEntity.ok(resDto);
 
     }
-
-
 }

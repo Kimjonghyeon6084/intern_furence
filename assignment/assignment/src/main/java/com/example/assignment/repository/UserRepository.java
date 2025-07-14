@@ -15,7 +15,7 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, String> {
 
     Optional<User> findByIdAndPwd(String id, String pwd);
-
+    Optional<User> findById(String id);
     //pwd 빼고 모든 유저 정보 가져오기.
     @Query("select new com.example.assignment.domain.dto.user.UserListDto(u.id, u.name, u.level, u.desc, u.reg_date) from t_user u")
     Page<UserListDto> findAllExceptPwd(Pageable pageable);

@@ -8,6 +8,7 @@
     <style>
         h2 {
             text-align: center;
+            font-size : 30px;
         }
         table, tr, th, td {
             margin : auto;
@@ -22,6 +23,16 @@
         #pagination {
             text-align: center;
         }
+        button {
+            margin : 10px 3px 0px 10px;
+            width : 50px;
+            height:
+        }
+        #userTable {
+            width : 70%;
+            margin-top : 60px;
+        }
+
     </style>
 </head>
 <body>
@@ -40,8 +51,6 @@
         </tbody>
     </table>
     <div id="pagination"></div>
-    <hr>
-    <button onclick="goToUploadPage()">파일 업로드</button>
 
     <script>
         let currentPage = 0;
@@ -161,6 +170,7 @@
             window.location.href = "/upload";
         }
 
+        /* 페이지 로딩될 때 /user/list/{page} 로 get요청 메서드 */
         window.addEventListener('DOMContentLoaded', () => {
             const pathParts = window.location.pathname.split('/');
             let page = 0;

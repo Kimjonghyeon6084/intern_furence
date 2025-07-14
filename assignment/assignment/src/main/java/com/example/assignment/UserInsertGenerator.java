@@ -18,7 +18,7 @@ public class UserInsertGenerator {
             int count = 0;
             while (count < 200) {
                 // id: 3~6자리 대문자, 중복 방지
-                int idLen = rand.nextInt(4) + 3;
+                int idLen = rand.nextInt(4) + 5;
                 StringBuilder idBuilder = new StringBuilder();
                 for (int j = 0; j < idLen; j++)
                     idBuilder.append((char)('A' + rand.nextInt(26)));
@@ -28,7 +28,7 @@ public class UserInsertGenerator {
                 usedIds.add(id);
 
                 // pwd: 4~8자리 숫자
-                int pwdLen = rand.nextInt(5) + 4;
+                int pwdLen = rand.nextInt(5) + 8;
                 StringBuilder pwd = new StringBuilder();
                 for (int j = 0; j < pwdLen; j++)
                     pwd.append(rand.nextInt(10));
