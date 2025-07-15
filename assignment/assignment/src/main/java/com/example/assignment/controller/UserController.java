@@ -47,12 +47,10 @@ public class UserController {
     /**
      * 페이징된 유저정보를 보여주는 메서드
      * @param page
-     * @param value
      * @return ResponseEntity<?>
      */
     @GetMapping("/user/list/{page}")
-    public ResponseEntity<?> showUserList(@PathVariable int page,
-                                          @SessionAttribute(name = "sessionID", required = false) String value) {
+    public ResponseEntity<?> showUserList(@PathVariable int page) {
         int size = 10;
         // 미리 로그인한 유저인지 확인
 //        if (value == null) {

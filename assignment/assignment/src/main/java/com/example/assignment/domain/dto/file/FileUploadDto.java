@@ -52,7 +52,7 @@ public class FileUploadDto {
         }
     }
     /**
-     * 값의 형식 검사 및 null 체크
+     * 각 필드의 값 형식 검사 및 null 체크
     **/
     public void validate(int lineNumber) {
 
