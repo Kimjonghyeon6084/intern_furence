@@ -36,10 +36,12 @@ public class UserService {
                 User user = checkUserIdOpt.get();
                 if (!user.getPwd().equals(dto.getPwd())) { // 비밀번호가 맞는지 검증
                     throw new IllegalArgumentException("비밀번호가 틀렸습니다.");
+                } else {
+                    throw new IllegalArgumentException("아이디가 틀렸습니다.");
                 }
-                throw new IllegalArgumentException("아이디가 틀렸습니다.");
+            } else {
+                throw new IllegalArgumentException("아이디와 비밀번호 모두 틀렸습니다.");
             }
-            throw new IllegalArgumentException("아이디와 비밀번호 모두 틀렸습니다.");
         }
         return LoginResDto.builder()
                 .id(dto.getId())
@@ -52,7 +54,7 @@ public class UserService {
      * 유저 리스트 불러오는 메서드(비밀번호만 빼고 모두다)
      * @param page
      * @param size
-     * @return
+     * @return Page<UserListDto>
      */
     public Page<UserListDto> findAllExceptPwd(int page, int size) {
         Pageable pageable = PageRequest.of(page, size); // pageable 객체 생성

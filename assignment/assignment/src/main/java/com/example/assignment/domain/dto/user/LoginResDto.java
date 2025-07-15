@@ -4,6 +4,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * 로그인 후 resDTO
+ */
 @Getter
 @RequiredArgsConstructor
 @Builder

@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * .dbfile 파일에 있는 한 줄씩 insert하는 클래스
+ */
 @Service
 public class InsertOneService {
 

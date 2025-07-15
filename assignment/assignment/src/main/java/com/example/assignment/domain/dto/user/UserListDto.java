@@ -4,6 +4,9 @@ import lombok.Getter;
 
 import java.sql.Timestamp;
 
+/**
+ * pwd 빼고 모든 정보 불러오는 DTO
+ */
 @Getter
 public class UserListDto {
 

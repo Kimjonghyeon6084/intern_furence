@@ -8,6 +8,10 @@ import lombok.Getter;
 
 import static com.example.assignment.domain.valid.ValidationGroup.*;
 
+/**
+ * 로그인시 필요한 DTO
+ * @NotBlank, @Size를 이용해서 validate함.
+ */
 @Builder
 @Getter
 public class LoginReqDto {

@@ -5,6 +5,9 @@ import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+/**
+ * 예외발생시 사용되는 클래스
+ */
 @Getter
 public class ExceptionResponse {
     private final boolean success;

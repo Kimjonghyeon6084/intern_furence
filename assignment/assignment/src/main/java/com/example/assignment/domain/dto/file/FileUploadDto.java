@@ -9,6 +9,9 @@ import lombok.Getter;
 
 import java.sql.Timestamp;
 
+/**
+ * 파일 업로드시 필요한 DTO
+ */
 @Getter
 @Builder
 public class FileUploadDto {
@@ -20,6 +23,11 @@ public class FileUploadDto {
     private String desc;
     private String regDate;
 
+    /**
+     * "/"로 잘라서 나온 조각을 담는 메서드
+     * @param parts
+     * @return
+     */
     public static FileUploadDto fromParts(String[] parts){
         if (parts.length == 5){
             return FileUploadDto.builder()
@@ -74,6 +82,10 @@ public class FileUploadDto {
             throw new CustomException(ErrorCode.REGDATE_INVALID, ErrorCode.REGDATE_INVALID.getMessage()+ "라인: " + lineNumber);
     }
 
+    /**
+     * 최종 검사 후 entity에 담는 메서드
+     * @return
+     */
     public User toEntity() {
         return User.builder()
                 .id(id)
@@ -81,7 +93,7 @@ public class FileUploadDto {
                 .name(name)
                 .level(level)
                 .desc(desc)
-                .reg_date(Timestamp.valueOf(regDate))
+                .regDate(Timestamp.valueOf(regDate))
                 .build();
     }
 }

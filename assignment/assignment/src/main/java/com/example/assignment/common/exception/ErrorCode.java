@@ -3,6 +3,9 @@ package com.example.assignment.common.exception;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
+/**
+ * uncheckedException 관련 예외처리 custom
+ */
 @Getter
 public enum ErrorCode {
 

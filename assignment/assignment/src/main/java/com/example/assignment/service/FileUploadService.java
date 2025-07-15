@@ -32,6 +32,9 @@ public class FileUploadService {
     private static final int INITIAL_SUCCESS_COUNT = 0;
     /**
      * 파일 업로드하는 메서드
+     * "/"로 잘라 각 항목을 DTO에 담고
+     * FileUploadDto.validate()를 통해서 각 항목을 검사한다.
+     * 성공건수는 success에 담아주고 오류는 errors에 담아 프론트로 넘겨줌
      **/
     public UploadResult processFile(MultipartFile file) {
         int success = 0;
@@ -67,6 +70,10 @@ public class FileUploadService {
         return new UploadResult(success, errors);
     }
 
+    /**
+     * 처음 파일 업로드하고 나서 페이징처리 전 가볍게 보여주는 메서드.
+     * @return
+     */
     public List<User> findAll() {
         log.info("✅DB정보 불러오기");
         return userRepository.findAll();
