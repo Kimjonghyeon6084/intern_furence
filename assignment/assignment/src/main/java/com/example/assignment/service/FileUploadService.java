@@ -9,6 +9,7 @@ import com.example.assignment.domain.entity.User;
 import com.example.assignment.repository.UserRepository;
 
 import jakarta.persistence.PersistenceException;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

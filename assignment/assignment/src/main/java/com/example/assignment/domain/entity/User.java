@@ -1,6 +1,7 @@
 package com.example.assignment.domain.entity;
 
 import com.example.assignment.domain.dto.UserDtoBase;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

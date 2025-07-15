@@ -1,6 +1,5 @@
 package com.example.assignment.controller;
 
-import com.example.assignment.common.exception.ExceptionResponse;
 import com.example.assignment.domain.dto.user.LoginReqDto;
 import com.example.assignment.domain.dto.user.UserListDto;
 import com.example.assignment.domain.dto.user.LoginResDto;
@@ -14,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

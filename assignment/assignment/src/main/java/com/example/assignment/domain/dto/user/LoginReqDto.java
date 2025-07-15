@@ -1,6 +1,5 @@
 package com.example.assignment.domain.dto.user;
 
-import com.example.assignment.domain.valid.ValidationGroup;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
