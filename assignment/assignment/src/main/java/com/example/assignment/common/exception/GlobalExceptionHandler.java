@@ -9,9 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * 발생하는 예외를 global하게 처리하는 클래스.
@@ -27,7 +25,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionResponse> handleNullPointerException(NullPointerException e) {
         log.error("NullPointerException", e);
         return ExceptionResponse.fail(
-                HttpStatus.INTERNAL_SERVER_ERROR, "NullPointerException: " + e.getMessage());
+                HttpStatus.BAD_REQUEST, "NullPointerException: " + e.getMessage(), e.getMessage());
     }
 
     /**
@@ -42,10 +40,18 @@ public class GlobalExceptionHandler {
                 .map(FieldError::getDefaultMessage)
                 .toList();
         return ExceptionResponse.fail(
-                HttpStatus.BAD_REQUEST, String.join("\n", message)
+                HttpStatus.BAD_REQUEST, String.join("\n", message),
 //        return ExceptionResponse.fail(
 //                HttpStatus.BAD_REQUEST, e.getBindingResult().getFieldError().getDefaultMessage());
-        );
+                e.getMessage());
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ExceptionResponse> handleIllegalArgumentException(IllegalArgumentException e) {
+        log.error("db검증 실패");
+        return ExceptionResponse.fail(
+                HttpStatus.UNAUTHORIZED, e.getMessage(), "IllegalArgumentException");
+
     }
 
     /**
@@ -55,6 +61,6 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionResponse> handleAllExceptions(Exception e) {
         log.error("Unknown Exception", e);
         return ExceptionResponse.fail(
-                HttpStatus.INTERNAL_SERVER_ERROR, "알 수 없는 오류: " + e.getMessage());
+                HttpStatus.INTERNAL_SERVER_ERROR, "알 수 없는 오류: " + e.getMessage(), e.getMessage());
     }
 }

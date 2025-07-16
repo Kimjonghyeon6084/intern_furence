@@ -21,7 +21,7 @@ public class ExceptionResponse {
         this.message = message;
     }
 
-    public static ResponseEntity<ExceptionResponse> fail(HttpStatus status, String message) {
+    public static ResponseEntity<ExceptionResponse> fail(HttpStatus status, String message, String eMessage) {
         return ResponseEntity.status(status).body(new ExceptionResponse(false, message));
     }
 }
