@@ -46,6 +46,11 @@ public class GlobalExceptionHandler {
                 e.getMessage());
     }
 
+    @ExceptionHandler(LoginFailedException.class)
+    public ResponseEntity<ExceptionResponse> handleLoginFailedException(LoginFailedException e) {
+        return ExceptionResponse.fail(HttpStatus.UNAUTHORIZED, e.getMessage(), "로그인실패");
+    }
+
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ExceptionResponse> handleIllegalArgumentException(IllegalArgumentException e) {
         log.error("db검증 실패");

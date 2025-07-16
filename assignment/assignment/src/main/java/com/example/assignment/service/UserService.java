@@ -1,5 +1,6 @@
 package com.example.assignment.service;
 
+import com.example.assignment.common.exception.LoginFailedException;
 import com.example.assignment.domain.dto.user.LoginReqDto;
 import com.example.assignment.domain.dto.user.UserListDto;
 import com.example.assignment.domain.dto.user.LoginResDto;
@@ -37,12 +38,12 @@ public class UserService {
             if (checkUserIdOpt.isPresent()) { // 아이디가 맞는지 검증
                 User user = checkUserIdOpt.get();
                 if (!user.getPwd().equals(dto.getPwd())) { // 비밀번호가 맞는지 검증
-                    throw new IllegalArgumentException("비밀번호가 틀렸습니다.");
+                    throw new LoginFailedException("비밀번호가 틀렸습니다.");
                 } else {
-                    throw new IllegalArgumentException("아이디가 틀렸습니다.");
+                    throw new LoginFailedException("아이디가 틀렸습니다.");
                 }
             } else {
-                throw new IllegalArgumentException("아이디와 비밀번호 모두 틀렸습니다.");
+                throw new LoginFailedException("아이디와 비밀번호 모두 틀렸습니다.");
             }
         }
         return LoginResDto.builder()
