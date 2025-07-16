@@ -17,7 +17,7 @@ public class LoggingInterceptor implements HandlerInterceptor {
      * @param request current HTTP request
      * @param response current HTTP response
      * @param handler chosen handler to execute, for type and/or instance evaluation
-     * @return
+     * @return b boolean
      * @throws Exception
      */
     @Override
@@ -26,9 +26,6 @@ public class LoggingInterceptor implements HandlerInterceptor {
         log.info("preHandle() 동작");
         String value = (String)request.getSession().getAttribute("sessionID");
         if (value == null) {
-//            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-//            String json = String.valueOf(ExceptionResponse.fail(HttpStatus.UNAUTHORIZED, "로그인이 필요한 페이지입니다."));
-//            response.getWriter().write(json);
             response.sendRedirect("/login");
             return false;
         } else {

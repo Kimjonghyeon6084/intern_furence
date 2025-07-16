@@ -1,6 +1,7 @@
 document.getElementById("uploadForm").onsubmit = function(e) {
             e.preventDefault();
             const formData = new FormData(this);
+
             fetch("/upload", {
                 method: "POST",
                 body: formData

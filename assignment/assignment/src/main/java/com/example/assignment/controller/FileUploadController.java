@@ -25,7 +25,7 @@ public class FileUploadController {
     private final FileUploadService fileUploadService;
 
     /**
-     * 업로드 html 창 띄어주는 메서드
+     * 파일 업로드 html 반환
      * @return
      */
     @GetMapping("/upload")
@@ -34,7 +34,7 @@ public class FileUploadController {
     }
 
     /**
-     * 파일 업로드하는 메서드. 
+     * 파일 업로드 처리
      * .dbfile 확장자만 가능하게 함.
      * @param file
      * @return
@@ -51,7 +51,7 @@ public class FileUploadController {
     }
 
     /**
-     * 저장된 유저정보 업로드하는 메서드
+     * 저장된 모든 유저정보 조회
      * @return
      */
     @GetMapping("/data")

@@ -25,7 +25,7 @@ public class UserController {
     private final UserService userService;
 
     /**
-     * login html창 업로드 메서드
+     * login 창 반환
      * @return
      */
     @GetMapping("/login")
@@ -34,7 +34,7 @@ public class UserController {
     }
 
     /**
-     * userlist html창 업로드 메서드
+     * userlist 창 반환
      * @return
      */
     @GetMapping("/userlist")
@@ -43,7 +43,7 @@ public class UserController {
     }
 
     /**
-     * 페이징된 유저정보를 보여주는 메서드
+     * 페이징된 유저정보 조회
      * @param page
      * @return ResponseEntity<?>
      */
@@ -61,11 +61,11 @@ public class UserController {
     }
 
     /**
-     * 로그인 메서드.
-     * 로그인을 했던 유저가 세션 만료 기간 전 로그인을 하면 파기를 하고 새로운 세션을 만들어서 로그인 시킴.
-     * @param LoginReqDto dto
-     * @param HTTPSession session
-     * @param HttpServletRequest request
+     * 로그인
+     * 기존 세션이 있다면 무효화 후 새로운 세션을 만들어서 로그인 시킴.
+     * @param dto LoginReqDto dto
+     * @param session HTTPSession
+     * @param request HttpServletRequest
      * @return ResponseEntity<LoginResDto>
      */
     @PostMapping("/login")

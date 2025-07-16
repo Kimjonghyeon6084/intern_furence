@@ -16,10 +16,10 @@ document.getElementById("loginForm").addEventListener("submit", function (e) {
             window.location.href = "/userlist";
         } else {
             const err = await res.json();
-            //console.log("err json:", err);
+            console.log("err json:", err);
             alert(err.message);
             //window.location.href = "/login";
-            console.log("login fail")
+            console.log("login 실패")
         }
     })
     .catch(err => {

@@ -26,7 +26,7 @@ public class FileUploadDto {
     /**
      * "/"로 잘라서 나온 조각을 담는 메서드
      * @param parts
-     * @return
+     * @return dto FileUploadDto
      */
     public static FileUploadDto fromParts(String[] parts){
         if (parts.length == 5){
@@ -84,7 +84,7 @@ public class FileUploadDto {
 
     /**
      * 최종 검사 후 entity에 담는 메서드
-     * @return
+     * @return User
      */
     public User toEntity() {
         return User.builder()

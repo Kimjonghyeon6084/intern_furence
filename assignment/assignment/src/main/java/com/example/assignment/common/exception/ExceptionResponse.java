@@ -6,7 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 /**
- * 예외발생시 사용되는 클래스
+ * API 예외 발생시 클라이언트에게 반환되는 응답 정보를 담은 DTO.
+ * 성공여부, 메세지를 포함.
+ * static fail() 을 통해 ResponseEntity 형태로 쉽게 생성 가능
  */
 @Getter
 public class ExceptionResponse {
