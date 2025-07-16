@@ -39,3 +39,6 @@ button {
   font-weight: bold;
   border-radius : 20px;
 }
+.errorMessage {
+    white-space: pre-line;
+}

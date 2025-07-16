@@ -13,12 +13,8 @@ import org.springframework.web.servlet.HandlerInterceptor;
 public class LoggingInterceptor implements HandlerInterceptor {
     /**
      * 메서드 요청 전 메서드
-     * 로그인이 필요한 url에 로그인 없이 접근시
-     * @param request current HTTP request
-     * @param response current HTTP response
-     * @param handler chosen handler to execute, for type and/or instance evaluation
-     * @return b boolean
-     * @throws Exception
+     * 로그인이 필요한 url에 접근시 세션 검사후
+     * 세션이 유효하면 그대로 진행, 유효하지 않으면 /login 으로 redirect.
      */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
