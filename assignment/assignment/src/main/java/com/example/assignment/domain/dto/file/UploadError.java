@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 public class UploadError {
 
     private final int lineCount;
+
     private final String errors;
 
 }

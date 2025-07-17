@@ -13,9 +13,13 @@ import java.sql.Timestamp;
 public class UserListDto {
 
     private String id;
+
     private String name;
+
     private String level;
+
     private String desc;
+
     private Timestamp regDate;
 
     public UserListDto(String id, String name, String level, String desc, Timestamp regDate) {

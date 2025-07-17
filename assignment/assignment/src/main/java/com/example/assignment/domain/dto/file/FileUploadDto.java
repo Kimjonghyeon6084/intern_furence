@@ -17,10 +17,15 @@ import java.sql.Timestamp;
 public class FileUploadDto {
 
     private String id;
+
     private String pwd;
+
     private String name;
+
     private String level;
+
     private String desc;
+
     private String regDate;
 
     /**

@@ -12,16 +12,29 @@ import org.springframework.http.ResponseEntity;
  */
 @Getter
 public class ExceptionResponse {
-    private final boolean success;
-    private final String message;
+    private boolean success;
+    private String message;
+    private String loginField;
 
 
     public ExceptionResponse(boolean success, String message) {
         this.success = success;
         this.message = message;
+        this.loginField = null;
     }
 
-    public static ResponseEntity<ExceptionResponse> fail(HttpStatus status, String message, String eMessage) {
+    public ExceptionResponse(boolean success, String message, String loginField) {
+        this.success = success;
+        this.message = message;
+        this.loginField = loginField;
+    }
+
+    public static ResponseEntity<ExceptionResponse> fail(HttpStatus status, String message) {
         return ResponseEntity.status(status).body(new ExceptionResponse(false, message));
+    }
+
+    // @valid 걸렸을 때 체크하려고 하는 부분
+    public static ResponseEntity<ExceptionResponse> fail(HttpStatus status, String loginField, String message) {
+        return ResponseEntity.status(status).body(new ExceptionResponse(false, loginField, message));
     }
 }

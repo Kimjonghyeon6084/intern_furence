@@ -1,5 +1,6 @@
 package com.example.assignment.common.interceptor;
 
+import com.example.assignment.domain.dto.user.SessionUserDto;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +21,7 @@ public class LoggingInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 //        log.info("요청 URL : {}", request.getRequestURI());
         log.info("preHandle() 동작");
-        String value = (String)request.getSession().getAttribute("sessionID");
+        SessionUserDto value = (SessionUserDto) request.getSession().getAttribute("userInfo");
         if (value == null) {
             response.sendRedirect("/login");
             return false;

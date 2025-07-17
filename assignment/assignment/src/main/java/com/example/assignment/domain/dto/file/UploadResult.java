@@ -13,6 +13,7 @@ import java.util.List;
 public class UploadResult {
 
     private final int successCount;
+
     private final List<UploadError> errors;
 
 }

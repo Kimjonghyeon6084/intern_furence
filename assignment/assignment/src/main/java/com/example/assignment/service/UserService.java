@@ -1,6 +1,7 @@
 package com.example.assignment.service;
 
-import com.example.assignment.common.exception.LoginFailedException;
+import com.example.assignment.domain.dto.LoginField;
+import com.example.assignment.domain.dto.LoginSuccessField;
 import com.example.assignment.domain.dto.user.LoginReqDto;
 import com.example.assignment.domain.dto.user.UserListDto;
 import com.example.assignment.domain.dto.user.LoginResDto;
@@ -23,34 +24,38 @@ public class UserService {
     private final UserRepository userRepository;
 
     /**
-     * 로그인 메서드. 로그인시 아이디가 틀렸는지, 비밀번호가 틀렸는지, 둘 다 틀렸는지 검증함
+     * 로그인 메서드. 로그인시 아이디가 틀렸는지, 비밀번호가 틀렸는지 검증함
      * @param LoginReqdto
      * @return LoginResDto
      */
     public LoginResDto login(LoginReqDto dto) {
-//        return userRepository.findByIdAndPwd(dto.getId(), dto.getPwd())
-//                .map(user -> new LoginResDto(dto.getId(), dto.getPwd()))
-//                .orElseThrow(() -> new IllegalArgumentException("아이디 혹은 비밀번호가 틀립니다."));
+
         Optional<User> checkUserIdOpt = userRepository.findById(dto.getId());
-        Optional<User> findByIdAndPwd = userRepository.findByIdAndPwd(dto.getId(), dto.getPwd());
 
-        if (findByIdAndPwd.isEmpty()) { // 아이디, 비밀번호가 맞는지 검증
-            if (checkUserIdOpt.isPresent()) { // 아이디가 맞는지 검증
-                User user = checkUserIdOpt.get();
-                if (!user.getPwd().equals(dto.getPwd())) { // 비밀번호가 맞는지 검증
-                    throw new LoginFailedException("비밀번호가 틀렸습니다.");
-                } else {
-                    throw new LoginFailedException("아이디가 틀렸습니다.");
-                }
-            } else {
-                throw new LoginFailedException("아이디와 비밀번호 모두 틀렸습니다.");
-            }
+        if (checkUserIdOpt.isEmpty()) { // 아이디가 틀렸을 때
+            return LoginResDto.builder()
+                        .successField(LoginSuccessField.FAILURE)
+                        .loginField(LoginField.ID)
+                        .message("아이디가 틀립니다.")
+                        .build();
         }
-        return LoginResDto.builder()
-                .id(dto.getId())
-                .pwd(dto.getPwd())
-                .build();
 
+        User user = checkUserIdOpt.get();
+
+        if (!user.getPwd().equals(dto.getPwd())) { // 비밀번호가 틀렸을 때
+            return LoginResDto.builder()
+                    .successField(LoginSuccessField.FAILURE)
+                    .loginField(LoginField.PWD)
+                    .message("비밀번호가 틀립니다.")
+                    .build();
+        }
+
+        return LoginResDto.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .successField(LoginSuccessField.SUCCESS)
+                .loginField(null)
+                .build();
     }
 
     /**
