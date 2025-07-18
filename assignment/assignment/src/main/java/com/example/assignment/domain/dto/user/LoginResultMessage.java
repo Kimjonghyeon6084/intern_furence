@@ -2,12 +2,15 @@ package com.example.assignment.domain.dto.user;
 
 import lombok.Getter;
 
+/**
+ * 로그인 결과 메세지를 담는 enum
+ */
+
 @Getter
 public enum LoginResultMessage {
 
     INVALID_ID("아이디가 틀립니다."),
-    INVALID_PASSWORD("비밀번호가 틀립니다."),
-    SUCCESS("로그인 성공");
+    INVALID_PASSWORD("비밀번호가 틀립니다.");
 
     private final String message;
 

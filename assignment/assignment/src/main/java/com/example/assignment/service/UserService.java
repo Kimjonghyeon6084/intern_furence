@@ -33,7 +33,7 @@ public class UserService {
                         .loginResult(LoginResult.FAILURE)
                         .loginValidationField(LoginValidationField.ID)
 //                        .message("아이디가 틀립니다.")
-                        .loginResultMessage(LoginResultMessage.INVALID_ID.getMessage())
+                        .message(LoginResultMessage.INVALID_ID.getMessage())
                         .build();
         }
 
@@ -44,7 +44,7 @@ public class UserService {
                     .loginResult(LoginResult.FAILURE)
                     .loginValidationField(LoginValidationField.PWD)
 //                    .message("비밀번호가 틀립니다.")
-                    .loginResultMessage(LoginResultMessage.INVALID_PASSWORD.getMessage())
+                    .message(LoginResultMessage.INVALID_PASSWORD.getMessage())
                     .build();
         }
 

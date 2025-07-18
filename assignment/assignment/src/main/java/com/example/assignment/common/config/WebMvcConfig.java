@@ -18,6 +18,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) { // 어플 내에 interceptor 등록해주는 메서드
         registry.addInterceptor(new LoggingInterceptor())
                 .addPathPatterns("/**")
-                .excludePathPatterns("/json","/login", "/favicon.ico", "/.well-known/**", "/userlist", "/css/**", "/js/**");
+                .excludePathPatterns("/json","/login", "/favicon.ico", "/.well-known/**", "/css/**", "/js/**");
     }
 }

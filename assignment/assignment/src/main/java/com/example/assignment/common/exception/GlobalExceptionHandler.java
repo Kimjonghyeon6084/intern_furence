@@ -51,11 +51,11 @@ public class GlobalExceptionHandler {
                 HttpStatus.BAD_REQUEST, msg, field);
     }
 
-    @ExceptionHandler(LoginFailedException.class)
-    public ResponseEntity<ExceptionResponse> handleLoginFailedException(LoginFailedException e) {
-        log.error("로그인 실패");
-        return ExceptionResponse.fail(HttpStatus.UNAUTHORIZED, e.getMessage());
-    }
+//    @ExceptionHandler(LoginFailedException.class)
+//    public ResponseEntity<ExceptionResponse> handleLoginFailedException(LoginFailedException e) {
+//        log.error("로그인 실패");
+//        return ExceptionResponse.fail(HttpStatus.UNAUTHORIZED, e.getMessage());
+//    }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ExceptionResponse> handleIllegalArgumentException(IllegalArgumentException e) {

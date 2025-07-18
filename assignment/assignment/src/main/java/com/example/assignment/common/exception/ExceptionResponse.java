@@ -29,11 +29,23 @@ public class ExceptionResponse {
         this.loginField = loginField;
     }
 
+    /**
+     * 기본 예외 실패 메서드
+     * @param status
+     * @param message
+     * @return ResponseEntity.status(status).body(new ExceptionResponse(false, message))
+     */
     public static ResponseEntity<ExceptionResponse> fail(HttpStatus status, String message) {
         return ResponseEntity.status(status).body(new ExceptionResponse(false, message));
     }
 
-    // @valid 걸렸을 때 체크하려고 하는 부분
+    /**
+     * 로그인 시 어떤 필드가 @Valid에 걸렸는지 확인하려는 메서드
+     * @param status
+     * @param loginField
+     * @param message
+     * @return ResponseEntity.status(status).body(new ExceptionResponse(false, loginField, message))
+     */
     public static ResponseEntity<ExceptionResponse> fail(HttpStatus status, String loginField, String message) {
         return ResponseEntity.status(status).body(new ExceptionResponse(false, loginField, message));
     }
