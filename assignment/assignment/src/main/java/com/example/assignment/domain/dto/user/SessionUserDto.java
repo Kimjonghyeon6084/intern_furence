@@ -1,16 +1,17 @@
 package com.example.assignment.domain.dto.user;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.io.Serializable;
 
 @Getter
-@RequiredArgsConstructor
+@Builder
 public class SessionUserDto {
 
-    private final String id;
+    private String id;
 
-    private final String name;
+    private String name;
 
 }

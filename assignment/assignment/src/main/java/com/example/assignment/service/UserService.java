@@ -1,10 +1,6 @@
 package com.example.assignment.service;
 
-import com.example.assignment.domain.dto.user.LoginField;
-import com.example.assignment.domain.dto.user.LoginSuccessField;
-import com.example.assignment.domain.dto.user.LoginReqDto;
-import com.example.assignment.domain.dto.user.UserListDto;
-import com.example.assignment.domain.dto.user.LoginResDto;
+import com.example.assignment.domain.dto.user.*;
 import com.example.assignment.domain.entity.User;
 import com.example.assignment.repository.UserRepository;
 
@@ -34,9 +30,10 @@ public class UserService {
 
         if (checkUserIdOpt.isEmpty()) { // 아이디가 틀렸을 때
             return LoginResDto.builder()
-                        .successField(LoginSuccessField.FAILURE)
-                        .loginField(LoginField.ID)
-                        .message("아이디가 틀립니다.")
+                        .loginResult(LoginResult.FAILURE)
+                        .loginValidationField(LoginValidationField.ID)
+//                        .message("아이디가 틀립니다.")
+                        .loginResultMessage(LoginResultMessage.INVALID_ID.getMessage())
                         .build();
         }
 
@@ -44,17 +41,18 @@ public class UserService {
 
         if (!user.getPwd().equals(dto.getPwd())) { // 비밀번호가 틀렸을 때
             return LoginResDto.builder()
-                    .successField(LoginSuccessField.FAILURE)
-                    .loginField(LoginField.PWD)
-                    .message("비밀번호가 틀립니다.")
+                    .loginResult(LoginResult.FAILURE)
+                    .loginValidationField(LoginValidationField.PWD)
+//                    .message("비밀번호가 틀립니다.")
+                    .loginResultMessage(LoginResultMessage.INVALID_PASSWORD.getMessage())
                     .build();
         }
 
         return LoginResDto.builder()
                 .id(user.getId())
                 .name(user.getName())
-                .successField(LoginSuccessField.SUCCESS)
-                .loginField(null)
+                .loginResult(LoginResult.SUCCESS)
+                .loginValidationField(null)
                 .build();
     }
 

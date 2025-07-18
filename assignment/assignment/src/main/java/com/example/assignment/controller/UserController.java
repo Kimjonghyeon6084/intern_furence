@@ -1,6 +1,6 @@
 package com.example.assignment.controller;
 
-import com.example.assignment.domain.dto.user.LoginSuccessField;
+import com.example.assignment.domain.dto.user.LoginResult;
 import com.example.assignment.domain.dto.user.LoginReqDto;
 import com.example.assignment.domain.dto.user.SessionUserDto;
 import com.example.assignment.domain.dto.user.UserListDto;
@@ -76,10 +76,13 @@ public class UserController {
                                                         HttpSession session,
                                                         HttpServletRequest request) {
         LoginResDto resDto = userService.login(dto);
-        if (resDto.getSuccessField() == LoginSuccessField.SUCCESS) {
+        if (resDto.getLoginResult() == LoginResult.SUCCESS) {
             // 세션에 넣을 dto
-            SessionUserDto sessionUserDto = new SessionUserDto(resDto.getId(), resDto.getName());
-
+//            SessionUserDto sessionUserDto = new SessionUserDto(resDto.getId(), resDto.getName());
+            SessionUserDto sessionUserDto = SessionUserDto.builder()
+                    .id(resDto.getId())
+                    .name(resDto.getName())
+                    .build();
             if (resDto != null) {
                 // session 등록 전 기존 세션이 있다면
                 // 파기(세션 고정 공격 방지, 이전 사용자 정보/값 초기화, 사용자 전환 이슈 방지)

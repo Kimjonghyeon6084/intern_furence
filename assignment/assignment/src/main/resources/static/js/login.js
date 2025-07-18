@@ -40,9 +40,8 @@ document.getElementById("loginForm").addEventListener("submit", function (e) {
                     pwdError.textContent += err.message;
                 }
 
-                if (err.successField === "FAILURE") {
-                    loginFail.textContent += err.message;
-
+                if (err.loginResult === "FAILURE") {
+                    loginFail.textContent += err.loginResultMessage;
                 }
             } catch (e) {
                 alert("JSON 파싱 실패", e);

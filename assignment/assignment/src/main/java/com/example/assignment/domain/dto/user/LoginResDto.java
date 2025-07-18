@@ -16,10 +16,12 @@ public class LoginResDto {
 
     private String name;
 
-    private LoginSuccessField successField;
+    private LoginResult loginResult;
 
-    private LoginField loginField;
+    private LoginValidationField loginValidationField;
 
-    private String message;
+    private String loginResultMessage;
+
+//    private LoginResultMessage loginResultMessage;
 
 }
