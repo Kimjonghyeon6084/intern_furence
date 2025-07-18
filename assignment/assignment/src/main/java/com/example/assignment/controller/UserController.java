@@ -1,11 +1,10 @@
 package com.example.assignment.controller;
 
-import com.example.assignment.domain.dto.LoginSuccessField;
+import com.example.assignment.domain.dto.user.LoginSuccessField;
 import com.example.assignment.domain.dto.user.LoginReqDto;
 import com.example.assignment.domain.dto.user.SessionUserDto;
 import com.example.assignment.domain.dto.user.UserListDto;
 import com.example.assignment.domain.dto.user.LoginResDto;
-import com.example.assignment.domain.entity.User;
 import com.example.assignment.service.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;

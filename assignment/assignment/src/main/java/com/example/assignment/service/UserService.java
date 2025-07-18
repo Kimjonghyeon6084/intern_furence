@@ -1,7 +1,7 @@
 package com.example.assignment.service;
 
-import com.example.assignment.domain.dto.LoginField;
-import com.example.assignment.domain.dto.LoginSuccessField;
+import com.example.assignment.domain.dto.user.LoginField;
+import com.example.assignment.domain.dto.user.LoginSuccessField;
 import com.example.assignment.domain.dto.user.LoginReqDto;
 import com.example.assignment.domain.dto.user.UserListDto;
 import com.example.assignment.domain.dto.user.LoginResDto;

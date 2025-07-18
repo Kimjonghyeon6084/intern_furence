@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 @Getter
 @RequiredArgsConstructor
-public class SessionUserDto implements Serializable {
+public class SessionUserDto {
 
     private final String id;
 

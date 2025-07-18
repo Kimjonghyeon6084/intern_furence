@@ -1,10 +1,7 @@
 package com.example.assignment.domain.dto.user;
 
-import com.example.assignment.domain.dto.LoginField;
-import com.example.assignment.domain.dto.LoginSuccessField;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 /**
  * 로그인 후 resDTO
