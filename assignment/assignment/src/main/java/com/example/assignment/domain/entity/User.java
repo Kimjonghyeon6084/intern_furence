@@ -21,14 +21,19 @@ public class User implements UserDtoBase {
     @Id
     @Column
     private String id;
+
     @Column
     private String pwd;
+
     @Column
     private String name;
+
     @Column
     private String level;
+
     @Column(name = "\"desc\"")
     private String desc;
+
     @Column
     private Timestamp regDate;
 

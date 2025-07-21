@@ -1,5 +1,7 @@
 let currentPage = 0;
 const size = 10;
+let lastSearchParams = null;
+
 
 // 현재 주소의 page 받아오기
 function getPageFromUrl() {
@@ -14,9 +16,6 @@ function movePage(page) {
         window.history.pushState({}, '', url);
         fetchUserList(page);
 }
-
-
-
 
 // 데이터 테이블형태로 보이게 함
 function renderTable(users) {
@@ -84,46 +83,61 @@ function renderPagination(current, totalPages, isLast) {
 }
 
 // 페이지 로딩될 때 /user/list/{page} 로 get요청
-window.addEventListener('DOMContentLoaded', () => {
-    const pathParts = window.location.pathname.split('/');
-    let page = 0;
-    if (pathParts.length >= 3 && pathParts[1] === 'userlist') {
-        page = parseInt(pathParts[2]) || 0;
-    }
-    currentPage = page;
-    fetchUserList(currentPage);
-});
+//window.addEventListener('DOMContentLoaded', () => {
+//    const pathParts = window.location.pathname.split('/');
+//    let page = 0;
+//    if (pathParts.length >= 3 && pathParts[1] === 'userlist') {
+//        page = parseInt(pathParts[2]) || 0;
+//    }
+//    currentPage = page;
+//    fetchUserList(currentPage);
+//});
 
-// 유저 리스트 불러오기
-function fetchUserList(page = 0) {
-    fetch(`/user/list/${page}`)
-        .then(async res => {
-            if (!res.ok) {
-                let msg;
-                try {
-                    const data = await res.json();
-                    msg = data.message;
-                } catch {
-                    msg = await res.text();
-                }
-                alert(msg);
-                if (res.status === 401) {
-                    window.location.href = "/login";
-                }
-                throw new Error(msg);
-            }
-            return res.json();
+// 실제 데이터 가져오는 함수
+    function fetchUserList(page = 0, params = null) {
+      let url = `/user/list/${page}`;
+      if (params && params.toString()) {
+        url += "?" + params.toString();
+      }
+      fetch(url)
+        .then(res => {
+          if (!res.ok) throw res;
+          return res.json();
         })
         .then(data => {
-            if (!data) return;
-            console.log(data);
-            renderTable(data.content);
-            renderPagination(data.number, data.totalPages, data.last);
+          renderTable(data.content);
+          renderPagination(data.number, data.totalPages, data.last);
         })
         .catch(err => {
-            if (err.message !== '로그인 필요') {
-                alert('유저 데이터를 불러오는데 실패했습니다.');
-//                console.error(err);
-            }
+          console.error(err);
+          alert("데이터 로드에 실패했습니다.");
         });
-}
+    }
+
+
+document.getElementById("userselectlist").addEventListener("submit", function(e) {
+
+    e.preventDefault();
+
+    const id      = document.getElementById("id").value;
+    const name    = document.getElementById("name").value;
+    const level   = document.getElementById("level").value;
+    const desc    = document.getElementById("desc").value;
+    const regDate = document.getElementById("regDate").value;
+
+    const params = new URLSearchParams();
+        if (id) params.append("id", id);
+        if (name) params.append("name", name);
+        if (level) params.append("level", level);
+        if (desc) params.append("desc", desc);
+        if (regDate) params.append("regDate", regDate);
+
+    lastSearchParams = params;
+    fetchUserList(0, params);
+
+    // 페이징용 페이지 이동
+    function movePage(page) {
+      fetchUserList(page, lastSearchParams);
+    }
+});
+

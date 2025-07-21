@@ -11,7 +11,7 @@ import lombok.Getter;
  */
 @Builder
 @Getter
-public class LoginReqDto {
+public class LoginRequestDto {
 
     @NotBlank(message = "아이디는 필수로 입력하셔야 합니다.")
     @Size(min = 4, message = "아이디는 4자리 이상 입력하셔야 합니다.")

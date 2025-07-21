@@ -11,7 +11,7 @@ import lombok.Getter;
  */
 @Getter
 @Builder
-public class LoginResDto {
+public class LoginResponseDto {
 
     private String id;
 

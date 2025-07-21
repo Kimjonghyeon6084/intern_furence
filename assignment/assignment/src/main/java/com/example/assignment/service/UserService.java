@@ -21,15 +21,15 @@ public class UserService {
 
     /**
      * 로그인 메서드. 로그인시 아이디가 틀렸는지, 비밀번호가 틀렸는지 검증함
-     * @param LoginReqdto
+     * @param LoginRequestDto
      * @return LoginResDto
      */
-    public LoginResDto login(LoginReqDto dto) {
+    public LoginResponseDto login(LoginRequestDto dto) {
 
         Optional<User> checkUserIdOpt = userRepository.findById(dto.getId());
 
         if (checkUserIdOpt.isEmpty()) { // 아이디가 틀렸을 때
-            return LoginResDto.builder()
+            return LoginResponseDto.builder()
                         .loginResult(LoginResult.FAILURE)
                         .loginValidationField(LoginValidationField.ID)
 //                        .message("아이디가 틀립니다.")
@@ -40,7 +40,7 @@ public class UserService {
         User user = checkUserIdOpt.get();
 
         if (!user.getPwd().equals(dto.getPwd())) { // 비밀번호가 틀렸을 때
-            return LoginResDto.builder()
+            return LoginResponseDto.builder()
                     .loginResult(LoginResult.FAILURE)
                     .loginValidationField(LoginValidationField.PWD)
 //                    .message("비밀번호가 틀립니다.")
@@ -48,7 +48,7 @@ public class UserService {
                     .build();
         }
 
-        return LoginResDto.builder()
+        return LoginResponseDto.builder()
                 .id(user.getId())
                 .name(user.getName())
                 .loginResult(LoginResult.SUCCESS)
@@ -65,5 +65,12 @@ public class UserService {
     public Page<UserListDto> findAllExceptPwd(int page, int size) {
         Pageable pageable = PageRequest.of(page, size); // pageable 객체 생성
         return userRepository.findAllExceptPwd(pageable);
+    }
+
+    /**
+     * 조건에 맞는 유저 리스트 불러오기
+     */
+    public Page<UserListResponseDto> selectUsers(UserListRequestDto dto, Pageable pageable) {
+        return userRepository.searchUsers(dto, pageable);
     }
 }

@@ -1,10 +1,6 @@
 package com.example.assignment.controller;
 
-import com.example.assignment.domain.dto.user.LoginResult;
-import com.example.assignment.domain.dto.user.LoginReqDto;
-import com.example.assignment.domain.dto.user.SessionUserDto;
-import com.example.assignment.domain.dto.user.UserListDto;
-import com.example.assignment.domain.dto.user.LoginResDto;
+import com.example.assignment.domain.dto.user.*;
 import com.example.assignment.service.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,10 +11,16 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.sql.Timestamp;
+import java.util.List;
 
 @Controller
 @Slf4j
@@ -50,18 +52,14 @@ public class UserController {
      * @param page
      * @return ResponseEntity<?>
      */
-    @GetMapping("/user/list/{page}")
-    public ResponseEntity<?> showUserList(@PathVariable int page) {
-        int size = 10;
-        // 미리 로그인한 유저인지 확인
-//        if (value == null) {
-//            return ExceptionResponse.fail(HttpStatus.UNAUTHORIZED, "로그인이 필요합니다..");
-//        } else {
-            Page<UserListDto> list = userService.findAllExceptPwd(page, size);
-            log.info("유저정보 불러오기 성공");
-            return ResponseEntity.ok(list);
-//        }
-    }
+//    @GetMapping("/user/list/{page}")
+//    public ResponseEntity<?> showUserList(@PathVariable int page) {
+//        int size = 10;
+//        // 미리 로그인한 유저인지 확인
+//            Page<UserListDto> list = userService.findAllExceptPwd(page, size);
+//            log.info("유저정보 불러오기 성공");
+//            return ResponseEntity.ok(list);
+//    }
 
     /**
      * 로그인
@@ -72,10 +70,10 @@ public class UserController {
      * @return ResponseEntity<LoginResDto>
      */
     @PostMapping("/login")
-    public ResponseEntity<LoginResDto> signin(@RequestBody @Valid LoginReqDto dto,
-                                                        HttpSession session,
-                                                        HttpServletRequest request) {
-        LoginResDto resDto = userService.login(dto);
+    public ResponseEntity<LoginResponseDto> signin(@RequestBody @Valid LoginRequestDto dto,
+                                                   HttpSession session,
+                                                   HttpServletRequest request) {
+        LoginResponseDto resDto = userService.login(dto);
         if (resDto.getLoginResult() == LoginResult.FAILURE) {
             // 로그인 실패시
             return ResponseEntity
@@ -85,12 +83,10 @@ public class UserController {
 
 
         // 세션에 넣을 dto
-        //SessionUserDto sessionUserDto = new SessionUserDto(resDto.getId(), resDto.getName());
         SessionUserDto sessionUserDto = SessionUserDto.builder()
                 .id(resDto.getId())
                 .name(resDto.getName())
                 .build();
-        // 수정
 
         // session 등록 전 기존 세션이 있다면
         // 파기(세션 고정 공격 방지, 이전 사용자 정보/값 초기화, 사용자 전환 이슈 방지)
@@ -105,5 +101,14 @@ public class UserController {
         log.info(newSession.getAttribute("userInfo").toString());
         log.info("로그인 성공");
         return ResponseEntity.ok(resDto);
+    }
+
+    @GetMapping("user/list/{page}")
+    public ResponseEntity<Page<UserListResponseDto>> selectUsers (@PathVariable int page,
+                                                                  UserListRequestDto dto) {
+        int size = 10;
+        Pageable pageable = PageRequest.of(page, 10);
+        Page<UserListResponseDto> result = userService.selectUsers(dto, pageable);
+        return ResponseEntity.ok(result);
     }
 }

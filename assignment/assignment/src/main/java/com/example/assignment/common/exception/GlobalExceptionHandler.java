@@ -25,7 +25,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionResponse> handleNullPointerException(NullPointerException e) {
         log.error("NullPointerException", e);
         return ExceptionResponse.fail(
-                HttpStatus.BAD_REQUEST, "NullPointerException: " + e.getMessage());
+                HttpStatus.INTERNAL_SERVER_ERROR, "NullPointerException: " + e.getMessage());
     }
 
     /**
@@ -36,31 +36,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ExceptionResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         log.error("로그인 아이디, 비밀번호 검사 실패", e);
-//        List<String> message = e.getBindingResult()
-//                .getFieldErrors()
-//                .stream()
-//                .map(FieldError::getDefaultMessage)
-//                .toList();
-//        return ExceptionResponse.fail(
-//                HttpStatus.BAD_REQUEST, String.join("\n", message)
 
-        FieldError fieldError = e.getBindingResult().getFieldError(); // @valid에 걸린 예외
+        FieldError fieldError = e.getBindingResult().getFieldErrors().get(0); // @valid에 걸린 예외
         String field = fieldError.getField(); // id인지 pwd인지 확인
         String msg = fieldError.getDefaultMessage(); // @Valid에 있는 msg
         return ExceptionResponse.fail(
                 HttpStatus.BAD_REQUEST, msg, field);
-    }
-
-//    @ExceptionHandler(LoginFailedException.class)
-//    public ResponseEntity<ExceptionResponse> handleLoginFailedException(LoginFailedException e) {
-//        log.error("로그인 실패");
-//        return ExceptionResponse.fail(HttpStatus.UNAUTHORIZED, e.getMessage());
-//    }
-
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ExceptionResponse> handleIllegalArgumentException(IllegalArgumentException e) {
-        return ExceptionResponse.fail(
-                HttpStatus.UNAUTHORIZED, e.getMessage());
     }
 
     /**

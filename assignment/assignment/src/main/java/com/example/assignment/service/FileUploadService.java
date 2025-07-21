@@ -28,7 +28,7 @@ import java.util.List;
 public class FileUploadService {
 
     private final UserRepository userRepository;
-    private final InsertOneService insertOneService;
+    private final InsertFileService insertFileService;
 
     private static final int INITIAL_SUCCESS_COUNT = 0;
     /**
@@ -54,7 +54,7 @@ public class FileUploadService {
                 FileUploadDto dto = FileUploadDto.fromParts(parts);
                 try {
                     dto.validate(i);
-                    insertOneService.insertFileOne(dto.toEntity());
+                    insertFileService.insertFile(dto.toEntity());
                     success++;
                 } catch (PersistenceException e) {
                     errors.add(new UploadError(i + 1, line + " (중복된 id)"));
