@@ -39,11 +39,17 @@ public class User implements UserDtoBase {
 
     public User(String id, String pwd, String name,
                     String level, String desc, Timestamp regDate) {
+
         this.id = id;
+
         this.pwd = pwd;
+
         this.name = name;
+
         this.level = level;
+
         this.desc = desc;
+
         this.regDate = regDate;
     }
 }

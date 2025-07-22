@@ -21,16 +21,16 @@ public class UserListResponseDto {
 
     Timestamp regDate;
 
-    @QueryProjection
-    public UserListResponseDto(String id, String name, String desc, String level, Timestamp regDate) {
+    @QueryProjection // select 절에 대상을 지정하는 것.
+    public UserListResponseDto(String id, String name, String level, String desc, Timestamp regDate) {
 
         this.id = id;
 
         this.name = name;
 
-        this.desc = desc;
-
         this.level = level;
+
+        this.desc = desc;
 
         this.regDate = regDate;
     }

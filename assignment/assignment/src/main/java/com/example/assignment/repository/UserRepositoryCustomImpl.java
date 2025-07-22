@@ -6,14 +6,16 @@ import com.example.assignment.domain.dto.user.UserListResponseDto;
 import com.example.assignment.domain.entity.QUser;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Time;
 import java.sql.Timestamp;
-import java.time.LocalTime;
 import java.util.List;
 
 @Repository
@@ -31,7 +33,12 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
         if (dto.getName() != null && !dto.getName().isBlank()) booleanBuilder.and(user.name.eq(dto.getName()));
         if (dto.getLevel() != null && !dto.getLevel().isBlank()) booleanBuilder.and(user.level.eq(dto.getLevel()));
         if (dto.getDesc() != null && !dto.getDesc().isBlank()) booleanBuilder.and(user.desc.contains(dto.getDesc()));
-        if (dto.getRegDate() != null) booleanBuilder.and(user.regDate.goe(Timestamp.valueOf(dto.getRegDate().atStartOfDay())));
+        if (dto.getRegDate() != null) {
+            Timestamp startDate = Timestamp.valueOf(dto.getRegDate().atStartOfDay());
+            Timestamp endDate = Timestamp.valueOf(dto.getRegDate().plusDays(1).atStartOfDay());
+            booleanBuilder.and(user.regDate.goe(startDate));
+            booleanBuilder.and(user.regDate.lt(endDate));
+        }
 
         System.out.println("검색조건 id: " + dto.getId());
         System.out.println("검색조건 name: " + dto.getName());
@@ -58,6 +65,7 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
                 .from(user)
                 .where(booleanBuilder)
                 .fetchOne();
+
         long nullCheckTotal = total != null
                 ? total
                 : 0L;

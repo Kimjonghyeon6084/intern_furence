@@ -14,7 +14,7 @@ function movePage(page) {
     currentPage = page;
     const url = new URL(window.location.origin + `/userlist/${page}`);
         window.history.pushState({}, '', url);
-        fetchUserList(page);
+        fetchUserList(page, lastSearchParams);
 }
 
 // 데이터 테이블형태로 보이게 함
@@ -26,6 +26,7 @@ function renderTable(users) {
         tbody.insertAdjacentHTML('beforeend', row);
         return;
     }
+    console.log("users : ", users)
     users.forEach(user => {
         const regDate = user.regDate
             ? new Date(user.regDate).toLocaleString('ko-KR', { hour12: false })
@@ -64,21 +65,23 @@ function renderPagination(current, totalPages, isLast) {
     }
 
     if (startPage > 0) {
-        pageDiv.innerHTML += `<button onclick="movePage(${startPage - 1})">이전</button>`;
+        pageDiv.innerHTML += `<button onclick="movePage(${startPage - 1})"
+                                      id="movepagebutton">이전</button>`;
     }
 
     for (let i = startPage; i <= endPage; i++) {
         pageDiv.innerHTML += `
             <button onclick="movePage(${i})" ${i === current
                                                     ? 'style="background:#777c7b;"'
-                                                    : ''}>
+                                                    : ''} class="commonButton">
                 ${i + 1}
             </button>
         `;
     }
 
     if (!isLast && endPage < totalPages - 1) {
-        pageDiv.innerHTML += `<button onclick="movePage(${endPage + 1})">다음</button>`;
+        pageDiv.innerHTML += `<button onclick="movePage(${endPage + 1})"
+                                      id="movepagebutton">다음</button>`;
     }
 }
 
@@ -105,6 +108,7 @@ function renderPagination(current, totalPages, isLast) {
           return res.json();
         })
         .then(data => {
+        console.log("data", data)
           renderTable(data.content);
           renderPagination(data.number, data.totalPages, data.last);
         })

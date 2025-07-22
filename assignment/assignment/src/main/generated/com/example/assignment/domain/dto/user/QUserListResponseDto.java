@@ -13,8 +13,8 @@ public class QUserListResponseDto extends ConstructorExpression<UserListResponse
 
     private static final long serialVersionUID = -1156941861L;
 
-    public QUserListResponseDto(com.querydsl.core.types.Expression<String> id, com.querydsl.core.types.Expression<String> name, com.querydsl.core.types.Expression<String> desc, com.querydsl.core.types.Expression<String> level, com.querydsl.core.types.Expression<? extends java.sql.Timestamp> regDate) {
-        super(UserListResponseDto.class, new Class<?>[]{String.class, String.class, String.class, String.class, java.sql.Timestamp.class}, id, name, desc, level, regDate);
+    public QUserListResponseDto(com.querydsl.core.types.Expression<String> id, com.querydsl.core.types.Expression<String> name, com.querydsl.core.types.Expression<String> level, com.querydsl.core.types.Expression<String> desc, com.querydsl.core.types.Expression<? extends java.sql.Timestamp> regDate) {
+        super(UserListResponseDto.class, new Class<?>[]{String.class, String.class, String.class, String.class, java.sql.Timestamp.class}, id, name, level, desc, regDate);
     }
 
 }

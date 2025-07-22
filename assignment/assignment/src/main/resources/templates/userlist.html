@@ -11,42 +11,50 @@
 </head>
 <body>
     <h2>유저 리스트</h2>
-    <form id="userselectlist" action="/user/list/0" method="get">
-        <div id="conditions">
-            <div>
-                <label for="id">id</label>
-                <input type="text" name="id" id="id"/>
+    <div id="userlistdiv">
+        <form id="userselectlist" action="/user/list/0" method="get">
+            <div id="conditions">
+                <div>
+                    <input type="text" name="id" id="id" placeholder="ID"/>
+                </div>
+                <div>
+                    <input type="text" id="name" name="name" placeholder="NAME"/>
+                </div>
+                <div>
+                    <input type="text"
+                           list="idlist"
+                           id="level"
+                           name="level"
+                           placeholder="LEVEL 선택">
+                    <datalist id="idlist">
+                        <option value="A"/>
+                        <option value="B"/>
+                        <option value="C"/>
+                        <option value="D"/>
+                        <option value="E"/>
+                        <option value="F"/>
+                    </datalist>
+                </div>
+                <div>
+                    <input type="text"
+                           id="desc"
+                           name="desc"
+                           placeholder="설명"/>
+                </div>
+                <div>
+                    <input class="datepicker"
+                           id="regDate"
+                           name="regDate"
+                           placeholder="날짜 선택">
+                </div>
+                <button type="submit" class="commonButton">조회</button>
             </div>
-            <div>
-                <label for="name">name</label>
-                <input type="text" id="name" name="name"/>
-            </div>
-            <div>
-                <label for="level">Level</label>
-                <input type="text"
-                       list="idlist"
-                       id="level"
-                       name="level">
-                <datalist id="idlist">
-                    <option value="A"/>
-                    <option value="B"/>
-                    <option value="C"/>
-                    <option value="D"/>
-                    <option value="E"/>
-                    <option value="F"/>
-                </datalist>
-            </div>
-            <div>
-                <label for="desc">설명</label>
-                <input type="text" id="desc" name="desc"/>
-            </div>
-            <div>
-                <input class="datepicker" id="regDate" name="regDate" placeholder="날짜 선택">
-            </div>
-            <button type="submit">조회</button>
-        </div>
-    </form>
-    <button onclick="fetchUserList(0)" id="fetchUserListButton">전체조회</button>
+        </form>
+        <button onclick="fetchUserList(0)"
+                id="fetchUserListButton"
+                class="commonButton">전체조회</button>
+    </div>
+
 
 
     <table id="userTable">
@@ -64,8 +72,14 @@
     </table>
     <div id="pagination"></div>
     <script src="/js/userlist.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" integrity="sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+            integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"
+            integrity="sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"></script>
     <script>
         $(function(){
           $('.datepicker').datepicker();

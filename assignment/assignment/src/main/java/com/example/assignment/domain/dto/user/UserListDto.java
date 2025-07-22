@@ -23,11 +23,17 @@ public class UserListDto {
     private Timestamp regDate;
 
     public UserListDto(String id, String name, String level, String desc, Timestamp regDate) {
+
         this.id = id;
+
         this.name = name;
+
         this.level = level;
+
         this.desc = desc;
+
         this.regDate = regDate;
+
     }
 
 }
