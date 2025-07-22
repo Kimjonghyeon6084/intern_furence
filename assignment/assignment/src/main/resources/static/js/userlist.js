@@ -129,19 +129,24 @@ document.getElementById("userselectlist").addEventListener("submit", function(e)
     const desc    = document.getElementById("desc").value;
     const regDate = document.getElementById("regDate").value;
 
-    const params = new URLSearchParams();
-        if (id) params.append("id", id);
-        if (name) params.append("name", name);
-        if (level) params.append("level", level);
-        if (desc) params.append("desc", desc);
-        if (regDate) params.append("regDate", regDate);
+    // 값을 아무것도 넣지 않은 상태에서 입력시 alert창 띄워주게 함.
+    if (id && name && level && desc && regDate != null) {
+        const params = new URLSearchParams();
+                if (id) params.append("id", id);
+                if (name) params.append("name", name);
+                if (level) params.append("level", level);
+                if (desc) params.append("desc", desc);
+                if (regDate) params.append("regDate", regDate);
 
-    lastSearchParams = params;
-    fetchUserList(0, params);
+            lastSearchParams = params;
+            fetchUserList(0, params);
 
-    // 페이징용 페이지 이동
-    function movePage(page) {
-      fetchUserList(page, lastSearchParams);
+            // 페이징용 페이지 이동
+            function movePage(page) {
+              fetchUserList(page, lastSearchParams);
+            }
+    } else {
+        alert("조건을 입력하세요.")
     }
 });
 

@@ -14,19 +14,19 @@ import org.springframework.http.ResponseEntity;
 public class ExceptionResponse {
     private boolean success;
     private String message;
-    private String loginField;
+    private String field;
 
 
     public ExceptionResponse(boolean success, String message) {
         this.success = success;
         this.message = message;
-        this.loginField = null;
+        this.field = null;
     }
 
-    public ExceptionResponse(boolean success, String message, String loginField) {
+    public ExceptionResponse(boolean success, String message, String field) {
         this.success = success;
         this.message = message;
-        this.loginField = loginField;
+        this.field = field;
     }
 
     /**
@@ -42,11 +42,11 @@ public class ExceptionResponse {
     /**
      * 로그인 시 어떤 필드가 @Valid에 걸렸는지 확인하려는 메서드
      * @param status
-     * @param loginField
+     * @param field
      * @param message
-     * @return ResponseEntity.status(status).body(new ExceptionResponse(false, loginField, message))
+     * @return ResponseEntity.status(status).body(new ExceptionResponse(false, field, message))
      */
-    public static ResponseEntity<ExceptionResponse> fail(HttpStatus status, String loginField, String message) {
-        return ResponseEntity.status(status).body(new ExceptionResponse(false, loginField, message));
+    public static ResponseEntity<ExceptionResponse> fail(HttpStatus status, String field, String message) {
+        return ResponseEntity.status(status).body(new ExceptionResponse(false, field, message));
     }
 }

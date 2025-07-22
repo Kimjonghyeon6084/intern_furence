@@ -34,14 +34,14 @@ document.getElementById("loginForm").addEventListener("submit", function (e) {
 
                 console.log(err);
 
-                if (err.loginField === 'id') {
+                if (err.field === 'id') {
                     idError.textContent += err.message;
-                } else if (err.loginField === 'pwd') {
+                } else if (err.field === 'pwd') {
                     pwdError.textContent += err.message;
                 }
 
                 if (err.loginResult === "FAILURE") {
-                    loginFail.textContent += err.loginResultMessage;
+                    loginFail.textContent += err.message;
                 }
             } catch (e) {
                 alert("JSON 파싱 실패", e);

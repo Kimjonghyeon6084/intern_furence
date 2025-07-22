@@ -14,10 +14,12 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.List;
 
+/**
+ * queryDsl 사용해서 필터링된 사용자 리스트 받아 조회.
+ */
 @Repository
 @RequiredArgsConstructor
 public class UserRepositoryCustomImpl implements UserRepositoryCustom {
@@ -26,6 +28,7 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
 
     @Override
     public Page<UserListResponseDto> searchUsers(UserListRequestDto dto, Pageable pageable) {
+
         QUser user = QUser.user;
         BooleanBuilder booleanBuilder = new BooleanBuilder();
 
@@ -36,8 +39,8 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
         if (dto.getRegDate() != null) {
             Timestamp startDate = Timestamp.valueOf(dto.getRegDate().atStartOfDay());
             Timestamp endDate = Timestamp.valueOf(dto.getRegDate().plusDays(1).atStartOfDay());
-            booleanBuilder.and(user.regDate.goe(startDate));
-            booleanBuilder.and(user.regDate.lt(endDate));
+            booleanBuilder.and(user.regDate.goe(startDate)); // 이상
+            booleanBuilder.and(user.regDate.lt(endDate)); //  미만
         }
 
         System.out.println("검색조건 id: " + dto.getId());
