@@ -51,7 +51,7 @@ window.addEventListener('popstate', () => {
     fetchUserList(page);
 });
 
-//
+// 페이지 버튼 만드는 부분
 function renderPagination(current, totalPages, isLast) {
     const pageDiv = document.getElementById("pagination");
     pageDiv.innerHTML = "";
@@ -139,11 +139,21 @@ document.getElementById("userselectlist").addEventListener("submit", function(e)
     // 값을 아무것도 넣지 않은 상태에서 입력시 alert창 띄워주게 함.
     if (id || name || level || desc || regDate) {
         const params = new URLSearchParams();
-                if (id) params.append("id", id);
-                if (name) params.append("name", name);
-                if (level) params.append("level", level);
-                if (desc) params.append("desc", desc);
-                if (regDate) params.append("regDate", regDate);
+                if (id) {
+                    params.append("id", id);
+                }
+                if (name) {
+                    params.append("name", name);
+                }
+                if (level) {
+                    params.append("level", level);
+                }
+                if (desc) {
+                    params.append("desc", desc);
+                }
+                if (regDate) {
+                    params.append("regDate", regDate);
+                }
 
             lastSearchParams = params;
             fetchUserList(0, params);

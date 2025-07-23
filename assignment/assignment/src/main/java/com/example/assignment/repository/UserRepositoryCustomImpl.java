@@ -33,26 +33,6 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
     public Page<UserListResponseDto> searchUsers(UserListRequestDto dto, Pageable pageable) {
 
         QUser user = QUser.user;
-//        BooleanBuilder booleanBuilder = new BooleanBuilder();
-//
-//        if (dto.getId() != null && !dto.getId().isBlank()) {
-//            booleanBuilder.and(user.id.eq(dto.getId()));
-//        }
-//        if (dto.getName() != null && !dto.getName().isBlank()) {
-//            booleanBuilder.and(user.name.eq(dto.getName()));
-//        }
-//        if (dto.getLevel() != null && !dto.getLevel().isBlank()) {
-//            booleanBuilder.and(user.level.eq(dto.getLevel()));
-//        }
-//        if (dto.getDesc() != null && !dto.getDesc().isBlank()) {
-//            booleanBuilder.and(user.desc.contains(dto.getDesc()));
-//        }
-//        if (dto.getRegDate() != null) {
-//            Timestamp startDate = Timestamp.valueOf(dto.getRegDate().atStartOfDay());
-//            Timestamp endDate = Timestamp.valueOf(dto.getRegDate().plusDays(1).atStartOfDay());
-//            booleanBuilder.and(user.regDate.goe(startDate)); // 이상
-//            booleanBuilder.and(user.regDate.lt(endDate)); //  미만
-//        }
 
         List<UserListResponseDto> content = jpaQueryFactory
                 .select(new QUserListResponseDto(
