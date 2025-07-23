@@ -12,7 +12,7 @@ document.getElementById("loginForm").addEventListener("submit", function (e) {
         body: JSON.stringify({id: id, pwd: pwd})
     })
     .then(async res => {
-        console.log(res);
+        console.log("res : ", res);
         if (res.ok) {
             window.location.href = "/userlist";
         } else {
@@ -32,15 +32,15 @@ document.getElementById("loginForm").addEventListener("submit", function (e) {
                 // @valid에 걸려서 넘어온 res에서 loginField를 이용해
                 // id or pwd의 input 아래에 해당 메세지 보여줄거다.
 
-                console.log(err);
+                console.log("err : ", err);
 
-                if (err.field === 'id') {
+                if (err.error === 'id') {
                     idError.textContent += err.message;
-                } else if (err.field === 'pwd') {
+                } else if (err.error === 'pwd') {
                     pwdError.textContent += err.message;
                 }
 
-                if (err.loginResult === "FAILURE") {
+                if (err.loginStatus === "FAILURE") {
                     loginFail.textContent += err.message;
                 }
             } catch (e) {

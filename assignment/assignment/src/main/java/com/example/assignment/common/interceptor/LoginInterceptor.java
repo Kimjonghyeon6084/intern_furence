@@ -20,6 +20,7 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         log.info("preHandle() 동작");
+        // getAttribute()로 나온 값이 Object 타입이기 때문에 (SessionUserDto) 로 형변환.
         SessionUserDto value = (SessionUserDto) request.getSession().getAttribute("userInfo");
         if (value == null) {
             response.sendRedirect("/login");

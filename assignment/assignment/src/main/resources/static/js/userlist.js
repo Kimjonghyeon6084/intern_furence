@@ -104,7 +104,9 @@ function renderPagination(current, totalPages, isLast) {
       }
       fetch(url)
         .then(res => {
-          if (!res.ok) throw res;
+          if (!res.ok) {
+            throw res;
+          }
           return res.json();
         })
         .then(data => {
@@ -128,9 +130,14 @@ document.getElementById("userselectlist").addEventListener("submit", function(e)
     const level   = document.getElementById("level").value;
     const desc    = document.getElementById("desc").value;
     const regDate = document.getElementById("regDate").value;
+    console.log("id", id)
+    console.log("name", name)
+    console.log("level", level)
+    console.log("desc", desc)
+    console.log("regDate", regDate)
 
     // 값을 아무것도 넣지 않은 상태에서 입력시 alert창 띄워주게 함.
-    if (id && name && level && desc && regDate != null) {
+    if (id || name || level || desc || regDate) {
         const params = new URLSearchParams();
                 if (id) params.append("id", id);
                 if (name) params.append("name", name);

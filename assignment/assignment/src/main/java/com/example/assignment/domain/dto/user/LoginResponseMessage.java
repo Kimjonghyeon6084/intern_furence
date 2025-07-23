@@ -7,14 +7,14 @@ import lombok.Getter;
  */
 
 @Getter
-public enum LoginResultMessage {
+public enum LoginResponseMessage {
 
     INVALID_ID("아이디가 틀립니다."),
     INVALID_PASSWORD("비밀번호가 틀립니다.");
 
     private final String message;
 
-    LoginResultMessage(String message) {
+    LoginResponseMessage(String message) {
         this.message = message;
     }
 }

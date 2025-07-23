@@ -34,7 +34,7 @@ public class GlobalExceptionHandler {
      * 그리고 해당 메세지를 담아 프론트로 보낸다.
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ExceptionResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+    public ResponseEntity<ExceptionResponse<String>> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         log.error("로그인 아이디, 비밀번호 검사 실패", e);
 
         FieldError fieldError = e.getBindingResult().getFieldErrors().get(0); // @valid에 걸린 예외

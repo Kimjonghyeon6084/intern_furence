@@ -13,14 +13,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.sql.Timestamp;
-import java.util.List;
 
 @Controller
 @Slf4j
@@ -76,7 +72,7 @@ public class UserController {
         LoginResponseDto resDto = userService.login(dto);
 
         // 로그인 성공시
-        if (resDto.getLoginResult() == LoginResult.SUCCESS) {
+        if (resDto.getLoginStatus() == LoginStatus.SUCCESS) {
             // 세션에 넣을 dto
             SessionUserDto sessionUserDto = SessionUserDto.builder()
                     .id(resDto.getId())
@@ -86,13 +82,12 @@ public class UserController {
             // session 등록 전 기존 세션이 있다면
             // 파기(세션 고정 공격 방지, 이전 사용자 정보/값 초기화, 사용자 전환 이슈 방지)
             SessionUserDto checkSessionUserDto = (SessionUserDto)session.getAttribute("userInfo");
-            if (checkSessionUserDto!= null && checkSessionUserDto.getId().equals(sessionUserDto.getId())) {
+            if (checkSessionUserDto != null && checkSessionUserDto.getId().equals(sessionUserDto.getId())) {
                 session.invalidate();
             }
 
             HttpSession newSession = request.getSession(true);
             newSession.setAttribute("userInfo", sessionUserDto);
-            log.info(newSession.getAttribute("userInfo").toString());
             log.info("로그인 성공");
             return ResponseEntity.ok(resDto);
         } else {

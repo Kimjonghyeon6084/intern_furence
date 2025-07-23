@@ -30,9 +30,9 @@ public class UserService {
 
         if (checkUserIdOpt.isEmpty()) { // 아이디가 틀렸을 때
             return LoginResponseDto.builder()
-                        .loginResult(LoginResult.FAILURE)
-                        .loginValidationField(LoginValidationField.ID)
-                        .message(LoginResultMessage.INVALID_ID.getMessage())
+                        .loginStatus(LoginStatus.FAILURE)
+                        .loginValidField(LoginValidField.ID)
+                        .message(LoginResponseMessage.INVALID_ID.getMessage())
                         .build();
         }
 
@@ -40,17 +40,17 @@ public class UserService {
 
         if (!user.getPwd().equals(dto.getPwd())) { // 비밀번호가 틀렸을 때
             return LoginResponseDto.builder()
-                    .loginResult(LoginResult.FAILURE)
-                    .loginValidationField(LoginValidationField.PWD)
-                    .message(LoginResultMessage.INVALID_PASSWORD.getMessage())
+                    .loginStatus(LoginStatus.FAILURE)
+                    .loginValidField(LoginValidField.PWD)
+                    .message(LoginResponseMessage.INVALID_PASSWORD.getMessage())
                     .build();
         }
 
         return LoginResponseDto.builder()
                 .id(user.getId())
                 .name(user.getName())
-                .loginResult(LoginResult.SUCCESS)
-                .loginValidationField(null)
+                .loginStatus(LoginStatus.SUCCESS)
+                .loginValidField(null)
                 .build();
     }
 
