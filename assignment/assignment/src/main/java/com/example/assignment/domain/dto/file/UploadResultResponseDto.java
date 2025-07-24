@@ -10,10 +10,10 @@ import java.util.List;
  */
 @Getter
 @RequiredArgsConstructor
-public class UploadResult {
+public class UploadResultResponseDto {
 
     private final int successCount;
 
-    private final List<UploadError> errors;
+    private final List<UploadErrorResponseDto> errors;
 
 }

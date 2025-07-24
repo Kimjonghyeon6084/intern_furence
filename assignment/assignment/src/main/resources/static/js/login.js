@@ -3,7 +3,7 @@ document.getElementById("loginForm").addEventListener("submit", function (e) {
     e.preventDefault();
     let err;
 
-    const id = document.getElementById("id").value;
+    const id  = document.getElementById("id").value;
     const pwd = document.getElementById("pwd").value;
 
     fetch("/login", {
@@ -22,8 +22,8 @@ document.getElementById("loginForm").addEventListener("submit", function (e) {
                 errorMessage = err.message || errorMessage;
 
                  // 필드별로 나눠 보여주는 로직
-                const idError = document.getElementById("idError");
-                const pwdError = document.getElementById("pwdError");
+                const idError   = document.getElementById("idError");
+                const pwdError  = document.getElementById("pwdError");
                 const loginFail = document.getElementById("loginFail");
                 idError.textContent = "";
                 pwdError.textContent = "";

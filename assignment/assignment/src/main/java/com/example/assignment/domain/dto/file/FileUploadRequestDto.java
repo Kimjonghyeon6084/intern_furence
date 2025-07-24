@@ -14,7 +14,7 @@ import java.sql.Timestamp;
  */
 @Getter
 @Builder
-public class FileUploadDto {
+public class FileUploadRequestDto {
 
     private String id;
 
@@ -33,9 +33,9 @@ public class FileUploadDto {
      * @param parts
      * @return dto FileUploadDto
      */
-    public static FileUploadDto fromParts(String[] parts){
+    public static FileUploadRequestDto fromParts(String[] parts) throws CustomException {
         if (parts.length == 5){
-            return FileUploadDto.builder()
+            return FileUploadRequestDto.builder()
                     .id(parts[0])
                     .pwd(parts[1])
                     .name(parts[2])
@@ -44,7 +44,7 @@ public class FileUploadDto {
                     .regDate(parts[4])
                     .build();
         } else if (parts.length == 6) {
-            return FileUploadDto.builder()
+            return FileUploadRequestDto.builder()
                     .id(parts[0])
                     .pwd(parts[1])
                     .name(parts[2])
@@ -59,7 +59,7 @@ public class FileUploadDto {
     /**
      * 각 필드의 값 형식 검사 및 null 체크
     **/
-    public void validate(int lineNumber) {
+    public void validate(int lineNumber) throws CustomException {
 
         if (id == null || id.isBlank())
             throw new CustomException(ErrorCode.ID_EMPTY, ErrorCode.ID_EMPTY.getMessage() + "라인 : " + lineNumber);

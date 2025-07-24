@@ -1,5 +1,6 @@
 package com.example.assignment.domain.dto.file;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -7,8 +8,9 @@ import lombok.RequiredArgsConstructor;
  * 파일 업로드중 에러 발생 시 담는 DTO
  */
 @Getter
+@Builder
 @RequiredArgsConstructor
-public class UploadError {
+public class UploadErrorResponseDto {
 
     private final int lineCount;
 

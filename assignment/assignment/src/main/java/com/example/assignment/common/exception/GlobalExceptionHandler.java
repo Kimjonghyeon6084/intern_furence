@@ -44,6 +44,11 @@ public class GlobalExceptionHandler {
                 HttpStatus.BAD_REQUEST, msg, field);
     }
 
+    @ExceptionHandler(CustomException.class)
+    public ResponseEntity<ExceptionResponse> handleCustomException(CustomException e) {
+        return ExceptionResponse.fail(HttpStatus.BAD_REQUEST, e.getMessage());
+    }
+
     /**
      * 그 외 모든 예외 처리 핸들러
      */
