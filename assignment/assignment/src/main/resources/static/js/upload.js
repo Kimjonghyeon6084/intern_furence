@@ -21,13 +21,14 @@ document.getElementById("uploadForm").onsubmit = function(e) {
                 if (result.errors.length > 0) {
                     html += `<h4>실패 내역</h4><ul>`;
                     result.errors.forEach(err => {
+                    console.log("err : ", err)
                         html += `<li>라인 ${err.lineCount}: ${err.errors}</li>`;
                     });
                     html += `</ul>`;
                 }
                 html += `<div>
                         <button onclick="loadData()" id="selectbutton">조회</button>
-                        <button onclick="goBack()">뒤로가기</button>
+                        <button onclick="goBack()" id="gobackbutton">뒤로가기</button>
                      <div/>
                      <table id="dataTable" style = "display: none;">
                         <thead>

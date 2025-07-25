@@ -48,7 +48,7 @@ public class FileUploadService {
                 String line = lines.get(i).trim();
                 String[] parts = line.split("/");
                 if (parts.length != 6) {
-                    errors.add(new UploadErrorResponseDto(i + 1, line + " (필드 개수 오류)"));
+                    errors.add(new UploadErrorResponseDto(i + 1, line));
                     continue;
                 }
                 FileUploadRequestDto dto = FileUploadRequestDto.fromParts(parts);
@@ -57,7 +57,7 @@ public class FileUploadService {
                     insertFileService.insertFile(dto.toEntity());
                     success++;
                 } catch (PersistenceException e) {
-                    errors.add(new UploadErrorResponseDto(i + 1, line + " (중복된 id)"));
+                    errors.add(new UploadErrorResponseDto(i + 1, line));
                     log.warn("✅파일 업로드 실패 (라인 {}): {} / 원인: {}", i + 1, line, ErrorCode.DB_DUPLICATE.getMessage());
                 } catch (CustomException e) {
                     errors.add(new UploadErrorResponseDto(i + 1, line));

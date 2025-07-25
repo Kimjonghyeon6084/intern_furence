@@ -4,18 +4,17 @@ import com.example.assignment.domain.dto.user.QUserListResponseDto;
 import com.example.assignment.domain.dto.user.UserListRequestDto;
 import com.example.assignment.domain.dto.user.UserListResponseDto;
 import com.example.assignment.domain.entity.QUser;
-import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.List;
@@ -25,6 +24,7 @@ import java.util.List;
  */
 @Repository
 @RequiredArgsConstructor
+@Slf4j
 public class UserRepositoryCustomImpl implements UserRepositoryCustom {
 
     private final JPAQueryFactory jpaQueryFactory;
@@ -32,9 +32,11 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
     @Override
     public Page<UserListResponseDto> searchUsers(UserListRequestDto dto, Pageable pageable) {
 
+        log.info("dto.getId()" + dto.getId());
+
         QUser user = QUser.user;
 
-        List<UserListResponseDto> content = jpaQueryFactory
+        List<UserListResponseDto> result = jpaQueryFactory
                 .select(new QUserListResponseDto(
                         user.id,
                         user.name,
@@ -66,11 +68,13 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
                 )
                 .fetchOne();
 
+        log.info(String.valueOf(total));
+
         long nullCheckTotal = total != null
                 ? total
                 : 0L;
 
-        return new PageImpl<>(content, pageable, nullCheckTotal);
+        return new PageImpl<>(result, pageable, nullCheckTotal);
     }
 
 
