@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import lombok.*;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 /**
  * User Entity
@@ -16,8 +17,10 @@ import java.sql.Timestamp;
 @Getter
 @Entity(name = "t_user")
 @Builder
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+//@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 public class User implements UserDtoBase {
+
     @Id
     @Column
     private String id;
@@ -52,4 +55,6 @@ public class User implements UserDtoBase {
 
         this.regDate = regDate;
     }
+
+    public static User EMPTY_USER = new User("", "", "", "", "", Timestamp.valueOf(LocalDateTime.now()));
 }

@@ -130,7 +130,7 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
         if (regDate != null) {
             Timestamp startRegDate = Timestamp.valueOf(regDate.atStartOfDay());
             Timestamp endRegDate = Timestamp.valueOf(regDate.plusDays(1).atStartOfDay());
-            return QUser.user.regDate.goe(startRegDate).and(QUser.user.regDate.lt(endRegDate));
+            return QUser.user.regDate.between(startRegDate, endRegDate);
         } else  {
             return null;
         }

@@ -51,7 +51,7 @@ window.addEventListener('popstate', () => {
     fetchUserList(page);
 });
 
-// 페이지 버튼 만드는 부분
+// 페이지 버튼 생성
 function renderPagination(current, totalPages, isLast) {
     const pageDiv = document.getElementById("pagination");
     pageDiv.innerHTML = "";
@@ -127,7 +127,7 @@ document.getElementById("userselectlist").addEventListener("submit", function(e)
 
     const id      = document.getElementById("id").value;
     const name    = document.getElementById("name").value;
-    const level   = document.getElementById("level").value;
+    const level   = document.getElementById("level").value.toUpperCase();
     const desc    = document.getElementById("desc").value;
     const regDate = document.getElementById("regDate").value;
     console.log("id", id)
@@ -166,4 +166,3 @@ document.getElementById("userselectlist").addEventListener("submit", function(e)
         alert("조건을 입력하세요.")
     }
 });
-

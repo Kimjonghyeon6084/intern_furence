@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.Optional;
 
@@ -26,33 +27,59 @@ public class UserService {
      */
     public LoginResponseDto login(LoginRequestDto dto) {
 
-        Optional<User> checkUserIdOpt = userRepository.findById(dto.getId());
+        User user = this.userRepository.findById(dto.getId())
+                .orElse(new User());
 
-        if (checkUserIdOpt.isEmpty()) { // 아이디가 틀렸을 때
-            return LoginResponseDto.builder()
-                        .loginStatus(LoginStatus.FAILURE)
-                        .loginValidField(LoginValidField.ID)
-                        .message(LoginResponseMessage.INVALID_ID.getMessage())
-                        .build();
-        }
+        LoginStatus loginStatus = false == user.getPwd().equals(dto.getPwd())
+                        ? LoginStatus.FAILURE : LoginStatus.SUCCESS;
+        LoginValidField field = user.getPwd().equals(dto.getPwd())
+                ? null : user == null ? LoginValidField.ID : LoginValidField.PWD;
 
-        User user = checkUserIdOpt.get();
+        String message = user.getPwd().equals(dto.getPwd())
+                ? null : user.equals("") ? LoginResponseMessage.INVALID_ID.getMessage()
+                : LoginResponseMessage.INVALID_PASSWORD.getMessage();
 
-        if (!user.getPwd().equals(dto.getPwd())) { // 비밀번호가 틀렸을 때
-            return LoginResponseDto.builder()
-                    .loginStatus(LoginStatus.FAILURE)
-                    .loginValidField(LoginValidField.PWD)
-                    .message(LoginResponseMessage.INVALID_PASSWORD.getMessage())
-                    .build();
-        }
+        String id = user.equals("") ? null : user.getId();
+        String name = user.equals("") ? null : user.getName();
 
         return LoginResponseDto.builder()
-                .id(user.getId())
-                .name(user.getName())
-                .loginStatus(LoginStatus.SUCCESS)
-                .loginValidField(null)
+                .loginStatus(loginStatus)
+                .loginValidField(field)
+                .message(message)
+                .id(id)
+                .name(name)
                 .build();
+
+
+//        Optional<User> checkUserIdOpt = userRepository.findById(dto.getId());
+
+
+//        if (checkUserIdOpt.isEmpty()) { // 아이디가 틀렸을 때
+//            return LoginResponseDto.builder()
+//                        .loginStatus(LoginStatus.FAILURE)
+//                        .loginValidField(LoginValidField.ID)
+//                        .message(LoginResponseMessage.INVALID_ID.getMessage())
+//                        .build();
+//        }
+//
+//        User user = checkUserIdOpt.get();
+//
+//        if (!user.getPwd().equals(dto.getPwd())) { // 비밀번호가 틀렸을 때
+//            return LoginResponseDto.builder()
+//                    .loginStatus(LoginStatus.FAILURE)
+//                    .loginValidField(LoginValidField.PWD)
+//                    .message(LoginResponseMessage.INVALID_PASSWORD.getMessage())
+//                    .build();
+//        }
+//
+//        return LoginResponseDto.builder()
+//                .id(user.getId())
+//                .name(user.getName())
+//                .loginStatus(LoginStatus.SUCCESS)
+//                .loginValidField(null)
+//                .build();
     }
+
 
     /**
      * 유저 리스트 불러오는 메서드(비밀번호만 빼고 모두다)

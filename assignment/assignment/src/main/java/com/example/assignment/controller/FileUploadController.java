@@ -41,7 +41,7 @@ public class FileUploadController {
      * @return
      */
     @PostMapping("/upload")
-    @CheckFileExtension(".dbfile")
+    @CheckFileExtension({".dbfile", ".txt"})
     public ResponseEntity<UploadResultResponseDto> fileUpload(@RequestParam("file") MultipartFile file) {
         UploadResultResponseDto result = fileUploadService.processFile(file);
         return ResponseEntity.ok(result);

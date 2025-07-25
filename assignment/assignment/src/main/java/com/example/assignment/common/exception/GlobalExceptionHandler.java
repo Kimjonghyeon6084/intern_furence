@@ -37,7 +37,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionResponse<String>> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         log.error("로그인 아이디, 비밀번호 검사 실패", e);
 
-        FieldError fieldError = e.getBindingResult().getFieldErrors().get(0); // @valid에 걸린 예외
+        FieldError fieldError = e.getBindingResult().getFieldErrors().get(0); // @valid에 걸린 첫번째 예외
         String field = fieldError.getField(); // id인지 pwd인지 확인
         String msg = fieldError.getDefaultMessage(); // @Valid에 있는 msg
         return ExceptionResponse.fail(
