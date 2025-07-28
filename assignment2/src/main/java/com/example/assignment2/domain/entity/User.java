@@ -26,16 +26,20 @@ public class User {
     @Column
     private String name;
 
+    @Column
+    private String level;
+
     @Column(name = "\"desc\"")
     private String desc;
 
     @Column
     private LocalDateTime regDate;
 
-    public User(String id, String pwd, String name, String desc, LocalDateTime regDate) {
+    public User(String id, String pwd, String name, String level, String desc, LocalDateTime regDate) {
         this.id = id;
         this.pwd = pwd;
         this.name = name;
+        this.level = level;
         this.desc = desc;
         this.regDate = regDate;
     }

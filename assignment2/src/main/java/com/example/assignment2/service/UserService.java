@@ -1,11 +1,14 @@
 package com.example.assignment2.service;
 
+//import com.example.assignment2.domain.dto.user.*;
 import com.example.assignment2.domain.dto.user.*;
+import com.example.assignment2.domain.dto.user.UserListRequestDto;
 import com.example.assignment2.domain.entity.User;
 import com.example.assignment2.repository.UserRepository;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -95,4 +98,7 @@ public class UserService {
 //    public Page<UserListResponseDto> selectUsers(UserListRequestDto dto, Pageable pageable) {
 //        return userRepository.searchUsers(dto, pageable);
 //    }
+    public Page<UserListResponseDto> selectUsers(UserListRequestDto dto, Pageable pageable) {
+        return this.userRepository.searchUsers(dto, pageable);
+    }
 }
