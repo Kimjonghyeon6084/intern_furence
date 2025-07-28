@@ -1,0 +1,40 @@
+
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>김종현_결과</title>
+        <link rel="stylesheet" href="/css/result.css">
+    </head>
+    <body>
+        <h2>업로드 결과</h2>
+        <p>성공: [[${result.successCount}]]건</p>
+        <p>실패: [[${result.errors.size()}]]건</p>
+
+        <div th:if="${result.errors.size() > 0}">
+            <h4>실패 내역</h4>
+            <ul>
+                <li th:each="err : ${result.errors}">
+                    라인 [[${err.lineCount}]]: [[${err.errors}]]
+                </li>
+                <br/>
+            </ul>
+        </div>
+
+        <button onclick="loadData()">조회</button>
+        <table id="dataTable">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>pwd</th>
+                    <th>name</th>
+                    <th>level</th>
+                    <th>desc</th>
+                    <th>reg_date</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <button onclick="goBack()">뒤로가기</button>
+        <script src="/js/result.js"></script>
+    </body>
+</html>

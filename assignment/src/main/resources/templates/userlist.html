@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>유저 리스트</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" integrity="sha512-aOG0c6nPNzGk+5zjwyJaoRUgCdOrfSDhmMID2u4+OIslr0GjpLKo7Xm0Ao3xmpM4T8AmIouRkqwj1nrdVsLKEQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/css/userlist.css">
+    <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+    <h2>유저 리스트</h2>
+    <div id="userlistdiv">
+        <form id="userselectlist" action="/user/list/0" method="get">
+            <div id="conditions">
+                <div>
+                    <input type="text" name="id" id="id" placeholder="ID"/>
+                </div>
+                <div>
+                    <input type="text" id="name" name="name" placeholder="NAME"/>
+                </div>
+                <div>
+                    <input type="text"
+                           list="idlist"
+                           id="level"
+                           name="level"
+                           placeholder="LEVEL 선택">
+                    <datalist id="idlist">
+                        <option value="A"/>
+                        <option value="B"/>
+                        <option value="C"/>
+                        <option value="D"/>
+                        <option value="E"/>
+                        <option value="F"/>
+                    </datalist>
+                </div>
+                <div>
+                    <input type="text"
+                           id="desc"
+                           name="desc"
+                           placeholder="설명"/>
+                </div>
+                <div>
+                    <input class="datepicker"
+                           id="regDate"
+                           name="regDate"
+                           placeholder="날짜 선택">
+                </div>
+                <button type="submit" class="commonButton">조회</button>
+            </div>
+        </form>
+        <button onclick="fetchUserList(0)"
+                id="fetchUserListButton"
+                class="commonButton">전체조회</button>
+    </div>
+
+
+
+    <table id="userTable">
+        <thead id="userListTableHead">
+        <tr>
+            <th>ID</th>
+            <th>이름</th>
+            <th>Level</th>
+            <th>Desc</th>
+            <th>Reg Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <div id="pagination"></div>
+    <script src="/js/userlist.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+            integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"
+            integrity="sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"></script>
+    <script>
+        $(function(){
+          $('.datepicker').datepicker();
+        })
+        $.datepicker.setDefaults({
+          dateFormat: 'yy-mm-dd',
+          prevText: '이전 달',
+          nextText: '다음 달',
+          monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+          monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+          dayNames: ['일', '월', '화', '수', '목', '금', '토'],
+          dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
+          dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
+          showMonthAfterYear: true,
+          yearSuffix: '년'
+        });
+
+        $(function () {
+          $('.datepicker').datepicker();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Document</title>
+        <link rel="stylesheet" href="/css/login.css">
+        <link rel="icon" href="/favicon.ico">
+    </head>
+    <body>
+        <div id="loginDiv">
+            <h1>로그인</h1>
+            <form id="loginForm" action="/login" method="post">
+                <label for="id"></label><input id="id" name="id" placeholder="아이디"/>
+                <div id="idError" class="errorMessage"></div>
+                <br>
+                <label for="pwd" ></label><input id="pwd" name="pwd" type="password" placeholder="비밀번호"/>
+                <div id="pwdError" class="errorMessage"></div>
+                <br>
+                <button type="submit">로그인</button>
+                <div id="loginFail"></div>
+            </form>
+        </div>
+        <script src="/js/login.js"></script>
+    </body>
+</html>
