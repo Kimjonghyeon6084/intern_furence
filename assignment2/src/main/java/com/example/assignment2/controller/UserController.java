@@ -1,9 +1,6 @@
 package com.example.assignment2.controller;
 
-import com.example.assignment2.domain.dto.user.LoginRequestDto;
-import com.example.assignment2.domain.dto.user.LoginResponseDto;
-import com.example.assignment2.domain.dto.user.LoginStatus;
-import com.example.assignment2.domain.dto.user.SessionUserDto;
+import com.example.assignment2.domain.dto.user.*;
 import com.example.assignment2.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -70,13 +67,13 @@ public class UserController {
         return ResponseEntity.ok(resDto);
     }
 
-//    @GetMapping("user/list/{page}")
-//    public ResponseEntity<Page<UserListResponseDto>> selectUsers (@PathVariable int page,
-//                                                                  UserListRequestDto dto) {
-//        int size = 10;
-//        Pageable pageable = PageRequest.of(page, size);
-//        Page<UserListResponseDto> result = userService.selectUsers(dto, pageable);
-//        return ResponseEntity.ok(result);
-//    }
+    @GetMapping("user/list/{page}")
+    public ResponseEntity<Page<UserListResponseDto>> selectUsers (@PathVariable int page,
+                                                                  UserListRequestDto dto) {
+        int size = 10;
+        Pageable pageable = PageRequest.of(page, size);
+        Page<UserListResponseDto> result = userService.selectUsers(dto, pageable);
+        return ResponseEntity.ok(result);
+    }
 }
 
