@@ -1,5 +1,6 @@
 package com.example.assignment.controller;
 
+import com.example.assignment.common.customAnnotation.CheckFileExtension;
 import com.example.assignment.domain.dto.file.UploadError;
 import com.example.assignment.domain.dto.file.UploadResult;
 import com.example.assignment.domain.entity.User;
@@ -40,12 +41,8 @@ public class FileUploadController {
      * @return
      */
     @PostMapping("/upload")
+    @CheckFileExtension({".dbfile"})
     public ResponseEntity<UploadResult> fileUpload(@RequestParam("file") MultipartFile file) {
-        if (!file.getOriginalFilename().endsWith(".dbfile")) {
-            List<UploadError> errors = new ArrayList<>();
-            errors.add(new UploadError(0, ".dbfile 확장자만 업로드 가능합니다."));
-            return ResponseEntity.ok(new UploadResult(0, errors));
-        }
         UploadResult result = fileUploadService.processFile(file);
         return ResponseEntity.ok(result);
     }
