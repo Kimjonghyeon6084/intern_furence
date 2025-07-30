@@ -1,155 +1,119 @@
-//import { renderLoginPage } from "/js/login.js";
-//import { renderUserListPage } from "/js/userlist.js";
-//import { renderFileUploadPage } from "/js/fileupload.js";
-//import { renderMainPage} from "/js/main.js"
-//
-//function renderPage() {
-//    const hash = location.hash || "login"; // 기본은 로그인 페이지로
-//
-//    const app = document.getElementById("app");
-//    app.innerHTML = "";
-//
-//    switch (hash) {
-//        case "login":
-//            renderLoginPage();
-//            break;
-//
-//        case "userlist":
-//            renderUserListPage();
-//            break;
-//
-//        case "fileupload":
-//            renderFileUploadPage();
-//            break;
-//
-//        case "main":
-//            renderMainPage();
-//            break;
-//
-//        default:
-//            renderLoginPage();
-//    }
-//}
-//
-//// hash 변경될 때마다 renderPage 호출
-//window.addEventListener("hashchange", renderPage);
-//
-//renderPage();
+var loginForm;
+var hash;
 
-import { createMainLayout } from "/js/layout.js";
-import { createMenu } from "/js/menu.js";
-import { createUserListView } from "/js/userlist/userlist.js";
-import { createFileUploadForm } from "/js/fileupload.js";
-import { renderLoginPage } from "/js/login.js";
-
-// SPA hash 기반 라우팅
 function renderPage() {
 
-    if (!window.location.hash) {
-        window.location.hash = "#login";
-        return;
+    hash = window.location.hash || "#login";
+    if (hash === "#main" || hash === "#userlist" || hash === "#fileupload") {
+        renderMainPage();
+    } else {
+        renderLoginPage();
     }
-
-    const hash = window.location.hash || "#login";
-        if (hash === "#main") {
-            renderMainPage();
-        } else {
-            renderLoginPage();
-        }
-    }
-
+}
 window.addEventListener("DOMContentLoaded", renderPage);
 window.addEventListener("hashchange", renderPage);
 
+// --- 로그인 화면 ---
+function renderLoginPage() {
+    const app = document.getElementById("app");
+    app.innerHTML = "";
+
+    loginForm = new dhx.Form(app, {
+        rows: [
+            { type: "input", name: "id", label: "아이디" },
+            { type: "input", name: "pwd", label: "비밀번호", inputType: "password" },
+            { type: "button", text: "로그인", id: "loginBtn", color: "primary" }
+        ]
+    });
+
+    // loginBtn이 실제로 존재하는지 꼭 확인(디버깅!)
+        console.log("loginForm.getItem(loginBtn):", loginForm.getItem("loginBtn"));
+
+    // 버튼이 있을 때만 이벤트 연결
+    if (loginForm.getItem("loginBtn")) {
+        loginForm.getItem("loginBtn").events.on("click", function() {
+            const values = loginForm.getValue();
+            console.log("로그인 폼 값:", values);
+            fetch("/login", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ id: values.id, pwd: values.pwd })
+                    })
+                    .then(async res => {
+                        const data = await res.json();
+                        if (!res.ok || (data.loginResultResponse && data.loginResultResponse.status == "FAILURE")) {
+                            alert((data.loginResultResponse && data.loginResultResponse.message) || "아이디/비번 오류!");
+                            return;
+                        }
+                        window.location.hash = "#main";
+                    })
+                    .catch(() => alert("서버 오류 또는 네트워크 장애!"));
+        });
+    }
+}
+
+// --- 메인+유저리스트 화면 ---
 function renderMainPage() {
+    const app = document.getElementById("app");
+    app.innerHTML = "";
 
-    const  { layout, headerDiv, menuDiv, contentDiv, footerDiv } = createMainLayout("app");
-    console.log("layout : ",layout)
-
-//    const menuDiv = createMenu(onMenuSelect);
-//    layout.getCell("menu").attach(menuDiv);
-//    console.log("menuDiv attach 확인",menuDiv)
-//
-//
-//    // ⭐️ header/footer에 dhtmlx Form을 attach 하고 싶으면:
-//    // 1. div 만들고
-//    // 2. div attach
-//    // 3. 그 div에 Form 생성
-//    const headerDiv = document.createElement("div");
-//    layout.getCell("header").attach(headerDiv);
-//    console.log("headerDiv attach 확인",headerDiv)
-//
-//    const headerForm = new dhx.Form(headerDiv, {
-//        rows: [
-//            { type: "text", label: "header test", value: "", readonly: true }
-//        ]
-//    });
-//
-//    const footerDiv = document.createElement("div");
-//    layout.getCell("footer").attach(footerDiv);
-//
-//    const footerForm = new dhx.Form(footerDiv, {
-//        rows: [
-//            { type: "text",
-//              label: "Copyright 2025",
-//              value: "",
-//              readonly: true }
-//        ]
-//    });
-//    console.log("footerDiv attach 확인",footerDiv)
-    createMenu(onMenuSelect, menuDiv);
-
-    // 헤더/푸터도 마찬가지
-    new dhx.Form(headerDiv, {
+    // dhtmlx Layout (셀 id 기반!)
+    var layout = new dhx.Layout(app, {
         rows: [
-            { type: "text", label: "header test", value: "", readonly: true }
+            { id: "header", height: 60 },
+            {
+                id: "body",
+                cols: [
+                    { id: "menu", width: 160 },
+                    { id: "content" }
+                ]
+            },
+            { id: "footer", height: 40 }
         ]
     });
 
-    new dhx.Form(footerDiv, {
+    // Header/Footer mount
+    new dhx.Form(layout.getCell("header"), {
         rows: [
-            { type: "text",
-              label: "Copyright 2025",
-              value: "",
-              readonly: true }
+            { type: "text", label: "관리자 SPA 예제", value: "", readonly: true }
+        ]
+    });
+    new dhx.Form(layout.getCell("footer"), {
+        rows: [
+            { type: "text", label: "Copyright 2025", value: "", readonly: true }
         ]
     });
 
-    showContent("userlist");
-
-    function onMenuSelect(page) {
-            showContent(page);
+    // 메뉴 mount
+//    createMenu(function(page) {
+//        layout.getCell("content").detach();
+//        if (page === "userlist") {
+//            createUserListView(layout.getCell("content"));
+//        } else if (page === "fileupload") {
+//            layout.getCell("content").attachHTML("<div style='padding:40px'>파일 업로드 구현 예정</div>");
+//        }
+//    }, layout.getCell("menu"));
+    createMenu(function(page) {
+        layout.getCell("content").detach();
+        window.location.hash = "#" + page;
+        if (page === "userlist") {
+            createUserListView(layout.getCell("content"));
+        } else if (page === "fileupload") {
+            layout.getCell("content").attachHTML("<div style='padding:40px'>파일 업로드 구현 예정</div>");
         }
+    }, layout.getCell("menu"));
 
-    function showContent(page) {
-//        const contentCell = layout.getCell("content");
-//        contentCell.detach(); // 셀 내용 비우기
-        contentDiv.innerHTML = ""; // 내용 비우기
-
-        let comp = null;
-
-        switch (page) {
-//             case "userlist":
-//                comp = createUserListGrid();
-//                break;
-
-             case "fileupload":
-                comp = createFileUploadForm();
-                break;
-
-             case "userlist":
-                comp = createUserListView();
-                break;
-
-            default:
-                comp = null;
-        }
-        console.log("showContent - page:", page, "comp:", comp, "isDiv:", comp instanceof HTMLElement);
-
-        if (comp) {
-          // ⭐️ comp는 반드시 div(Node)만 반환해야 함!
-//            contentCell.attach(comp);
-        contentDiv.appendChild(comp);
-        }
+//    // 초기 content 셀은 아무것도 출력하지 않거나 안내 메시지만 출력
+//    layout.getCell("content").attachHTML(
+//        "<div style='padding:50px; text-align:center; color:#999'>좌측 메뉴에서 기능을 선택하세요.</div>"
+//    );
+    if (hash === "#userlist") {
+        createUserListView(layout.getCell("content"));
+    } else if (hash === "#fileupload") {
+        layout.getCell("content").attachHTML("<div style='padding:40px'>파일 업로드 구현 예정</div>");
+    } else {
+        layout.getCell("content").attachHTML(
+            "<div style='padding:50px; text-align:center; color:#999'>좌측 메뉴에서 기능을 선택하세요.</div>"
+        );
     }
 }

@@ -41,7 +41,6 @@ public class UserController {
                                                    HttpServletRequest request) {
         LoginResponseDto resDto = userService.login(dto);
 
-        // 로그인 성공시
         if (resDto.getLoginStatus() == LoginStatus.FAILURE) {
             // 로그인 실패시
             return ResponseEntity
