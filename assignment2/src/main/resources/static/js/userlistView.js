@@ -40,19 +40,37 @@ function createUserListView(targetCell) {
             data: []
         });
 
+//    var proxy = new dhx.LazyDataProxy({
+//        url: "/user/list",
+//        params: {size: 15},
+//    })
+
+    const lazyDataProxy = new dhx.LazyDataProxy(
+        "/user/list",   // 서버 API URL
+        {
+            from: 0,       // 시작 인덱스 (최초 로드할 row의 위치)
+            limit: 10,     // 한 번에 로드할 row 개수(페이지 사이즈)
+            prepare: 10,    // 미리(pre-fetch) 가져올 page 개수 (최적화용)
+            delay: 150     // 스크롤 시 다음 요청까지 딜레이(ms)
+        }
+);
+
+    grid.data.load(lazyDataProxy);
+
 // Pagination 위젯 mount
     let pageSize = 10; // 기본값, 필요시 서버에서 받아온 걸로 setPageSize 가능
     let totalElements = 0;
     console.log(document.getElementById("userlist-pagination")); // null이면 100% 이게 원인!
 
-    let paginationWidget = new dhx.Pagination("userlist-pagination", {
+    let pagination = new dhx.Pagination("userlist-pagination", {
+        data: grid.data,
         pageSize: pageSize,
         total: 0,
         page: 0
     });
 
     // --- 페이지 변경 이벤트: 반드시 여기서 fetch! ---
-    paginationWidget.events.on("change", function(page) {
+    pagination.events.on("change", function(page) {
         fetchUserList(page, lastSearchParams);
     });
 
@@ -69,13 +87,13 @@ function createUserListView(targetCell) {
             .then(data => {
                 grid.data.parse(data.content || []);
                 // 서버 응답의 totalElements, number 등으로 페이지네이션 갱신!
-                paginationWidget.setTotal(data.totalElements || 0);
-                paginationWidget.setPage(data.number || 0);
+                pagination.setTotal(data.totalElements || 0);
+                pagination.setPage(data.number || 0);
                 // 필요하면 pageSize도 갱신 (여기선 10 고정)
             })
             .catch(() => {
                 grid.data.parse([]);
-                paginationWidget.setTotal(0);
+                pagination.setTotal(0);
                 alert("데이터 로드 실패");
             });
     }
@@ -91,7 +109,7 @@ function createUserListView(targetCell) {
             searchForm.clear();
             lastSearchParams = null;
             grid.data.parse([]);
-            paginationWidget.setTotal(0);
+            pagination.setTotal(0);
         }
     });
 

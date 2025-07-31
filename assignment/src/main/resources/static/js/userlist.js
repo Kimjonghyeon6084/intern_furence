@@ -101,6 +101,7 @@ function renderPagination(current, totalPages, isLast) {
       let url = `/user/list/${page}`;
       if (params && params.toString()) {
         url += "?" + params.toString();
+        console.log("url",url)
       }
       fetch(url)
         .then(res => {

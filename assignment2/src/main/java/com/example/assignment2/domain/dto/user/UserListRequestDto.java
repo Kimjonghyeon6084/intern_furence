@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Setter
 @Getter
@@ -20,5 +21,8 @@ public class UserListRequestDto {
     private String desc;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate regDate;
+    private LocalDate startRegDate;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate endRegDate;
 }

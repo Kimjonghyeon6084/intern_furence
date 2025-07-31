@@ -4,7 +4,6 @@ import com.example.assignment2.domain.dto.user.QUserListResponseDto;
 import com.example.assignment2.domain.dto.user.UserListRequestDto;
 import com.example.assignment2.domain.dto.user.UserListResponseDto;
 import com.example.assignment2.domain.entity.QUser;
-import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
@@ -15,9 +14,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -48,7 +45,7 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
                         nameEq(dto.getName()),
                         levelEq(dto.getLevel()),
                         descContains(dto.getDesc()),
-                        regDateEq(dto.getRegDate())
+                        regDateEq(dto.getStartRegDate(), dto.getEndRegDate())
                 )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -62,7 +59,7 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
                         nameEq(dto.getName()),
                         levelEq(dto.getLevel()),
                         descContains(dto.getDesc()),
-                        regDateEq(dto.getRegDate())
+                        regDateEq(dto.getStartRegDate(), dto.getEndRegDate())
                 )
                 .fetchOne();
 
@@ -71,6 +68,23 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
                 : 0L;
 
         return new PageImpl<>(content, pageable, nullCheckTotal);
+    }
+
+    @Override
+    public List<UserListResponseDto> searchUserList() {
+
+        QUser user = QUser.user;
+
+        return jpaQueryFactory
+                .select(new QUserListResponseDto(
+                        user.id,
+                        user.name,
+                        user.level,
+                        user.desc,
+                        user.regDate
+                ))
+                .from(user)
+                .fetch();
     }
 
 
@@ -122,11 +136,12 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
     /**
      * QueryDsl 사용시 regDate가 null 체크하는 메서드
      */
-    private Predicate regDateEq(LocalDate regDate) {
-        if (regDate != null) {
-            Timestamp startRegDate = Timestamp.valueOf(regDate.atStartOfDay());
-            Timestamp endRegDate = Timestamp.valueOf(regDate.plusDays(1).atStartOfDay());
-            return QUser.user.regDate.goe((Expression<LocalDateTime>) startRegDate).and(QUser.user.regDate.lt((Expression<LocalDateTime>) endRegDate));
+    private Predicate regDateEq(LocalDate startRegDate, LocalDate endRegDate) {
+        if ((startRegDate)!= null) {
+//            LocalDate startTime = startRegDate.atStartOfDay();
+//            LocalDate endTime = Timestamp.valueOf(endRegDate.plusDays(1).atStartOfDay());
+//            return QUser.user.regDate.goe((Expression<LocalDateTime>) startTime).and(QUser.user.regDate.lt((Expression<LocalDateTime>) endTime));
+            return QUser.user.regDate.goe(startRegDate.atStartOfDay()).and(QUser.user.regDate.lt(endRegDate.plusDays(1).atStartOfDay()));
         } else  {
             return null;
         }

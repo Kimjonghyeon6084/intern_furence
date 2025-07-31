@@ -1,4 +1,4 @@
-package com.example.assignment2.config;
+package com.example.assignment2.common.config;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
