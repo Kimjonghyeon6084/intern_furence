@@ -44,20 +44,6 @@ public class UserController {
     }
 
     /**
-     * 페이징된 유저정보 조회
-     * @param page
-     * @return ResponseEntity<?>
-     */
-//    @GetMapping("/user/list/{page}")
-//    public ResponseEntity<?> showUserList(@PathVariable int page) {
-//        int size = 10;
-//        // 미리 로그인한 유저인지 확인
-//            Page<UserListDto> list = userService.findAllExceptPwd(page, size);
-//            log.info("유저정보 불러오기 성공");
-//            return ResponseEntity.ok(list);
-//    }
-
-    /**
      * 로그인
      * 기존 세션이 있다면 무효화 후 새로운 세션을 만들어서 로그인 시킴.
      * @param dto LoginReqDto dto
@@ -97,6 +83,11 @@ public class UserController {
         return ResponseEntity.ok(resDto);
     }
 
+    /**
+     * 페이징된 유저정보 조회
+     * @param page
+     * @return ResponseEntity<?>
+     */
     @GetMapping("user/list/{page}")
     public ResponseEntity<Page<UserListResponseDto>> selectUsers (@PathVariable int page,
                                                                   UserListRequestDto dto) {

@@ -28,6 +28,13 @@ public class GlobalExceptionHandler {
                 HttpStatus.INTERNAL_SERVER_ERROR, "NullPointerException: " + e.getMessage());
     }
 
+    @ExceptionHandler(CustomException.class)
+    public ResponseEntity<ExceptionResponse> handleCustomException(CustomException e) {
+        log.error("CustomException", e);
+        return ExceptionResponse.fail(
+                HttpStatus.BAD_REQUEST, "CustomException: " + e.getMessage());
+    }
+
     /**
      * valid 예외 관련. 검증 실패 핸들러
      * @valid에 걸렸을 때 id, pwd 둘 중 어디서 생긴건지

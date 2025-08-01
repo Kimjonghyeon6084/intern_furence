@@ -22,8 +22,8 @@ public class UserService {
 
     /**
      * 로그인 메서드. 로그인시 아이디가 틀렸는지, 비밀번호가 틀렸는지 검증함
-     * @param LoginRequestDto
-     * @return LoginResDto
+     * @param dto
+     * @return
      */
     public LoginResponseDto login(LoginRequestDto dto) {
 

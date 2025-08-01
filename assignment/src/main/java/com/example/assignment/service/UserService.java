@@ -21,44 +21,45 @@ public class UserService {
 
     /**
      * 로그인 메서드. 로그인시 아이디가 틀렸는지, 비밀번호가 틀렸는지 검증함
-     * @param LoginRequestDto
-     * @return LoginResDto
      */
     public LoginResponseDto login(LoginRequestDto dto) {
 
         Optional<User> checkUserIdOpt = userRepository.findById(dto.getId());
 
-        if (checkUserIdOpt.isEmpty()) { // 아이디가 틀렸을 때
-            return LoginResponseDto.builder()
-                        .loginStatus(LoginStatus.FAILURE)
-                        .loginValidField(LoginValidField.ID)
-                        .message(LoginResponseMessage.INVALID_ID.getMessage())
-                        .build();
-        }
-
-        User user = checkUserIdOpt.get();
-
-        if (!user.getPwd().equals(dto.getPwd())) { // 비밀번호가 틀렸을 때
-            return LoginResponseDto.builder()
-                    .loginStatus(LoginStatus.FAILURE)
-                    .loginValidField(LoginValidField.PWD)
-                    .message(LoginResponseMessage.INVALID_PASSWORD.getMessage())
-                    .build();
-        }
-
-        return LoginResponseDto.builder()
-                .id(user.getId())
-                .name(user.getName())
-                .loginStatus(LoginStatus.SUCCESS)
-                .loginValidField(null)
-                .build();
+//        if (checkUserIdOpt.isEmpty()) { // 아이디가 틀렸을 때
+//            return LoginResponseDto.builder()
+//                        .loginStatus(LoginStatus.FAILURE)
+//                        .loginValidField(LoginValidField.ID)
+//                        .message(LoginResponseMessage.INVALID_ID.getMessage())
+//                        .build();
+//        }
+//
+//        User user = checkUserIdOpt.get();
+//
+//        if (!user.getPwd().equals(dto.getPwd())) { // 비밀번호가 틀렸을 때
+//            return LoginResponseDto.builder()
+//                    .loginStatus(LoginStatus.FAILURE)
+//                    .loginValidField(LoginValidField.PWD)
+//                    .message(LoginResponseMessage.INVALID_PASSWORD.getMessage())
+//                    .build();
+//        }
+//
+//        return LoginResponseDto.builder()
+//                .id(user.getId())
+//                .name(user.getName())
+//                .loginStatus(LoginStatus.SUCCESS)
+//                .loginValidField(null)
+//                .build();
+        return this.userRepository.findById(dto.getId())
+                .map(user -> user.getPwd().equals(dto.getPwd())
+                    ? buildSuccessResponse(user)
+                    : buildFailResponse(LoginFailType.PWD)
+                )
+                .orElse(buildFailResponse(LoginFailType.ID));
     }
 
     /**
      * 유저 리스트 불러오는 메서드(비밀번호만 빼고 모두다)
-     * @param page
-     * @param size
-     * @return Page<UserListDto>
      */
     public Page<UserListDto> findAllExceptPwd(int page, int size) {
         Pageable pageable = PageRequest.of(page, size); // pageable 객체 생성
@@ -70,5 +71,30 @@ public class UserService {
      */
     public Page<UserListResponseDto> selectUsers(UserListRequestDto dto, Pageable pageable) {
         return userRepository.searchUsers(dto, pageable);
+    }
+
+
+    /**
+     * 로그인 성공했을 때 메서드
+     */
+    private LoginResponseDto buildSuccessResponse(User user) {
+        return LoginResponseDto.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .loginStatus(LoginStatus.SUCCESS)
+                .build();
+    }
+
+    /**
+     * 로그인 실패시 메서드
+     */
+    private LoginResponseDto buildFailResponse(LoginFailType loginFailType) {
+        return LoginResponseDto.builder()
+                .loginStatus(LoginStatus.FAILURE)
+                .loginFailType(loginFailType.getField())
+                .message(loginFailType.getMessage())
+                .id(null)
+                .name(null)
+                .build();
     }
 }

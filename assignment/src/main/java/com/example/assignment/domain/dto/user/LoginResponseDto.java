@@ -19,7 +19,7 @@ public class LoginResponseDto {
 
     private LoginStatus loginStatus;
 
-    private LoginValidField loginValidField;
+    private String loginFailType;
 
     private String message;
 

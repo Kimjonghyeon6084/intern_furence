@@ -22,7 +22,12 @@ document.getElementById("uploadForm").onsubmit = function(e) {
                          <table id="dataTable">
                             <thead>
                                 <tr>
-                                    <th>id</th><th>pwd</th><th>name</th><th>level</th><th>desc</th><th>reg_date</th>
+                                    <th>id</th>
+                                    <th>pwd</th>
+                                    <th>name</th>
+                                    <th>level</th>
+                                    <th>desc</th>
+                                    <th>reg_date</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>

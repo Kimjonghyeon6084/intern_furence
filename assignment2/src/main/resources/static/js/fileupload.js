@@ -5,6 +5,9 @@ let fileuploadResultForm;
 let fileuploadListGrid;
 
 const reloadFileuploadListGrid = () => {
+    if (!fileuploadListGrid) {
+        createFileuploadListGrid();
+    }
     fetch("/api/userlist/data")
         .then(res => res.json())
         .then(list => {
@@ -36,7 +39,7 @@ function formatRegDate_DEBUGONLY(dateStr) {
 const init = () => {
     createLayout();
     createFileuploadForm();
-    createFileuploadListGrid();
+//    createFileuploadListGrid();
 
     // 업로드 버튼 이벤트 바인딩 (폼 생성 후에 반드시 연결!)
         fileuploadForm.events.on("click", (id, e) => {
@@ -61,7 +64,7 @@ const init = () => {
                         layout.getCell("fileuploadResultContent").detach();
                     }
                     createFileuploadResultForm(result);
-                    // 파일 목록 갱신 필요시: reloadFileuploadListGrid();
+//                    reloadFileuploadListGrid();
                 })
                 .catch(() => alert("업로드 중 오류 발생!"));
         });
