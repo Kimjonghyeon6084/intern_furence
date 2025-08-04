@@ -1,5 +1,6 @@
 package com.example.assignment2.domain.dto.user;
 
+import com.example.assignment2.common.customAnnotation.CheckDateRangeValid;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +11,10 @@ import java.time.LocalDateTime;
 
 @Setter
 @Getter
+@CheckDateRangeValid(
+        startField = "startRegDate",
+        endField = "endRegDate"
+)
 public class UserListRequestDto {
 
     private String id;

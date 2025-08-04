@@ -3,7 +3,7 @@ let layout;
 let filterForm;
 let userlistGrid;
 let pagination;
-const pageSize = 10;`
+const pageSize = 10;
 let currentParams = "";
 let temporaryDataStore;
 
@@ -174,7 +174,7 @@ function createUserlistGrid() {
 function createPagination() {
     if (pagination) return;
 
-    // temporaryDataStore 생성 및 getLength 설정
+   // temporaryDataStore 생성 및 getLength 설정
     temporaryDataStore = new dhx.DataCollection();
     temporaryDataStore.totalCount = 0;
     temporaryDataStore.getLength = function() {
@@ -192,7 +192,7 @@ function createPagination() {
 
     pagination.events.on("change", newPage => {
         loadUserList(newPage, currentParams);
-});
+    });
 }
 
 // 데이터 로딩 함수
@@ -200,14 +200,19 @@ function loadUserList(page = 0, params = "") {
     const url = `/user/list/${page}` + (params ? `?${params}` : "");
 
     fetch(url)
-        .then(res => {
-            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        .then(async res => {
+            if (!res.ok) {
+                // 실패시 에러메시지 파싱
+                const error = await res.json();
+                dhx.alert({ title: "오류", text: error.message || "에러" });
+                return null;
+            }
             return res.json();
         })
         .then(data => {
+         if (!data) return;
             userlistGrid.data.removeAll();
             userlistGrid.data.parse(data.content);
-            userlistGrid.data.totalCount = data.totalElements;
             temporaryDataStore.totalCount = data.totalElements;
 
             pagination.setPage(data.number);

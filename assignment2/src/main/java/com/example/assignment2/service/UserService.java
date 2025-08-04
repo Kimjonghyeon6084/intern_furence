@@ -1,6 +1,5 @@
 package com.example.assignment2.service;
 
-//import com.example.assignment2.domain.dto.user.*;
 import com.example.assignment2.domain.dto.user.*;
 import com.example.assignment2.domain.dto.user.UserListRequestDto;
 import com.example.assignment2.domain.entity.User;
@@ -80,24 +79,9 @@ public class UserService {
                 .build();
     }
 
-
-    /**
-     * 유저 리스트 불러오는 메서드(비밀번호만 빼고 모두다)
-     * @param page
-     * @param size
-     * @return Page<UserListDto>
-     */
-//    public Page<UserListDto> findAllExceptPwd(int page, int size) {
-//        Pageable pageable = PageRequest.of(page, size); // pageable 객체 생성
-//        return userRepository.findAllExceptPwd(pageable);
-//    }
-
     /**
      * 조건에 맞는 유저 리스트 불러오기
      */
-//    public Page<UserListResponseDto> selectUsers(UserListRequestDto dto, Pageable pageable) {
-//        return userRepository.searchUsers(dto, pageable);
-//    }
     public Page<UserListResponseDto> selectUsers(UserListRequestDto dto, Pageable pageable) {
         return this.userRepository.searchUsers(dto, pageable);
     }

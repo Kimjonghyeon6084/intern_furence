@@ -68,7 +68,7 @@ public class UserController {
 
     @GetMapping("user/list/{page}")
     public ResponseEntity<Page<UserListResponseDto>> selectUsers (@PathVariable int page,
-                                                                  UserListRequestDto dto) {
+                                                                  @Valid UserListRequestDto dto) {
         int size = 10;
         Pageable pageable = PageRequest.of(page, size);
         Page<UserListResponseDto> result = userService.selectUsers(dto, pageable);

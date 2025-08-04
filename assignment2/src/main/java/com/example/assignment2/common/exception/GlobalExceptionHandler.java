@@ -3,6 +3,7 @@ package com.example.assignment2.common.exception;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -32,11 +33,27 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ExceptionResponse<String>> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-        log.error("로그인 아이디, 비밀번호 검사 실패", e);
+        log.error("MethodArgumentNotValidException", e);
 
-        FieldError fieldError = e.getBindingResult().getFieldErrors().get(0); // @valid에 걸린 예외
-        String field = fieldError.getField(); // id인지 pwd인지 확인
-        String msg = fieldError.getDefaultMessage(); // @Valid에 있는 msg
+        String field = null;
+        String msg = "입력값 오류가 발생했습니다.";
+
+//        FieldError fieldError = e.getBindingResult().getFieldErrors().get(0); // @valid에 걸린 예외
+//        String field = fieldError.getField(); // id인지 pwd인지 확인
+//        String msg = fieldError.getDefaultMessage(); // @Valid에 있는 msg
+//        return ExceptionResponse.fail(
+//                HttpStatus.BAD_REQUEST, msg, field);
+        BindingResult bindingResult = e.getBindingResult();
+
+        if (!bindingResult.getFieldErrors().isEmpty()) {
+            FieldError fieldError = bindingResult.getFieldErrors().get(0);
+            field = fieldError.getField();
+            msg = fieldError.getDefaultMessage();
+        } else if (!bindingResult.getGlobalErrors().isEmpty()) {
+            // 클래스 단위 에러(커스텀 Validator) - 필드명은 없음
+            msg = bindingResult.getGlobalErrors().get(0).getDefaultMessage();
+        }
+
         return ExceptionResponse.fail(
                 HttpStatus.BAD_REQUEST, msg, field);
     }
