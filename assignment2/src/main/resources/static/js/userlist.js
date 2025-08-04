@@ -6,6 +6,7 @@ let pagination;
 const pageSize = 10;
 let currentParams = "";
 let ignorePageEvent = false;
+let fakeDataStore;
 
 // 레이아웃 생성
 function createLayout(rootId = "userlistform") {
@@ -175,13 +176,22 @@ function createUserlistGrid() {
     }
 }
 
-
-function createPagination(dataStore) {
+function createPagination() {
     if (pagination) return;
+
+   // 1) fakeDataStore 생성 및 getLength 패치
+       fakeDataStore = new dhx.DataCollection();
+       fakeDataStore.totalCount = 0;
+       fakeDataStore.getLength = function() {
+           // totalCount 가 바뀔 때마다 동적으로 읽어줌
+           return (typeof this.totalCount === "number" && !isNaN(this.totalCount))
+               ? this.totalCount
+               : 0;
+       };
         pagination = new dhx.Pagination(null, {
             css: "dhx_widget--bordered dhx_widget--no-border_top",
-            data: dataStore,
-            pageSize
+            data: fakeDataStore,
+            pageSize: pageSize
         });
     layout.getCell("paginationcontent").attach(pagination);
 
@@ -201,10 +211,16 @@ function loadUserList(page = 0, params = "") {
             return res.json();
         })
         .then(data => {
-            userlistGrid.data.totalCount = data.totalElements;
+//            userlistGrid.data.totalCount = data.totalElements;
             userlistGrid.data.removeAll();
             userlistGrid.data.parse(data.content);
             userlistGrid.paint();
+
+//        const totalPages = Math.ceil(data.totalElements / pageSize);
+//        pagination.config.pagesCount = totalPages;
+        userlistGrid.data.totalCount = data.totalElements;
+        fakeDataStore.totalCount = data.totalElements;
+        pagination.paint(); // 갱신
 
       // 페이지 표시
             ignorePageEvent = true;
@@ -213,13 +229,20 @@ function loadUserList(page = 0, params = "") {
 
             console.log("data", data);
             console.log("data.content", data.content);
+            console.log("userlistGrid.data",userlistGrid.data)
+            console.log("pagination.config", pagination.config)
             console.log("userlistGrid.data.serialize()", userlistGrid.data.serialize());
             console.log("userlistGrid.data.getLength()", userlistGrid.data.getLength());
+            console.log("dom 업데이트 확인 : ", document.querySelectorAll('.dhx_grid-row'))
         })
         .catch(err => {
             dhx.alert({ title:"오류", text:"유저리스트 로딩에 실패했습니다." });
         });
 }
+
+// 최초 1회만 createUserlistGrid(), createPagination() 호출!
+// loadUserList에서 그리드 인스턴스 초기화하면 안 됨!
+// 페이징 이벤트, 데이터 parse/removeAll 순서 점검!
 
 // 초기화
 function init() {
