@@ -3,10 +3,9 @@ let layout;
 let filterForm;
 let userlistGrid;
 let pagination;
-const pageSize = 10;
+const pageSize = 10;`
 let currentParams = "";
-let ignorePageEvent = false;
-let fakeDataStore;
+let temporaryDataStore;
 
 // 레이아웃 생성
 function createLayout(rootId = "userlistform") {
@@ -98,6 +97,7 @@ function createFilterForm() {
     // 조회 버튼
     filterForm.getItem("search").events.on("click", () => {
         currentParams = new URLSearchParams(filterForm.getValue()).toString();
+        console.log("currentParams", currentParams);
         loadUserList(0, currentParams);
     });
 
@@ -169,41 +169,30 @@ function createUserlistGrid() {
         data:[]
     });
     layout.getCell("userlistcontent").attach(userlistGrid);
-
-  // getLength: 최초 1회만 정의
-    if (!userlistGrid.data.getLengthPatched) {
-        userlistGrid.data.getLength = function() {
-            return (typeof this.totalCount === "number" && !isNaN(this.totalCount))
-                ? this.totalCount
-                : 0;
-        };
-    userlistGrid.data.getLengthPatched = true;
-    }
 }
 
 function createPagination() {
     if (pagination) return;
 
-   // fakeDataStore 생성 및 getLength 패치
-   fakeDataStore = new dhx.DataCollection();
-   fakeDataStore.totalCount = 0;
-   fakeDataStore.getLength = function() {
-       // totalCount 가 바뀔 때마다 동적으로 읽어줌
-       return (typeof this.totalCount === "number" && !isNaN(this.totalCount))
+    // temporaryDataStore 생성 및 getLength 설정
+    temporaryDataStore = new dhx.DataCollection();
+    temporaryDataStore.totalCount = 0;
+    temporaryDataStore.getLength = function() {
+       // totalCount가 바뀔 때마다 동적으로 읽어줌
+       return (typeof this.totalCount === "number")
            ? this.totalCount
            : 0;
-   };
+    };
     pagination = new dhx.Pagination(null, {
         css: "dhx_widget--bordered dhx_widget--no-border_top",
-        data: fakeDataStore,
+        data: temporaryDataStore,
         pageSize: pageSize
     });
     layout.getCell("paginationcontent").attach(pagination);
 
     pagination.events.on("change", newPage => {
-        if (ignorePageEvent) return;
         loadUserList(newPage, currentParams);
-    });
+});
 }
 
 // 데이터 로딩 함수
@@ -218,17 +207,12 @@ function loadUserList(page = 0, params = "") {
         .then(data => {
             userlistGrid.data.removeAll();
             userlistGrid.data.parse(data.content);
-            userlistGrid.paint();
-
             userlistGrid.data.totalCount = data.totalElements;
-            fakeDataStore.totalCount = data.totalElements;
-            pagination.paint(); // 갱신
+            temporaryDataStore.totalCount = data.totalElements;
 
-            // 페이지 표시
-            ignorePageEvent = true;
-            pagination.setPage(data.number, true);
-            ignorePageEvent = false;
+            pagination.setPage(data.number);
 
+            console.log("data", data)
             console.log("data.content", data.content);
             console.log("userlistGrid.data",userlistGrid.data)
             console.log("pagination.config", pagination.config)
