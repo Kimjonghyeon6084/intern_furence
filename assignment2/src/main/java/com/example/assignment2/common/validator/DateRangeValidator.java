@@ -1,14 +1,17 @@
 package com.example.assignment2.common.validator;
 
 import com.example.assignment2.common.customAnnotation.CheckDateRangeValid;
+import com.example.assignment2.domain.dto.user.DateValidationMessage;
+
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.lang.reflect.Field;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.temporal.Temporal;
 
+@Slf4j
 public class DateRangeValidator implements ConstraintValidator<CheckDateRangeValid, Object> {
 
     private String startFieldName;
@@ -33,15 +36,20 @@ public class DateRangeValidator implements ConstraintValidator<CheckDateRangeVal
             Object start = startField.get(value);
             Object end = endField.get(value);
 
-            if (start == null || end == null) return true;
+            if (start == null || end == null) {
+                context.disableDefaultConstraintViolation();
+                context.buildConstraintViolationWithTemplate(String.valueOf(DateValidationMessage.EMPTY_RANGE))
+                        .addConstraintViolation();
+                return false;
+            }
 
-            // LocalDate, LocalDateTime, 등 Temporal 인터페이스 비교
+            // LocalDate 로 들어온 두 객체 비교
             if (start instanceof LocalDate && end instanceof LocalDate) {
-                return !((LocalDate ) start).isAfter((LocalDate ) end);
+                return !((LocalDate)start).isAfter((LocalDate)end);
             }
         } catch (Exception e) {
-            // 필드가 없거나 타입 불일치 등은 통과(혹은 false로)
-            return true;
+            log.warn("DateRangeValidator 필드 접근 오류: {}", e.getMessage());
+            return false;
         }
         return true;
     }

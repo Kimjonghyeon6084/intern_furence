@@ -204,7 +204,9 @@ function loadUserList(page = 0, params = "") {
             if (!res.ok) {
                 // 실패시 에러메시지 파싱
                 const error = await res.json();
-                dhx.alert({ title: "오류", text: error.message || "에러" });
+                console.log("error", error)
+//                dhx.alert({ title: "오류", text: error.message || "에러" });
+                dhx.alert({ title: "오류", text: error.errors[0].defaultMessage || "에러" });
                 return null;
             }
             return res.json();

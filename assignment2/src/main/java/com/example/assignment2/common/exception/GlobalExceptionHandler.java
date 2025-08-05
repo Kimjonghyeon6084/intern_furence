@@ -35,25 +35,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionResponse<String>> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         log.error("MethodArgumentNotValidException", e);
 
-        String field = null;
-        String msg = "입력값 오류가 발생했습니다.";
-
-//        FieldError fieldError = e.getBindingResult().getFieldErrors().get(0); // @valid에 걸린 예외
-//        String field = fieldError.getField(); // id인지 pwd인지 확인
-//        String msg = fieldError.getDefaultMessage(); // @Valid에 있는 msg
-//        return ExceptionResponse.fail(
-//                HttpStatus.BAD_REQUEST, msg, field);
-        BindingResult bindingResult = e.getBindingResult();
-
-        if (!bindingResult.getFieldErrors().isEmpty()) {
-            FieldError fieldError = bindingResult.getFieldErrors().get(0);
-            field = fieldError.getField();
-            msg = fieldError.getDefaultMessage();
-        } else if (!bindingResult.getGlobalErrors().isEmpty()) {
-            // 클래스 단위 에러(커스텀 Validator) - 필드명은 없음
-            msg = bindingResult.getGlobalErrors().get(0).getDefaultMessage();
-        }
-
+        FieldError fieldError = e.getBindingResult().getFieldErrors().get(0); // @valid에 걸린 예외
+        String field = fieldError.getField(); // id인지 pwd인지 확인
+        String msg = fieldError.getDefaultMessage(); // @Valid에 있는 msg
         return ExceptionResponse.fail(
                 HttpStatus.BAD_REQUEST, msg, field);
     }
