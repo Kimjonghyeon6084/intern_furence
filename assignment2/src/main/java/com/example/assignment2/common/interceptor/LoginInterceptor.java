@@ -1,6 +1,6 @@
 package com.example.assignment2.common.interceptor;
 
-import com.example.assignment2.domain.dto.user.SessionUserDto;
+import com.example.assignment2.domain.dto.user.login.SessionUserDto;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;

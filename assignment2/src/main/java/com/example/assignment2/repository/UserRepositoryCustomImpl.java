@@ -1,8 +1,8 @@
 package com.example.assignment2.repository;
 
-import com.example.assignment2.domain.dto.user.QUserListResponseDto;
-import com.example.assignment2.domain.dto.user.UserListRequestDto;
-import com.example.assignment2.domain.dto.user.UserListResponseDto;
+import com.example.assignment2.domain.dto.user.list.QUserListResponseDto;
+import com.example.assignment2.domain.dto.user.list.UserListRequestDto;
+import com.example.assignment2.domain.dto.user.list.UserListResponseDto;
 import com.example.assignment2.domain.entity.QUser;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.jpa.impl.JPAQueryFactory;

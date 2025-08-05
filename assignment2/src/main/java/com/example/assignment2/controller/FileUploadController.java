@@ -2,7 +2,7 @@ package com.example.assignment2.controller;
 
 import com.example.assignment2.common.customAnnotation.CheckFileExtension;
 import com.example.assignment2.domain.dto.file.UploadResult;
-import com.example.assignment2.domain.dto.user.UserListResponseDto;
+import com.example.assignment2.domain.dto.user.list.UserListResponseDto;
 import com.example.assignment2.domain.entity.User;
 import com.example.assignment2.service.FileUploadService;
 

@@ -1,11 +1,10 @@
-package com.example.assignment2.domain.dto.user;
+package com.example.assignment2.domain.dto.user.list;
 
 import com.querydsl.core.annotations.QueryProjection;
 
 import lombok.Builder;
 import lombok.Getter;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Getter

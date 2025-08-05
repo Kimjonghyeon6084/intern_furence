@@ -20,7 +20,7 @@ public @interface CheckDateRangeValid {
 
     String endField();
 
-    DateValidationMessage message() default DateValidationMessage.INVALID_RANGE;
+    String message() default "시작일이 종료일보다 늦을 수 없습니다.";
 
     Class<?>[] groups() default {};
 

@@ -5,7 +5,7 @@ import com.example.assignment2.common.exception.ErrorCode;
 import com.example.assignment2.domain.dto.file.FileUploadDto;
 import com.example.assignment2.domain.dto.file.UploadError;
 import com.example.assignment2.domain.dto.file.UploadResult;
-import com.example.assignment2.domain.dto.user.UserListResponseDto;
+import com.example.assignment2.domain.dto.user.list.UserListResponseDto;
 import com.example.assignment2.domain.entity.User;
 import com.example.assignment2.repository.UserRepository;
 import jakarta.persistence.PersistenceException;

@@ -36,9 +36,12 @@ public class DateRangeValidator implements ConstraintValidator<CheckDateRangeVal
             Object start = startField.get(value);
             Object end = endField.get(value);
 
+            if (start == null && end == null) return true;
+
+            log.info("start : {}, end : {}", start, end);
             if (start == null || end == null) {
                 context.disableDefaultConstraintViolation();
-                context.buildConstraintViolationWithTemplate(String.valueOf(DateValidationMessage.EMPTY_RANGE))
+                context.buildConstraintViolationWithTemplate(String.valueOf(DateValidationMessage.EMPTY_RANGE.getMessage()))
                         .addConstraintViolation();
                 return false;
             }

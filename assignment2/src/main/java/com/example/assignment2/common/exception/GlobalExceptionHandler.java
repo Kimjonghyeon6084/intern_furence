@@ -38,6 +38,7 @@ public class GlobalExceptionHandler {
         FieldError fieldError = e.getBindingResult().getFieldErrors().get(0); // @valid에 걸린 예외
         String field = fieldError.getField(); // id인지 pwd인지 확인
         String msg = fieldError.getDefaultMessage(); // @Valid에 있는 msg
+        log.info("msg : {}", msg);
         return ExceptionResponse.fail(
                 HttpStatus.BAD_REQUEST, msg, field);
     }

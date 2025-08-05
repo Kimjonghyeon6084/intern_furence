@@ -22,4 +22,14 @@ public class PageController {
     public String goFileUploadPage() {
         return "fileupload";
     }
+
+    @GetMapping("/edit/userinfo")
+    public String goEditUserinfoPage() {
+        return "userinfo";
+    }
+
+    @GetMapping("/signup")
+    public String goSignupPage() {
+        return "signup";
+    }
 }

@@ -116,36 +116,46 @@ function createUserlistGrid() {
             {
                 id:"id",
                 header:[{
-                    text:"ID"
+                    text:"ID",
+                    align: "center",
                 }],
-                width:200
+                align: "center",
+                width:150
             },
             {
                 id:"name",
                 header:[{
-                    text:"이름"
+                    text:"이름",
+                    align: "center",
                 }],
-                width:200
+                align: "center",
+                width:150
             },
             {
                 id:"level",
                 header:[{
-                    text:"레벨"
+                    text:"레벨",
+                    align: "center",
                 }],
-                width:200
+                align: "center",
+                width:150
             },
             {
                 id:"desc",
                 header:[{
-                    text:"설명"
+                    text:"설명",
+                    align: "center",
                 }],
-                width:350
+                align: "center",
+                width:300
             },
             {
                 id:"regDate",
                 header:[{
-                    text:"가입일"
+                    text:"가입일",
+                    align: "center",
                 }],
+                align: "center",
                 template: function(value) {
                     const date = new Date(value);
                     return date.toLocaleString("ko-KR", {
@@ -159,8 +169,24 @@ function createUserlistGrid() {
                       .replace('일', '일 ')
                       .replace(':', '시 ') + '분';
                   },
-                  width:350
-             }
+                  width:300
+            },
+            {
+                id: "edit",
+                header: [{
+                    text: "수정",
+                    align: "center",
+                }],
+                align: "center",
+                htmlEnable : true,
+                width: 80,
+                height: 30,
+                template: function(value, row, col) {
+                    return `<button
+                        class="edit-user-btn"
+                        data-id="${row.id}">수정</button>`;
+                }
+            },
         ],
         autoWidth:true,
         resizable:true,

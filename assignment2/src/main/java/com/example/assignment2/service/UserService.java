@@ -1,7 +1,8 @@
 package com.example.assignment2.service;
 
-import com.example.assignment2.domain.dto.user.*;
-import com.example.assignment2.domain.dto.user.UserListRequestDto;
+import com.example.assignment2.domain.dto.user.list.UserListRequestDto;
+import com.example.assignment2.domain.dto.user.list.UserListResponseDto;
+import com.example.assignment2.domain.dto.user.login.*;
 import com.example.assignment2.domain.entity.User;
 import com.example.assignment2.repository.UserRepository;
 

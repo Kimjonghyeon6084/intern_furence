@@ -1,7 +1,7 @@
 package com.example.assignment2.repository;
 
-import com.example.assignment2.domain.dto.user.UserListRequestDto;
-import com.example.assignment2.domain.dto.user.UserListResponseDto;
+import com.example.assignment2.domain.dto.user.list.UserListRequestDto;
+import com.example.assignment2.domain.dto.user.list.UserListResponseDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

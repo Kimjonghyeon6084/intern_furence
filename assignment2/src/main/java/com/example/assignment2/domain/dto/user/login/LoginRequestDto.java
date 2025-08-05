@@ -1,4 +1,4 @@
-package com.example.assignment2.domain.dto.user;
+package com.example.assignment2.domain.dto.user.login;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

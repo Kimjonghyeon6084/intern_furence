@@ -1,13 +1,13 @@
-package com.example.assignment2.domain.dto.user;
+package com.example.assignment2.domain.dto.user.list;
 
 import com.example.assignment2.common.customAnnotation.CheckDateRangeValid;
+
 import lombok.Getter;
 import lombok.Setter;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Setter
 @Getter
