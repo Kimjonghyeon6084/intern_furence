@@ -5,9 +5,37 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script type="text/javascript" src="/codebase/suite.min.js"></script>
+    <link rel="stylesheet" href="/codebase/suite.css">
     <title>회원가입</title>
+    <style>
+        .dhx_form-group {
+            display: flex;
+            align-items: center;
+        }
+        .dhx_combobox {
+            display: flex;
+        }
+        .dhx_combobox__label {
+            display: inline-block;
+            text-align: right;
+            margin-right: 8px;
+        }
+        .dhx_label,
+        .dhx_combobox__label{
+            display: inline-block;
+            width:110px !important;
+            text-align: right;
+            margin-right: 8px;
+        }
+        label {
+            width: 70px !important;
+        }
+    </style>
 </head>
     <body>
         <h1>회원가입</h1>
+        <div id="usersignupform" style="width: 100vw; height: 100vh;"></div>
     </body>
+    <script src="/js/signup.js"></script>
 </html>

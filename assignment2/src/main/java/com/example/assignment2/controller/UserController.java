@@ -1,12 +1,14 @@
 package com.example.assignment2.controller;
 
 import com.example.assignment2.domain.dto.user.*;
+import com.example.assignment2.domain.dto.user.info.*;
 import com.example.assignment2.domain.dto.user.list.UserListRequestDto;
 import com.example.assignment2.domain.dto.user.list.UserListResponseDto;
 import com.example.assignment2.domain.dto.user.login.LoginRequestDto;
 import com.example.assignment2.domain.dto.user.login.LoginResponseDto;
 import com.example.assignment2.domain.dto.user.login.LoginStatus;
 import com.example.assignment2.domain.dto.user.login.SessionUserDto;
+import com.example.assignment2.domain.entity.User;
 import com.example.assignment2.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -21,10 +23,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @Slf4j
@@ -72,12 +71,39 @@ public class UserController {
         return ResponseEntity.ok(resDto);
     }
 
-    @GetMapping("user/list/{page}")
+    @GetMapping("/user/list/{page}")
     public ResponseEntity<Page<UserListResponseDto>> selectUsers (@PathVariable int page,
                                                                   @Valid UserListRequestDto dto) {
         int size = 10;
         Pageable pageable = PageRequest.of(page, size);
         Page<UserListResponseDto> result = userService.selectUsers(dto, pageable);
+        return ResponseEntity.ok(result);
+    }
+
+    @PostMapping("/user/signup")
+    public ResponseEntity<UserSignupResponseDto> signup(@RequestBody @Valid UserSignupRequestDto dto) {
+
+        log.info("dto : {}", dto);
+        UserSignupResponseDto result = this.userService.signup(dto);
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<UserEditResponseDto> getUser(@PathVariable String id) {
+        User user = userService.findById(id);
+        return ResponseEntity.ok(UserEditResponseDto.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .level(user.getLevel())
+                .desc(user.getDesc())
+                .build());
+    }
+
+    @PutMapping("/user/{userId}")
+    public ResponseEntity<UserEditResponseDto> editUser(
+            @PathVariable("userId") String userId,
+            @RequestBody UserEditRequestDto dto) {
+        UserEditResponseDto result = userService.editUser(userId, dto);
         return ResponseEntity.ok(result);
     }
 }

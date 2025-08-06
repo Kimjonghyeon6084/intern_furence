@@ -257,6 +257,18 @@ function loadUserList(page = 0, params = "") {
         });
 }
 
+document.addEventListener("click", function(e) {
+    if (e.target.classList.contains("edit-user-btn")) {
+        const userId = e.target.dataset.id; // 실제 유저의 id 값
+        console.log(userId)
+        // edituserinfo 페이지(또는 SPA 라우트)로 id만 넘기기
+        window.location.href = `/api/edit/userinfo?id=${userId}`;
+        // 만약 SPA hash 방식이면 location.hash = "#edituserinfo?id=" + userId;
+        }
+});
+
+
+
 // 초기화
 function init() {
     createLayout();

@@ -1,25 +1,14 @@
 package com.example.assignment2.domain.dto.user.info;
 
-import jakarta.persistence.Column;
-
 import lombok.Getter;
-
-import java.time.LocalDateTime;
+import lombok.RequiredArgsConstructor;
 
 @Getter
+@RequiredArgsConstructor
 public class UserSignupResponseDto {
 
-    private String id;
+    private final String id;
 
-    private String pwd;
-
-    private String name;
-
-    private String level;
-
-    @Column(name = "\"desc\"")
-    private String desc;
-
-    private LocalDateTime regDate;
+    private final String name;
 
 }

@@ -32,6 +32,7 @@ form.getItem("idbutton").events.on("click", function() {
         if (!response.ok) {
             error = await response.json();
             console.log("err : ",error);
+            return null;
         }
         window.location.href = "/api/userlist";
     })
