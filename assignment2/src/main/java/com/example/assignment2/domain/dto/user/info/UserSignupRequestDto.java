@@ -13,19 +13,20 @@ import java.time.LocalDateTime;
 @Builder
 public class UserSignupRequestDto {
 
-    @NotBlank(message = "아이디는 필수로 입력하셔야 합니다.")
-    @Size(min = 4, message = "아이디는 4자리 이상 입력하셔야 합니다.")
+    @NotBlank(message = "아이디 : 필수 정보입니다.")
+    @Size(min = 4, message = "아이디: 4자리 이상 입력하셔야 합니다.")
     private String id;
 
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[~@#$%^&+=!])(?=\\S+$).{8,15}$",
-             message = "비밀번호는 대소문자, 숫자, 특수문자 1개 이상을 포함한 8-15자의 비밀번호를 입력해야 합니다.")
+             message = "비밀번호: 8-15자의 영문 대/소문자, 숫자, 특수문자를 사용해 주세요.")
     private String pwd;
 
-    @Pattern(regexp = "^[가-힣]+$", message = "한글만 입력 가능합니다.")
+    @NotBlank(message = "이름: 필수 정보입니다.")
     @Size(min = 2, message = "이름는 2자리 이상 입력하셔야 합니다.")
+    @Pattern(regexp = "^[가-힣]+$", message = "한글만 입력 가능합니다.")
     private String name;
 
-    @NotBlank(message = "level은 필수로 입력하셔야 합니다.")
+    @NotBlank(message = "level: 필수 정보입니다.")
     private String level;
 
     @Column(name = "\"desc\"")

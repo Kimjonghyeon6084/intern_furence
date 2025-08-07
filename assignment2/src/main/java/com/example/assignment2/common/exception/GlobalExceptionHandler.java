@@ -1,5 +1,6 @@
 package com.example.assignment2.common.exception;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +9,10 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 발생하는 예외를 global하게 처리하는 클래스.
@@ -31,16 +36,40 @@ public class GlobalExceptionHandler {
      * @valid에 걸렸을 때 id, pwd 둘 중 어디서 생긴건지
      * 그리고 해당 메세지를 담아 프론트로 보낸다.
      */
+//    @ExceptionHandler(MethodArgumentNotValidException.class)
+//    public ResponseEntity<ExceptionResponse<String>> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+//        log.error("글로벌 익셉션 진입 : MethodArgumentNotValidException", e);
+//
+//        FieldError fieldError = e.getBindingResult().getFieldErrors().get(0); // @valid에 걸린 예외
+//        String field = fieldError.getField(); // id인지 pwd인지 확인
+//        String msg = fieldError.getDefaultMessage(); // @Valid에 있는 msg
+//        log.info("msg : {}", msg);
+//        return ExceptionResponse.fail(
+//                HttpStatus.BAD_REQUEST, msg, field);
+//    }
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ExceptionResponse<String>> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-        log.error("글로벌 익셉션 진입 : MethodArgumentNotValidException", e);
+    public ResponseEntity<?> handleValidationExceptions(MethodArgumentNotValidException ex, HttpServletRequest request) {
 
-        FieldError fieldError = e.getBindingResult().getFieldErrors().get(0); // @valid에 걸린 예외
-        String field = fieldError.getField(); // id인지 pwd인지 확인
-        String msg = fieldError.getDefaultMessage(); // @Valid에 있는 msg
-        log.info("msg : {}", msg);
-        return ExceptionResponse.fail(
-                HttpStatus.BAD_REQUEST, msg, field);
+        List<FieldError> fieldErrors = ex.getBindingResult().getFieldErrors();
+        String uri = request.getRequestURI();
+
+        // uri에 따라 예외들을 하나만 보낼지 리스트로 보낼 지 정함.
+        // 추가적인 사항들이 더 있을 수도 있으므로 switch 문으로 작성
+        switch (uri) {
+            case "/login":
+                FieldError err = fieldErrors.get(0);
+                return ExceptionResponse.fail(HttpStatus.BAD_REQUEST, err.getDefaultMessage(), err.getField());
+
+            default:
+                // 기본 전체 에러 리스트 반환
+                List<Map<String, String>> defaultErrors = fieldErrors.stream()
+                        .map(e -> Map.of("field", e.getField(), "message", e.getDefaultMessage()))
+                        .toList();
+                String msg = defaultErrors.stream()
+                        .map(e -> e.get("message"))
+                        .collect(Collectors.joining(", "));
+                return ExceptionResponse.fail(HttpStatus.BAD_REQUEST, msg, defaultErrors);
+        }
     }
 
     /**

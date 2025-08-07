@@ -37,57 +37,11 @@ public class UserService {
      */
     public LoginResponseDto login(LoginRequestDto dto) {
 
-//        User user = this.userRepository.findById(dto.getId())
-//                .orElse(new User());
-
-//        LoginStatus loginStatus = false == user.getPwd().equals(dto.getPwd())
-//                ? LoginStatus.FAILURE : LoginStatus.SUCCESS;
-//        LoginValidField field = user.getPwd().equals(dto.getPwd())
-//                ? null : user == null ? LoginValidField.ID : LoginValidField.PWD;
-//
-//        String message = user.getPwd().equals(dto.getPwd())
-//                ? null : user.equals("") ? LoginResponseMessage.INVALID_ID.getMessage()
-//                : LoginResponseMessage.INVALID_PASSWORD.getMessage();
-//
-//        String id = user.equals("") ? null : user.getId();
-//        String name = user.equals("") ? null : user.getName();
-//
-//        return LoginResponseDto.builder()
-//                .loginStatus(loginStatus)
-//                .loginValidField(field)
-//                .message(message)
-//                .id(id)
-//                .name(name)
-//                .build();
-
-
-        Optional<User> checkUserIdOpt = userRepository.findById(dto.getId());
-
-
-        if (checkUserIdOpt.isEmpty()) { // 아이디가 틀렸을 때
-            return LoginResponseDto.builder()
-                        .loginStatus(LoginStatus.FAILURE)
-                        .loginValidField(LoginValidField.ID)
-                        .message(LoginResponseMessage.INVALID_ID.getMessage())
-                        .build();
-        }
-
-        User user = checkUserIdOpt.get();
-
-        if (!user.getPwd().equals(dto.getPwd())) { // 비밀번호가 틀렸을 때
-            return LoginResponseDto.builder()
-                    .loginStatus(LoginStatus.FAILURE)
-                    .loginValidField(LoginValidField.PWD)
-                    .message(LoginResponseMessage.INVALID_PASSWORD.getMessage())
-                    .build();
-        }
-
-        return LoginResponseDto.builder()
-                .id(user.getId())
-                .name(user.getName())
-                .loginStatus(LoginStatus.SUCCESS)
-                .loginValidField(null)
-                .build();
+        return this.userRepository.findById(dto.getId())
+            .map(user -> dto.getPwd().equals(user.getPwd())
+                    ? buildSuccessResponse(user)
+                    : buildFailResponse(LoginFailType.PWD))
+            .orElse(buildFailResponse(LoginFailType.ID));
     }
 
     /**
@@ -98,8 +52,6 @@ public class UserService {
     }
 
     public UserSignupResponseDto signup(UserSignupRequestDto dto) {
-
-        log.info("dto"+dto);
 
         if(this.userRepository.existsById(dto.getId())) {
             throw new IllegalArgumentException("이미 존재하는 아이디입니다.");
@@ -119,7 +71,8 @@ public class UserService {
     }
 
     public User findById(String id) {
-        return this.userRepository.findById(id).orElseThrow(() -> new NoSuchElementException("해당 회원이 존재하지 않습니다."));
+        return this.userRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("해당 회원이 존재하지 않습니다."));
     }
 
     public UserEditResponseDto editUser(String id, UserEditRequestDto dto) {
@@ -132,6 +85,28 @@ public class UserService {
         return UserEditResponseDto.builder()
                 .id(id)
                 .name(dto.getName())
+                .build();
+    }
+
+    /**
+     * 로그인 성공했을 때 메서드
+     */
+    private LoginResponseDto buildSuccessResponse(User user) {
+        return LoginResponseDto.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .loginStatus(LoginStatus.SUCCESS)
+                .build();
+    }
+
+    /**
+     * 로그인 실패시 메서드
+     */
+    private LoginResponseDto buildFailResponse(LoginFailType loginFailType) {
+        return LoginResponseDto.builder()
+                .loginStatus(LoginStatus.FAILURE)
+                .loginFailType(loginFailType.getField())
+                .message(loginFailType.getMessage())
                 .build();
     }
 }

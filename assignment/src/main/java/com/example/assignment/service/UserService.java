@@ -50,6 +50,29 @@ public class UserService {
 //                .loginStatus(LoginStatus.SUCCESS)
 //                .loginValidField(null)
 //                .build();
+
+        //        User user = this.userRepository.findById(dto.getId())
+//                .orElse(new User());
+
+//        LoginStatus loginStatus = false == user.getPwd().equals(dto.getPwd())
+//                ? LoginStatus.FAILURE : LoginStatus.SUCCESS;
+//        LoginValidField field = user.getPwd().equals(dto.getPwd())
+//                ? null : user == null ? LoginValidField.ID : LoginValidField.PWD;
+//
+//        String message = user.getPwd().equals(dto.getPwd())
+//                ? null : user.equals("") ? LoginResponseMessage.INVALID_ID.getMessage()
+//                : LoginResponseMessage.INVALID_PASSWORD.getMessage();
+//
+//        String id = user.equals("") ? null : user.getId();
+//        String name = user.equals("") ? null : user.getName();
+//
+//        return LoginResponseDto.builder()
+//                .loginStatus(loginStatus)
+//                .loginValidField(field)
+//                .message(message)
+//                .id(id)
+//                .name(name)
+//                .build();
         return this.userRepository.findById(dto.getId())
                 .map(user -> user.getPwd().equals(dto.getPwd())
                     ? buildSuccessResponse(user)

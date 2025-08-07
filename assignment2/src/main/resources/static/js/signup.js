@@ -21,21 +21,48 @@ function createSignupForm() {
                 type: "input",
                 label: "아이디",
                 name: "id",
+                height: "content",
                 width: 300,
+            },
+            {
+                type: "text",
+                name: "idError",
+                html: "",
+                css: "formerrormessage",
+                height: "content",
+                hidden: true,
             },
             {
                 type: "input",
                 inputType: "password",
                 label: "비밀번호",
+                height: "content",
                 name: "pwd",
                 width: 300,
+            },
+            {
+                type: "text",
+                name: "pwdError",
+                html: "",
+                css: "formerrormessage",
+                height: "content",
+                hidden: true,
             },
             {
                 type: "input",
                 label: "이름",
                 name: "name",
+                height: "content",
                 width: 300,
                 css: "levelcombo",
+            },
+            {
+                type: "text",
+                name: "nameError",
+                html: "",
+                css: "formerrormessage",
+                height: "content",
+                hidden: true,
             },
             {
                 type: "combo",
@@ -67,13 +94,23 @@ function createSignupForm() {
                         id: "F",
                         value: "F",
                     },
-                ]
+                ],
+                height: "content",
+            },
+            {
+                type: "text",
+                name: "levelError",
+                html: "",
+                css: "formerrormessage",
+                height: "content",
+                hidden: true,
             },
             {
                 type: "input",
                 label: "설명",
                 name: "desc",
                 width: 300,
+                height: "content",
                 css: "descdiv",
             },
             {
@@ -85,11 +122,17 @@ function createSignupForm() {
                 size:"medium",
                 css: "signupbutndiv",
             },
-        ]
-
+        ],
+        height: "content",
     })
     layout.getCell("usersignupcontent").attach(signupForm);
     signupForm.getItem("register").events.on("click", () => {
+
+        signupForm.getItem("idError").hide();
+        signupForm.getItem("pwdError").hide();
+        signupForm.getItem("nameError").hide();
+        signupForm.getItem("levelError").hide();
+
         const formValue = signupForm.getValue();
         console.log("formValue", formValue);
         fetch("/user/signup", {
@@ -101,30 +144,38 @@ function createSignupForm() {
             if (!res.ok) {
                 const err = await res.json();
                 console.log("err", err);
-                showLoginFailMessage(err);
+                err.error.forEach(errorList => {
+                    // 각 에러의 field에 해당하는 에러 영역이 있으면 메시지 세팅 및 표시
+                    switch (errorList.field) {
+                        case "id":
+                            signupForm.getItem("idError").setValue(errorList.message);
+                            signupForm.getItem("idError").show();
+                            break;
+                        case "pwd":
+                            signupForm.getItem("pwdError").setValue(errorList.message);
+                            signupForm.getItem("pwdError").show();
+                            break;
+                        case "level":
+                            signupForm.getItem("levelError").setValue(errorList.message);
+                            signupForm.getItem("levelError").show();
+                            break;
+                        case "name":
+                            signupForm.getItem("nameError").setValue(errorList.message);
+                            signupForm.getItem("nameError").show();
+                            break;
+                        default:
+                            break;
+                    }
+                });
             } else {
                 window.location.href = "/api/login";
             }
         })
-        .catch(() => dhx.alert("서버 오류 및 네트워크 오류"));
+        .catch((e) => {
+            console.log("e", e);
+            alert("서버 오류 및 네트워크 오류")
+        });
     })
-}
-
-function showLoginFailMessage(err) {
-    console.log("err1" + err)
-    const item = signupForm.getItem("login-error");
-
-    item.config.value = "아이디 또는 비밀번호가 올바르지 않습니다.";
-    item.config.hidden = false;
-    signupForm.paint();
-}
-function hideLoginFailMessage() {
-    const item = signupForm.getItem("login-error");
-    if (item) {
-        item.config.value = "";
-        item.config.hidden = true;
-        signupForm.paint();
-    }
 }
 
 
