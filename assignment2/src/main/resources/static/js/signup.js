@@ -15,40 +15,66 @@ function createLayout(rootId = "usersignupform") {
 
 function createSignupForm() {
     signupForm = new dhx.Form(null, {
+        css: "dhx_widget--bordered",
         rows: [
             {
                 type: "input",
                 label: "아이디",
                 name: "id",
-                width: 220,
+                width: 300,
             },
             {
-                type: "password",
+                type: "input",
+                inputType: "password",
                 label: "비밀번호",
                 name: "pwd",
-                width: 220,
+                width: 300,
             },
             {
                 type: "input",
                 label: "이름",
                 name: "name",
-                width: 220,
+                width: 300,
+                css: "levelcombo",
             },
             {
                 type: "combo",
                 label: "level",
                 name: "level",
-//                width: 220,
-                data: ["A","B","C","D","E","F"].map(v => ({
-                                                        id: v,
-                                                        value: v
-                                                }))
+                width: 300,
+                data: [
+                    {
+                        id: "A",
+                        value: "A",
+                    },
+                    {
+                        id: "B",
+                        value: "B",
+                    },
+                    {
+                        id: "C",
+                        value: "C",
+                    },
+                    {
+                        id: "D",
+                        value: "D",
+                    },
+                    {
+                        id: "E",
+                        value: "E",
+                    },
+                    {
+                        id: "F",
+                        value: "F",
+                    },
+                ]
             },
             {
                 type: "input",
                 label: "설명",
                 name: "desc",
-                width: 250,
+                width: 300,
+                css: "descdiv",
             },
             {
                 type: "button",
@@ -56,17 +82,9 @@ function createSignupForm() {
                 id:"register",
                 text:"등록",
                 color:"primary",
-                size:"medium"
+                size:"medium",
+                css: "signupbutndiv",
             },
-            {
-                type: "text",
-                name: "login-error",
-                id: "login-error",
-                label: "",
-                value: "",
-                hidden: true,
-                css: "dhx_form-global-error"
-            }
         ]
 
     })

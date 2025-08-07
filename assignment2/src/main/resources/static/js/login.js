@@ -7,11 +7,48 @@ const layout = new dhx.Layout(root, {
 });
 
 const form = new dhx.Form(null, {
-    css: "dhx_widget--bordered", // 이건 무슨 css지?
+    css: "dhx_widget--bordered",
     rows: [
-        {type: "input", name: "id", label: "아이디", required: "true"},
-        {type: "input", name: "pwd", label: "비밀번호", inputType: "password", required: "true"},
-        {type: "button", text: "로그인",name: "로그인", name: "idbutton"}
+        {
+            type: "input",
+            name: "id",
+            label: "아이디",
+        },
+        {
+            type: "text",
+            name: "idError",
+            html: "",
+            css: "formerrormessage", // 커스텀 클래스 지정 가능
+            height: "content",
+            hidden: true
+        },
+        {
+            type: "input",
+            name: "pwd",
+            label: "비밀번호",
+            inputType: "password",
+        },
+        {
+            type: "text",
+            name: "pwdError",
+            html: "",
+            css: "formerrormessage",
+            height: "content",
+            hidden: true,
+        },
+        {
+            type: "button",
+            text: "로그인",
+            name: "idbutton",
+        },
+        {
+            type: "text",
+            name: "loginError",
+            html: "",
+            css: "formerrormessage",
+            height: "content",
+            hidden: true,
+        },
     ]
 });
 
@@ -21,6 +58,10 @@ console.log("form.getItem(loginBtn):", form.getItem("idbutton"));
 
 
 form.getItem("idbutton").events.on("click", function() {
+    form.getItem("idError").hide();
+    form.getItem("pwdError").hide();
+    form.getItem("loginError").hide();
+
     const value = form.getValue();
     console.log("value:", value);
     fetch("/login", {
@@ -31,10 +72,47 @@ form.getItem("idbutton").events.on("click", function() {
     .then(async response => {
         if (!response.ok) {
             error = await response.json();
-            console.log("err : ",error);
+            console.log("error : ",error);
+
+            if (error.success === false) {
+                switch (error.error) {
+                    case "id":
+                        form.getItem("idError").setValue(error.message);
+                        form.getItem("idError").show();
+                        break;
+                    case "pwd":
+                        form.getItem("pwdError").setValue(error.message);
+                        form.getItem("pwdError").show();
+                        break;
+                    default:
+                        form.getItem("idError").hide();
+                        form.getItem("pwdError").hide();
+                }
+                form.getItem("loginError").setValue("");
+            }
+            if (error.loginStatus === "FAILURE") {
+                switch (error.loginValidField) {
+                    case "id":
+                        form.getItem("loginError").setValue(error.message || "존재하지 않는 아이디입니다.");
+                        form.getItem("loginError").show();
+                        break;
+                    case "pwd":
+                        form.getItem("loginError").setValue(error.message || "비밀번호가 틀렸습니다.");
+                        form.getItem("loginError").show();
+                        break;
+                    default:
+                        form.getItem("loginError").setValue(error.message || "로그인에 실패했습니다.");
+                        form.getItem("loginError").show();
+                }
+                form.getItem("idError").setValue("");
+                form.getItem("pwdError").setValue("");
+            }
             return null;
         }
         window.location.href = "/api/userlist";
     })
-    .catch(() => alert("서버 오류 및 네트워크 오류"));
+    .catch((e) => {
+        console.error("catch 오류 : ", e);
+        alert("서버 오류 및 네트워크 오류");
+    })
 })

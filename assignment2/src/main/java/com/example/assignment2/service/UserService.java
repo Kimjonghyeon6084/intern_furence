@@ -126,17 +126,12 @@ public class UserService {
         User user = this.userRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("해당 회원이 존재하지 않습니다."));
 
+        user.updateFrom(dto);
         this.userRepository.save(user);
 
         return UserEditResponseDto.builder()
-//                .id(dto.getId())
-                .pwd(dto.getPwd())
+                .id(id)
                 .name(dto.getName())
-                .level(dto.getLevel())
-                .desc(dto.getDesc())
-                .modDate(dto.getModDate())
                 .build();
-
-
     }
 }

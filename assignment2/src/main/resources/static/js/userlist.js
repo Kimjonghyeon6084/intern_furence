@@ -1,5 +1,6 @@
 // 전역 변수
 let layout;
+let signupButtonForm;
 let filterForm;
 let userlistGrid;
 let pagination;
@@ -11,6 +12,10 @@ let temporaryDataStore;
 function createLayout(rootId = "userlistform") {
     layout = new dhx.Layout(document.getElementById(rootId), {
         rows: [
+            {
+                id: "signupbuttoncontent",
+                height: "content",
+            },
             {
                 id: "filtercontent",
                 height: "content"
@@ -25,6 +30,24 @@ function createLayout(rootId = "userlistform") {
             }
         ]
     });
+}
+// 회원가입 버튼 생성
+function createSignupButtonForm() {
+    signupButtonForm = new dhx.Form(null, {
+        rows: [
+            {
+                type: "button",
+                text: "회원가입",
+                name: "signup",
+                css: "signupbtn"
+            }
+        ]
+    })
+    layout.getCell("signupbuttoncontent").attach(signupButtonForm);
+
+    signupButtonForm.events.on("click", () => {
+        window.location.href = `/api/signup`;
+    })
 }
 
 // 필터 폼 생성
@@ -272,6 +295,7 @@ document.addEventListener("click", function(e) {
 // 초기화
 function init() {
     createLayout();
+    createSignupButtonForm();
     createFilterForm();
     createUserlistGrid();
     createPagination();

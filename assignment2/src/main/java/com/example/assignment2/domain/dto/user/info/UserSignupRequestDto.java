@@ -17,7 +17,6 @@ public class UserSignupRequestDto {
     @Size(min = 4, message = "아이디는 4자리 이상 입력하셔야 합니다.")
     private String id;
 
-//    @NotBlank(message = "비밀번호는 필수로 입력하셔야 합니다.")
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[~@#$%^&+=!])(?=\\S+$).{8,15}$",
              message = "비밀번호는 대소문자, 숫자, 특수문자 1개 이상을 포함한 8-15자의 비밀번호를 입력해야 합니다.")
     private String pwd;

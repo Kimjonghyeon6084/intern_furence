@@ -1,6 +1,8 @@
 package com.example.assignment2.domain.entity;
 
 import com.example.assignment2.domain.dto.UserDtoBase;
+import com.example.assignment2.domain.dto.user.info.UserEditRequestDto;
+import com.example.assignment2.domain.dto.user.info.UserEditResponseDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -47,5 +49,27 @@ public class User implements UserDtoBase {
         this.desc = desc;
         this.regDate = regDate;
         this.modDate = modDate;
+    }
+
+    /**
+     * 회원정보수정시 사용하는 메서드
+     * @param dto
+     */
+    public void updateFrom(UserEditRequestDto dto) {
+        if (dto.getPwd() != null && !dto.getPwd().isBlank()) {
+            this.pwd = dto.getPwd();
+        }
+        if (dto.getName() != null) {
+            this.name = dto.getName();
+        }
+        if (dto.getLevel() != null) {
+            this.level = dto.getLevel();
+        }
+        if (dto.getDesc() != null) {
+            this.desc = dto.getDesc();
+        }
+        if (dto.getModDate() != null) {
+            this.modDate = dto.getModDate();
+        }
     }
 }

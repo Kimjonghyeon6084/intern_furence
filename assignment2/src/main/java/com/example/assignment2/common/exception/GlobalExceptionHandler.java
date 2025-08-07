@@ -33,7 +33,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ExceptionResponse<String>> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-        log.error("MethodArgumentNotValidException", e);
+        log.error("글로벌 익셉션 진입 : MethodArgumentNotValidException", e);
 
         FieldError fieldError = e.getBindingResult().getFieldErrors().get(0); // @valid에 걸린 예외
         String field = fieldError.getField(); // id인지 pwd인지 확인

@@ -9,33 +9,66 @@
     <link rel="stylesheet" href="/codebase/suite.css">
     <title>회원가입</title>
     <style>
+        .dhx_form {
+            overflow-x: hidden !important;
+        }
         .dhx_form-group {
             display: flex;
             align-items: center;
         }
         .dhx_combobox {
             display: flex;
+            align-items: center;
         }
-        .dhx_combobox__label {
-            display: inline-block;
-            text-align: right;
-            margin-right: 8px;
+        .dhx_combobox label {
+            width: 1vw;
         }
-        .dhx_label,
-        .dhx_combobox__label{
-            display: inline-block;
-            width:110px !important;
-            text-align: right;
-            margin-right: 8px;
-        }
-        label {
+        .dhx_form-group .dhx_label,
+        .dhx_form-group .dhx_combobox__label {
             width: 70px !important;
+            min-width: 70px !important;
+            max-width: 70px !important;
+            display: inline-block !important;
+            text-align: right;
+            margin : 0 1vw 0 0 !important;
+            height: 14px !important;
+            line-height: 100% !important;
+        }
+        .dhx_combobox-input-box {
+            width: 136px !important;
+        }
+        #signuppage {
+            display: flex;flex-direction: column;
+            align-items: center;
+        }
+        .dhx_layout  {
+            display: flex;
+            align-items: center;
+        }
+        .dhx_layout-cell {
+            width: 60vw;
+            overflow-x: hidden;
+        }
+        .signupbutndiv {
+            display: flex;
+            justify-content: center;
+        }
+        .descdiv dhx_input__wrapper {
+
+        }
+        h1 {
+            margin: 10vh 0 10vh 0;
+        }
+        body {
+            overflow: hidden;
         }
     </style>
 </head>
     <body>
-        <h1>회원가입</h1>
-        <div id="usersignupform" style="width: 100vw; height: 100vh;"></div>
+        <div id="signuppage">
+            <h1>회원가입</h1>
+            <div id="usersignupform" style="width: 100vw; height: 100vh;"></div>
+        </div>
     </body>
     <script src="/js/signup.js"></script>
 </html>
