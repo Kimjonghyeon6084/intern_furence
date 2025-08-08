@@ -10,7 +10,7 @@ let temporaryDataStore;
 
 // 레이아웃 생성
 function createLayout(rootId = "userlistform") {
-    layout = new dhx.Layout(document.getElementById(rootId), {
+    layout = new dhx.Layout(rootId, {
         rows: [
             {
                 id: "signupbuttoncontent",
@@ -72,10 +72,32 @@ function createFilterForm() {
                     name: "level",
                     placeholder: "레벨",
                     width: 80,
-                    data: ["A","B","C","D","E","F"].map(v => ({
-                                                            id: v,
-                                                            value: v
-                                                    }))
+                    data: [
+                        {
+                            id: "A",
+                            value: "A",
+                        },
+                        {
+                            id: "B",
+                            value: "B",
+                        },
+                        {
+                            id: "C",
+                            value: "C",
+                        },
+                        {
+                            id: "D",
+                            value: "D",
+                        },
+                        {
+                            id: "E",
+                            value: "E",
+                        },
+                        {
+                            id: "F",
+                            value: "F",
+                        },
+                    ],
                 },
                 {
                     type: "input",
@@ -111,7 +133,14 @@ function createFilterForm() {
                     text:"전체검색",
                     color:"secondary",
                     size:"medium"
-                }
+                },
+                {
+                    type: "button",
+                    name: "reset",
+                    text: "초기화",
+                    color:"secondary",
+                    size:"medium"
+                },
             ]
         }]
     });
@@ -130,6 +159,10 @@ function createFilterForm() {
         currentParams = "";
         loadUserList(0, "");
     });
+    // 초기화 버튼
+    filterForm.getItem("reset").events.on("click", () => {
+        filterForm.clear();
+    })
 }
 
 // 그리드 생성
@@ -201,12 +234,12 @@ function createUserlistGrid() {
                     align: "center",
                 }],
                 align: "center",
-                htmlEnable : true,
+                htmlEnable : true, // 태그 소요 넣기 위해
                 width: 80,
                 height: 30,
                 template: function(value, row, col) {
                     return `<button
-                        class="edit-user-btn"
+                        class="dhx_button dhx_button--primary edit-user-btn"
                         data-id="${row.id}">수정</button>`;
                 }
             },
@@ -251,11 +284,9 @@ function loadUserList(page = 0, params = "") {
     fetch(url)
         .then(async res => {
             if (!res.ok) {
-                // 실패시 에러메시지 파싱
                 const error = await res.json();
                 console.log("error", error)
-//                dhx.alert({ title: "오류", text: error.message || "에러" });
-                dhx.alert({ title: "오류", text: error.errors[0].defaultMessage || "에러" });
+                alert(error.errors[0].defaultMessage || "에러" );
                 return null;
             }
             return res.json();
@@ -276,7 +307,7 @@ function loadUserList(page = 0, params = "") {
             console.log("userlistGrid.data.getLength()", userlistGrid.data.getLength());
         })
         .catch(err => {
-            dhx.alert({ title:"오류", text:"유저리스트 로딩에 실패했습니다." });
+            alert("유저리스트 로딩에 실패했습니다.");
         });
 }
 
@@ -284,9 +315,7 @@ document.addEventListener("click", function(e) {
     if (e.target.classList.contains("edit-user-btn")) {
         const userId = e.target.dataset.id; // 실제 유저의 id 값
         console.log(userId)
-        // edituserinfo 페이지(또는 SPA 라우트)로 id만 넘기기
         window.location.href = `/api/edit/userinfo?id=${userId}`;
-        // 만약 SPA hash 방식이면 location.hash = "#edituserinfo?id=" + userId;
         }
 });
 

@@ -2,13 +2,13 @@ package com.example.assignment2.domain.entity;
 
 import com.example.assignment2.domain.dto.UserDtoBase;
 import com.example.assignment2.domain.dto.user.info.UserEditRequestDto;
-import com.example.assignment2.domain.dto.user.info.UserEditResponseDto;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
 import lombok.*;
-import org.springframework.cglib.core.Local;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 
@@ -39,6 +39,7 @@ public class User implements UserDtoBase {
     private LocalDateTime regDate;
 
     @Column
+    @LastModifiedDate
     private LocalDateTime modDate;
 
     public User(String id, String pwd, String name, String level, String desc, LocalDateTime regDate, LocalDateTime modDate) {
@@ -68,8 +69,8 @@ public class User implements UserDtoBase {
         if (dto.getDesc() != null) {
             this.desc = dto.getDesc();
         }
-        if (dto.getModDate() != null) {
-            this.modDate = dto.getModDate();
-        }
+//        if (dto.getModDate() != null) {
+//            this.modDate = dto.getModDate();
+//        }
     }
 }

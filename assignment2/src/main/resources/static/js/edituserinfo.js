@@ -14,12 +14,13 @@ function createLayout(rootId = "edituserinfo") {
 
 function createEditForm() {
     editForm = new dhx.Form(null, {
+    css: "dhx_widget--bordered",
         rows: [
             {
                 type: "input",
                 label: "아이디",
                 name: "id",
-                width: 220,
+                width: 300,
                 readOnly: true,
             },
             {
@@ -34,7 +35,8 @@ function createEditForm() {
                 type: "input",
                 label: "비밀번호",
                 name: "pwd",
-                width: 220,
+                inputType: "password",
+                width: 300,
             },
             {
                 type: "text",
@@ -48,7 +50,7 @@ function createEditForm() {
                 type: "input",
                 label: "이름",
                 name: "name",
-                width: 220,
+                width: 300,
             },
             {
                 type: "text",
@@ -62,11 +64,34 @@ function createEditForm() {
                 type: "combo",
                 label: "level",
                 name: "level",
-//                width: 220,
-                data: ["A","B","C","D","E","F"].map(v => ({
-                                                        id: v,
-                                                        value: v
-                                                }))
+                css: "levelcontent",
+                width: 230,
+                data: [
+                    {
+                        id: "A",
+                        value: "A",
+                    },
+                    {
+                        id: "B",
+                        value: "B",
+                    },
+                    {
+                        id: "C",
+                        value: "C",
+                    },
+                    {
+                        id: "D",
+                        value: "D",
+                    },
+                    {
+                        id: "E",
+                        value: "E",
+                    },
+                    {
+                        id: "F",
+                        value: "F",
+                    },
+                ],
             },
             {
                 type: "text",
@@ -80,7 +105,7 @@ function createEditForm() {
                 type: "input",
                 label: "설명",
                 name: "desc",
-                width: 250,
+                width: 300,
             },
             {
                 type: "button",
@@ -88,7 +113,8 @@ function createEditForm() {
                 id: "edit",
                 text:"수정",
                 color:"primary",
-                size:"medium"
+                size:"medium",
+                css: "editmutton"
             },
         ]
     })
@@ -96,10 +122,10 @@ function createEditForm() {
 
     editForm.getItem("edit").events.on("click", () => {
 
-        signupForm.getItem("idError").hide();
-        signupForm.getItem("pwdError").hide();
-        signupForm.getItem("nameError").hide();
-        signupForm.getItem("levelError").hide();
+        editForm.getItem("idError").hide();
+        editForm.getItem("pwdError").hide();
+        editForm.getItem("nameError").hide();
+        editForm.getItem("levelError").hide();
 
         const formValue = editForm.getValue();
 
@@ -119,22 +145,49 @@ function createEditForm() {
                 name: formValue.name,
                 level: formValue.level,
                 desc: formValue.desc,
-                // 필요시 추가 필드
             })
         })
         .then(async res => {
             if (!res.ok) {
                 const err = await res.json();
                 console.log("err", err)
-                console.log("수정 실패 : " + (err.message || "알 수 없는 오류"))
-                return;
+                console.log(err.message)
+                err.error.forEach(errorList => {
+                    switch (errorList.field) {
+                        case "id":
+                            editForm.getItem("idError").setValue(errorList.message);
+                            editForm.getItem("idError").show();
+                            break;
+                        case "pwd":
+                            editForm.getItem("pwdError").setValue(errorList.message);
+                            editForm.getItem("pwdError").show();
+                            break;
+                        case "level":
+                            editForm.getItem("levelError").setValue(errorList.message);
+                            editForm.getItem("levelError").show();
+                            break;
+                        case "name":
+                            editForm.getItem("nameError").setValue(errorList.message);
+                            editForm.getItem("nameError").show();
+                            break;
+                        default:
+                            break;
+                    }
+                });
+                return null;
             }
-            const result = await res.json();
-            console.log("result", result)
+            return res.json();
+        })
+        .then(data => {
+            if (!data) return;
+            console.log("data", data)
             console.log("수정 완료")
             window.location.href = "/api/userlist"
         })
-        .catch(() => dhx.alert("서버 오류 및 네트워크 오류"));
+        .catch((e) => {
+            console.log("e", e);
+            alert("서버 오류 및 네트워크 오류")
+        });
     });
 }
 

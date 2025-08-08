@@ -8,9 +8,64 @@
         <script type="text/javascript" src="/codebase/suite.js"></script>
         <link rel="stylesheet" href="/codebase/suite.css">
         <title>로그인화면</title>
+        <style>
+            h1 {
+                margin: 10vh 0 10vh 0;
+            }
+            #logindiv {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            .dhx_form-group {
+                display: flex;
+                align-items: center;
+            }
+            .dhx_form-group .dhx_label {
+                width: 70px !important;
+                min-width: 70px !important;
+                max-width: 70px !important;
+                display: inline-block !important;
+                text-align: right;
+                margin : 0 1vw 0 0 !important;
+                height: 14px !important;
+                line-height: 100% !important;
+            }
+            .dhx_layout-rows {
+                align-items: center;
+            }
+            .dhx_layout-cell {
+                width: 60vw;
+                margin: 2vh 0 2vh 0;
+            }
+            .dhx_form {
+                overflow-x: hidden !important;
+            }
+            .dhx_form-element {
+                display: flex;
+                justify-content: center;
+            }
+            .dhx_form-group--textinput {
+                width: 300px;
+                margin-left: 6vw;
+            }
+            .formerrormessage {
+                margin: 0;
+            }
+            .loginerrormessage input {
+                text-align: center;
+                margin : 0;
+            }
+            .loginerrormessage .dhx_form-group--textinput {
+                margin : 0;
+            }
+        </style>
     </head>
     <body>
-        <div id="loginform">로그인</div>
+        <div id="logindiv">
+            <h1>로그인</h1>
+            <div id="loginform"></div>
+        </div>
     </body>
     <script src="/js/login.js"></script>
 </html>

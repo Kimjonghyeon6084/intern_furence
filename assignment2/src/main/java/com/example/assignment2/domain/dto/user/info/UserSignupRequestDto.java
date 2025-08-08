@@ -29,7 +29,6 @@ public class UserSignupRequestDto {
     @NotBlank(message = "level: 필수 정보입니다.")
     private String level;
 
-    @Column(name = "\"desc\"")
     private String desc;
 
     private LocalDateTime regDate;

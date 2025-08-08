@@ -71,6 +71,22 @@ public class UserController {
         return ResponseEntity.ok(resDto);
     }
 
+    /**
+     * 아이디 중복검사 메서드
+     * @param id
+     * @return
+     */
+    @GetMapping("/user/checkId")
+    public ResponseEntity<UserIdCheckResponseDto> checkId(@RequestParam String id) {
+        return ResponseEntity.ok(userService.checkIdDuplication(id));
+    }
+
+    /**
+     * 유저 조회 메서드(페이징)
+     * @param page
+     * @param dto
+     * @return
+     */
     @GetMapping("/user/list/{page}")
     public ResponseEntity<Page<UserListResponseDto>> selectUsers (@PathVariable int page,
                                                                   @Valid UserListRequestDto dto) {
@@ -80,6 +96,11 @@ public class UserController {
         return ResponseEntity.ok(result);
     }
 
+    /**
+     * 유저 회원가입 메서드
+     * @param dto
+     * @return
+     */
     @PostMapping("/user/signup")
     public ResponseEntity<UserSignupResponseDto> signup(@RequestBody @Valid UserSignupRequestDto dto) {
 
@@ -88,6 +109,11 @@ public class UserController {
         return ResponseEntity.ok(result);
     }
 
+    /**
+     * 수정버튼 누를 때 해당 유저의 정보를 받아오는 메서드
+     * @param id
+     * @return
+     */
     @GetMapping("/user/{id}")
     public ResponseEntity<UserEditResponseDto> getUser(@PathVariable String id) {
         User user = userService.findById(id);
@@ -99,10 +125,15 @@ public class UserController {
                 .build());
     }
 
+    /**
+     * 유저 회원정보 수정
+     * @param userId
+     * @param dto
+     * @return
+     */
     @PutMapping("/user/{userId}")
-    public ResponseEntity<UserEditResponseDto> editUser(
-            @PathVariable("userId") String userId,
-            @RequestBody UserEditRequestDto dto) {
+    public ResponseEntity<UserEditResponseDto> editUser(@PathVariable("userId") String userId,
+                                                        @RequestBody @Valid UserEditRequestDto dto) {
         UserEditResponseDto result = userService.editUser(userId, dto);
         return ResponseEntity.ok(result);
     }

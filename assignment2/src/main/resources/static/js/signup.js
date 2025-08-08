@@ -18,11 +18,26 @@ function createSignupForm() {
         css: "dhx_widget--bordered",
         rows: [
             {
-                type: "input",
-                label: "아이디",
-                name: "id",
-                height: "content",
-                width: 300,
+                cols: [
+                    {
+                        type: "input",
+                        label: "아이디",
+                        name: "id",
+                        height: "content",
+                        width: 300,
+                        css: "idinputcss"
+                    },
+                    {
+                        type: "button",
+                        name: "idduplicationcheckbutton",
+                        height: "content",
+                        text: "중복체크",
+                        width: "content",
+                        css: "idduplicationcheckbuttoncss"
+                    },
+                ],
+                width: "content",
+                css: "idcheckcontent"
             },
             {
                 type: "text",
@@ -96,6 +111,7 @@ function createSignupForm() {
                     },
                 ],
                 height: "content",
+                css: "levelcontent",
             },
             {
                 type: "text",
@@ -126,6 +142,42 @@ function createSignupForm() {
         height: "content",
     })
     layout.getCell("usersignupcontent").attach(signupForm);
+    signupForm.getItem("idduplicationcheckbutton").events.on("click", () => {
+
+        const idValue = signupForm.getItem("id").getValue();
+        console.log("idValue",idValue);
+
+        signupForm.getItem("idError").hide();
+
+        const params = new URLSearchParams({
+            id : idValue
+        })
+
+        fetch(`/user/checkId?id=${params}`)
+            .then(async res => {
+                if(!res.ok) {
+                    const error = await res.json();
+                    console.log("error", error);
+                    alert(error);
+                    return;
+                }
+                return res.json();
+            })
+            .then(data => {
+                console.log("data", data);
+                if (data.duplicate) {
+                    signupForm.getItem("idError").setValue("아이디가 중복됩니다.");
+                    signupForm.getItem("idError").show();
+                } else {
+                    signupForm.getItem("idError").setValue("사용가능한 아이디입니다..");
+                    signupForm.getItem("idError").show();
+                }
+            })
+            .catch(error => {
+                alert(err || "중복 체크 중 오류가 발생하였습니다.")
+            })
+    })
+
     signupForm.getItem("register").events.on("click", () => {
 
         signupForm.getItem("idError").hide();

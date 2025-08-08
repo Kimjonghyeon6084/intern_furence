@@ -7,10 +7,8 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 @Builder
-public class UserSignupResponseDto {
+public class UserIdCheckResponseDto {
 
-    private final String id;
-
-    private final String name;
+    private final boolean duplicate;
 
 }

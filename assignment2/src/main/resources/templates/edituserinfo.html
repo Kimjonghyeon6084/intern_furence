@@ -8,9 +8,96 @@
     <script type="text/javascript" src="/codebase/suite.js"></script>
     <link rel="stylesheet" href="/codebase/suite.css">
     <title>회원정보수정</title>
+    <style>
+        .dhx_form {
+           overflow-x: hidden !important;
+       }
+       .dhx_form-group {
+           display: flex;
+           align-items: center;
+       }
+       .dhx_combobox {
+           display: flex;
+           align-items: center;
+       }
+       .dhx_combobox label {
+           width: 1vw;
+       }
+       .dhx_form-group .dhx_label,
+       .dhx_form-group .dhx_combobox__label {
+           width: 70px !important;
+           min-width: 70px !important;
+           max-width: 70px !important;
+           display: inline-block !important;
+           text-align: right;
+           margin : 0 1vw 0 0 !important;
+           height: 14px !important;
+           line-height: 100% !important;
+       }
+       .dhx_combobox-input-box {
+           width: 136px !important;
+       }
+       #editpage {
+           display: flex;
+           flex-direction: column;
+           align-items: center;
+       }
+       .dhx_layout  {
+           display: flex;
+           align-items: center;
+       }
+       .dhx_layout-cell {
+           width: 60vw;
+           overflow-x: hidden;
+       }
+       li {
+           text-align: center;
+       }
+       .loginbutton {
+           display: flex;
+           justify-content: center;
+       }
+       .dhx_combobox-input-box {
+           height: 40px;
+       }
+       h1 {
+           margin: 5vh 0 5vh 0;
+       }
+       body {
+           overflow: hidden;
+       }
+       .dhx_input {
+           height: 40px;
+       }
+       .dhx_combobox-input-list {
+           height: 40px;
+       }
+
+       .idduplicationcheckbuttoncss {
+           width: auto;
+           margin: 4px 0 0 4px;
+       }
+        .levelcontent {
+            display: flex;
+            justify-content: center;
+        }
+        .editmutton {
+            display: flex;
+            justify-content: center;
+        }
+        .dhx_combobox-input-box {
+            width: 220px !important;
+        }
+        .dhx_input__wrapper input {
+            text-align: center;
+        }
+    </style>
 </head>
     <body>
-        <div id="edituserinfo">수정</div>
+        <div id="editpage">
+            <h1>회원정보수정</h1>
+            <div id="edituserinfo" style="width: 100vw; height: 100vh;"></div>
+        </div>
     </body>
     <script src="/js/edituserinfo.js"></script>
 </html>

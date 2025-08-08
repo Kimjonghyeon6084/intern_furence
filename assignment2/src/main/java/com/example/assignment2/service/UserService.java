@@ -1,9 +1,6 @@
 package com.example.assignment2.service;
 
-import com.example.assignment2.domain.dto.user.info.UserEditRequestDto;
-import com.example.assignment2.domain.dto.user.info.UserEditResponseDto;
-import com.example.assignment2.domain.dto.user.info.UserSignupRequestDto;
-import com.example.assignment2.domain.dto.user.info.UserSignupResponseDto;
+import com.example.assignment2.domain.dto.user.info.*;
 import com.example.assignment2.domain.dto.user.list.UserListRequestDto;
 import com.example.assignment2.domain.dto.user.list.UserListResponseDto;
 import com.example.assignment2.domain.dto.user.login.*;
@@ -53,7 +50,7 @@ public class UserService {
 
     public UserSignupResponseDto signup(UserSignupRequestDto dto) {
 
-        if(this.userRepository.existsById(dto.getId())) {
+        if (this.userRepository.existsById(dto.getId())) {
             throw new IllegalArgumentException("이미 존재하는 아이디입니다.");
         }
 
@@ -62,12 +59,16 @@ public class UserService {
                 .pwd(dto.getPwd())
                 .level(dto.getLevel())
                 .name(dto.getName())
+                .desc(dto.getDesc())
                 .regDate(LocalDateTime.now())
                 .build();
 
         this.userRepository.save(user);
 
-        return new UserSignupResponseDto(user.getId(), user.getName());
+        return UserSignupResponseDto.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .build();
     }
 
     public User findById(String id) {
@@ -80,6 +81,7 @@ public class UserService {
                 .orElseThrow(() -> new NoSuchElementException("해당 회원이 존재하지 않습니다."));
 
         user.updateFrom(dto);
+        user.setModDate(LocalDateTime.now());
         this.userRepository.save(user);
 
         return UserEditResponseDto.builder()
@@ -107,6 +109,12 @@ public class UserService {
                 .loginStatus(LoginStatus.FAILURE)
                 .loginFailType(loginFailType.getField())
                 .message(loginFailType.getMessage())
+                .build();
+    }
+
+    public UserIdCheckResponseDto checkIdDuplication(String id) {
+        return UserIdCheckResponseDto.builder()
+                .duplicate(this.userRepository.existsById(id))
                 .build();
     }
 }

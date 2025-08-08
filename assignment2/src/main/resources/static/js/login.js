@@ -18,7 +18,7 @@ const form = new dhx.Form(null, {
             type: "text",
             name: "idError",
             html: "",
-            css: "formerrormessage", // 커스텀 클래스 지정 가능
+            css: "formerrormessage",
             height: "content",
             hidden: true
         },
@@ -39,13 +39,13 @@ const form = new dhx.Form(null, {
         {
             type: "button",
             text: "로그인",
-            name: "idbutton",
+            name: "loginbutton",
         },
         {
             type: "text",
             name: "loginError",
             html: "",
-            css: "formerrormessage",
+            css: "loginerrormessage",
             height: "content",
             hidden: true,
         },
@@ -54,10 +54,7 @@ const form = new dhx.Form(null, {
 
 layout.getCell("loginlayout").attach(form);
 
-console.log("form.getItem(loginBtn):", form.getItem("idbutton"));
-
-
-form.getItem("idbutton").events.on("click", function() {
+form.getItem("loginbutton").events.on("click", function() {
     form.getItem("idError").hide();
     form.getItem("pwdError").hide();
     form.getItem("loginError").hide();

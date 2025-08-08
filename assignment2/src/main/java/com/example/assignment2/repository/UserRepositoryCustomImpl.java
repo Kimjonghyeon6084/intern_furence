@@ -138,10 +138,8 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
      */
     private Predicate regDateEq(LocalDate startRegDate, LocalDate endRegDate) {
         if ((startRegDate)!= null) {
-//            LocalDate startTime = startRegDate.atStartOfDay();
-//            LocalDate endTime = Timestamp.valueOf(endRegDate.plusDays(1).atStartOfDay());
-//            return QUser.user.regDate.goe((Expression<LocalDateTime>) startTime).and(QUser.user.regDate.lt((Expression<LocalDateTime>) endTime));
-            return QUser.user.regDate.goe(startRegDate.atStartOfDay()).and(QUser.user.regDate.lt(endRegDate.plusDays(1).atStartOfDay()));
+            return QUser.user.regDate.goe(startRegDate.atStartOfDay())
+                    .and(QUser.user.regDate.lt(endRegDate.plusDays(1).atStartOfDay()));
         } else  {
             return null;
         }
